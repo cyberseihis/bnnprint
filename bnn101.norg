@@ -1,0 +1,119 @@
+@document.meta
+title: bnn101
+description: For exploration of bnns prior to actual thesis implementation
+authors: dabbing
+categories: ceid
+created: 2022-11-05
+updated: 2022-11-17
+version: 0.0.15
+@end
+
+* Checking out BNNs
+** Figure out
+   - [?] Should I have the first layer have full precision inputs?
+   > Ask proff.
+   - [x] Is there a ready implementation of ternary `(-1,0,+1)` weights?
+   > Yes, /Larq/ has support for _Ternary Weight Networks_
+   - [_] What tools are there for turning trained models to custom hardware?
+   > So far seen _PYNQ_+(only relevant for xilinx© zynq platrforms)+ and _LeFlow_+(seems abandoned)+
+   > I dont actually think those are gonna help, too general purpose and obtuse
+
+** Hands-on
+   Seems like the only real option is Larq
+   - [x] Read Larq introduction
+   - [ ] Create git repo
+   - [ ] Familiarise yourself with collaboratory again a bit
+   > Maybe try dreamnote?
+   >> It's _*deepnote*_. Also it has no gpu accelaration and doesn't seem AI focused.
+   - [x] Train a toy example of a bnn
+   > Run the MNIST example with the input activations also binarised
+   > Model [here]{file:///home/dabbing/Documents/BinaryNeuralNetwork/mnistbnn.h5}
+   - [x] Find a dataset suitable for printed electronics -using CNNs-
+   > Proff. recomended the /UCI repository/(dataset on his papers).
+   > So no CNNing any time soon…
+   # context maybe
+   - [_] Implement the inference step in numpy
+   - [x] Extract weights from trained model
+   > [Keras API]{https://keras.io/api/layers/}
+   [Pickled weights]
+   - [ ] Load weights to verilog
+   - [!] Prototype /sequencial/ full precision * binary neuron
+   - [ ] Look for printed electronics paper implementations
+*** A comparison of UCI datasets
+    - Arrythmia: Low accuracy, biggest ammount of MACs
+    - Cardio: Complicated data structure
+    - -GasId-
+    - HAR: Not sure how _time series data_ can train a NN on a _single sample_
+    > Also just more data cleanup
+    - *Pendigits*: Data in convinient int form and homogenous
+    - Red/Whitewine: Terrible accuracy
+
+*** Pendigits training
+    - [x] Make model in Larq for /Pendigits/ dataset
+    > Chosen because it seems simular to _MNIST_.
+    > -It has more possibilities for architecture than fully connected and such,I question picking it first-
+    > -Thinking of /2*3/ Conv. layer in the start-
+    > Architecture is 16->16->10
+    > Binarised accuracy of ~0.7
+    - [x] Check what -the original authors- other papers did
+    [Pendigits 2010]{file:///home/dabbing/Desktop/ceid/xarti/bnn/PendigitsPatternRecognitionLetters.pdf}
+    > Apparently multiple representations are in the dataset
+    > Not sure about SVM relevance(*NONE*)
+    - [x] See format of /inputs/outputs/ in MNIST
+    > Images: Just 3d array of pixel values per image
+    > Labels: Just 1d array of digits
+    - [x] Format dataset for keras
+    - [_] Pass dataset through [AutoKeras] just for lols
+    - [x] Decide on an architecture
+    > Fully connected gave better results than convoluting first
+    - [x] Make sure it uses ints
+
+** Reading up
+   - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
+   - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/A comprehensive review of Binary Neural Network.pdf}
+   - [ ] Read the papers recomended on [larq guide]{https://docs.larq.dev/larq/guides/bnn-architecture/#further-references}
+   - [-] Find papers for BNN accelarators
+   - [!] Check referrers of early papers for cool papers
+   - [!] Re-read printed electronics paper by prof.
+   - [x] Read YodaNN paper
+   > Mostly about caching inputs etc
+   - [x] Read BNN comparison paper
+   > *First* BNN accelarator paper
+   > Maybe check referrers for later works
+   - [=] Read low latency with layer parallelisations
+   > Not sure how relevant low latency is to me
+   - [ ] Read [FP-BNN paper]
+   - [x] Learn about [Batch normalisation]{https://deepai.org/machine-learning-glossary-and-terms/batch-normalization}
+   - [x] Learn about [Max pooling]{https://deepai.org/machine-learning-glossary-and-terms/max-pooling}
+   - [x] Read up on [Ternary Weight Networks]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Ternary_Weight_Networks.pdf}
+   - [x] Learn about [skip connections]{https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/}
+   - [x] Learn about [attention transfer]{https://arxiv.org/pdf/1612.03928.pdf}
+   - [ ] Learn about Popcount Compressor Trees
+   - [=] Read remaining papers from proff. recomendations
+   > Gotta find 'em first tho...
+   > THE FUCKING VPN DOESN'T DO SHIT
+   - [x] Read [Fast Inference Framework]{file:///home/dabbing/Desktop/ceid/xarti/bnn/daBNN A Super Fast Inference Framework for Binary NeuralNetworks on ARM devices.pdf}
+   > Not relevant
+
+** Components
+*** Binary Convolution
+**** XNOR
+     Since it's with a constant weight, it's either
+     nothing if /w/ is 1 or invertion if /w/ is 0.
+     Is there a _verilog_ instruction to XNOR an array with a bit?
+**** Popcount
+     There should be quite a bit of common chunks of the same values being added.
+     Locating these chunks among kernels in the same area(+could be translated+)
+     would be useful.
+*** Max Pooling
+    Is there a way to avoid calculating all of them when I only need the max?
+    > Can find max of 2 arrays by popcount/comparison of the bits they differ on one of them.
+*** Batch Normalization
+    Can turn it to a /comparator/ using a constant /c/.
+    $c = -beta * \sqrt{var + eps} + mean$
+
+** References
+   [AutoKeras]{https://autokeras.com/tutorial/image_classification/}
+   [FP-BNN]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/FP-BNN-On-FPGA-neurocomputing.pdf}
+   [Cardio Notebook]{https://www.kaggle.com/code/johnmantios/cardiotocography-classification}
+   [Pickled weights]{file:///home/dabbing/Documents/BinaryNeuralNetwork/datasets/pendigits/pendigit_weights.pk}
