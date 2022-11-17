@@ -21,8 +21,8 @@ version: 0.0.15
 ** Hands-on
    Seems like the only real option is Larq
    - [x] Read Larq introduction
-   - [ ] Create git repo
-   - [ ] Familiarise yourself with collaboratory again a bit
+   - [x] Create git repo
+   - [x] Familiarise yourself with collaboratory again a bit
    > Maybe try dreamnote?
    >> It's _*deepnote*_. Also it has no gpu accelaration and doesn't seem AI focused.
    - [x] Train a toy example of a bnn
@@ -36,8 +36,12 @@ version: 0.0.15
    - [x] Extract weights from trained model
    > [Keras API]{https://keras.io/api/layers/}
    [Pickled weights]
-   - [ ] Load weights to verilog
-   - [!] Prototype /sequencial/ full precision * binary neuron
+   - [x] Test weights localy
+   - [_] Load weights to verilog
+   - [ ] Make script to print neuron operations
+   > Print + or - and a\[i\] for i-th activation 
+   > Check that subtraction works as expected first
+   - [!] Prototype /parallel/ full precision * binary neuron
    - [ ] Look for printed electronics paper implementations
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs
