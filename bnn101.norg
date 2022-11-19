@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-17
+updated: 2022-11-19
 version: 0.0.15
 @end
 
@@ -38,10 +38,12 @@ version: 0.0.15
    [Pickled weights]
    - [x] Test weights localy
    - [_] Load weights to verilog
-   - [ ] Make script to print neuron operations
-   > Print + or - and a\[i\] for i-th activation 
-   > Check that subtraction works as expected first
-   - [!] Prototype /parallel/ full precision * binary neuron
+   - [x] Use verilator
+   > Need a *wrapper script* in cpp. Can pretty much copy-paste it.
+   - [x] Make script to print neuron operations
+   - [ ] Prototype /parallel/ full precision * binary neuron
+   - [x] Test subtraction in verilog between unsigneds
+   > Works great
    - [ ] Look for printed electronics paper implementations
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs
