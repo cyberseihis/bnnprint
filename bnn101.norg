@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-21
+updated: 2022-11-22
 version: 0.0.15
 @end
 
@@ -30,7 +30,9 @@ version: 0.0.15
    - [x] Use verilator
    > Need a *wrapper script* in cpp. Can pretty much copy-paste it.
    - [x] Prototype /parallel/ full precision * binary neuron
-   - [ ] Prototype /batch normalisation/ layer _as comparators_
+   - [x] Prototype /batch normalisation/ layer _as comparators_
+   - [ ] Train network with _ternary weights_
+   - [ ] Train network with less bits for activations
 *** Batch normalisation prototype
     - [x] Read formula for comparator value from [XNOR Neural Engine]
     - [x] Implement formula in python script
@@ -42,6 +44,18 @@ version: 0.0.15
     - [x] Complete layer module
     - [x] Half-ass testbench
 
+*** Dense fully binarised
+    - [ ] Write *popcount* module
+    > Doesnt need to be parametric at first
+    - [ ] Test weights localy
+    - [ ] Write module printer script
+    - [ ] Test against Larq
+
+*** Exit batch-normalization with softmax
+    - [ ] Generalise first scipt to print threshholds here too
+    - [ ] Decide on implementation
+    > Maybe subtract thresholds then a select-max circuit
+ 
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs
     - Cardio: Complicated data structure
@@ -84,6 +98,9 @@ version: 0.0.15
    - [x] Read BNN comparison paper
    > *First* BNN accelarator paper
    > Maybe check referrers for later works
+   - [ ] Read XnorBin
+   - [ ] Read XNORPop
+   - [ ] Read Bankman et. al
    - [=] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
    - [ ] Read [FP-BNN paper]
@@ -93,6 +110,9 @@ version: 0.0.15
    - [x] Learn about [skip connections]{https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/}
    - [x] Learn about [attention transfer]{https://arxiv.org/pdf/1612.03928.pdf}
    - [ ] Learn about Popcount Compressor Trees
+   - [ ] Learn about Popcount reduction trees
+   - [!] Search about softmax in bnns
+   > Don't know if they are the same
    - [=] Read remaining papers from proff. recomendations
    > Gotta find 'em first tho...
    > THE FUCKING VPN DOESN'T DO SHIT
