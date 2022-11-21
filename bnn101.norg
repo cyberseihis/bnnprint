@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-19
+updated: 2022-11-21
 version: 0.0.15
 @end
 
@@ -40,8 +40,13 @@ version: 0.0.15
    - [_] Load weights to verilog
    - [x] Use verilator
    > Need a *wrapper script* in cpp. Can pretty much copy-paste it.
-   - [x] Make script to print neuron operations
-   - [ ] Prototype /parallel/ full precision * binary neuron
+   - [x] Prototype /parallel/ full precision * binary neuron
+   -- [x] Make script to print neuron operations
+   -- [x] Make output vector from array in print script
+   -- [x] Include scipt output in verilog file
+   -- [x] Half-ass testbench
+   -- [x] Fix singed number issue
+   -- [x] Rewrite scipt to use intermediate output array
    - [x] Test subtraction in verilog between unsigneds
    > Works great
    - [ ] Look for printed electronics paper implementations
