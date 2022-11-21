@@ -37,9 +37,10 @@ version: 0.0.15
     - [=] Save comparator values
     - [x] Test _comparison results_ match _Larq layer output_
     > Testing through python repl vs colabboratory sucks as a process
-    - [ ] Write script to print comparators from values
-    - [ ] Complete layer module
-    - [ ] Half-ass testbench
+    - [x] Write script to print comparators from values
+    > Propably will need to specify signed values
+    - [x] Complete layer module
+    - [x] Half-ass testbench
 
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs

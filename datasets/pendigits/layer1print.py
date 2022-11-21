@@ -24,6 +24,9 @@ def single_line(i: int, bweights: list[bool]):
     return p1+"\n"+p2
 
 
-wo = [single_line(y, x) for y, x in enumerate(wi)]
-for w in wo:
-    print(w)
+def fp_bin_weights_to_operations(weights):
+    '\n'.join([single_line(y, x) for y, x in enumerate(weights)])
+
+
+if __name__ == "__main__":
+    print(fp_bin_weights_to_operations(wi))
