@@ -20,36 +20,27 @@ version: 0.0.15
 
 ** Hands-on
    Seems like the only real option is Larq
-   - [x] Read Larq introduction
-   - [x] Create git repo
-   - [x] Familiarise yourself with collaboratory again a bit
-   > Maybe try dreamnote?
-   >> It's _*deepnote*_. Also it has no gpu accelaration and doesn't seem AI focused.
-   - [x] Train a toy example of a bnn
-   > Run the MNIST example with the input activations also binarised
-   > Model [here]{file:///home/dabbing/Documents/BinaryNeuralNetwork/mnistbnn.h5}
    - [x] Find a dataset suitable for printed electronics -using CNNs-
    > Proff. recomended the /UCI repository/(dataset on his papers).
    > So no CNNing any time soon…
-   # context maybe
-   - [_] Implement the inference step in numpy
    - [x] Extract weights from trained model
    > [Keras API]{https://keras.io/api/layers/}
    [Pickled weights]
    - [x] Test weights localy
-   - [_] Load weights to verilog
    - [x] Use verilator
    > Need a *wrapper script* in cpp. Can pretty much copy-paste it.
    - [x] Prototype /parallel/ full precision * binary neuron
-   -- [x] Make script to print neuron operations
-   -- [x] Make output vector from array in print script
-   -- [x] Include scipt output in verilog file
-   -- [x] Half-ass testbench
-   -- [x] Fix singed number issue
-   -- [x] Rewrite scipt to use intermediate output array
-   - [x] Test subtraction in verilog between unsigneds
-   > Works great
-   - [ ] Look for printed electronics paper implementations
+   - [ ] Prototype /batch normalisation/ layer _as comparators_
+*** Batch normalisation prototype
+    - [x] Read formula for comparator value from [XNOR Neural Engine]
+    - [x] Implement formula in python script
+    - [=] Save comparator values
+    - [x] Test _comparison results_ match _Larq layer output_
+    > Testing through python repl vs colabboratory sucks as a process
+    - [ ] Write script to print comparators from values
+    - [ ] Complete layer module
+    - [ ] Half-ass testbench
+
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs
     - Cardio: Complicated data structure
@@ -82,6 +73,7 @@ version: 0.0.15
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
    - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/A comprehensive review of Binary Neural Network.pdf}
+   - [ ] Look for printed electronics paper implementations
    - [ ] Read the papers recomended on [larq guide]{https://docs.larq.dev/larq/guides/bnn-architecture/#further-references}
    - [-] Find papers for BNN accelarators
    - [!] Check referrers of early papers for cool papers
@@ -122,9 +114,11 @@ version: 0.0.15
 *** Batch Normalization
     Can turn it to a /comparator/ using a constant /c/.
     $c = -beta * \sqrt{var + eps} + mean$
+    Since the value we compare is an integer, turning the comp value from float to int _does not introduce any error_
 
 ** References
    [AutoKeras]{https://autokeras.com/tutorial/image_classification/}
    [FP-BNN]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/FP-BNN-On-FPGA-neurocomputing.pdf}
    [Cardio Notebook]{https://www.kaggle.com/code/johnmantios/cardiotocography-classification}
    [Pickled weights]{file:///home/dabbing/Documents/BinaryNeuralNetwork/datasets/pendigits/pendigit_weights.pk}
+   [XNOR Neural Engine]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORNeuralEngine.pdf}
