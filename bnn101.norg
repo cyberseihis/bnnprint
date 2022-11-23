@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-22
+updated: 2022-11-23
 version: 0.0.15
 @end
 
@@ -36,7 +36,7 @@ version: 0.0.15
 *** Batch normalisation prototype
     - [x] Read formula for comparator value from [XNOR Neural Engine]
     - [x] Implement formula in python script
-    - [=] Save comparator values
+    - [_] Save comparator values
     - [x] Test _comparison results_ match _Larq layer output_
     > Testing through python repl vs colabboratory sucks as a process
     - [x] Write script to print comparators from values
@@ -45,7 +45,9 @@ version: 0.0.15
     - [x] Half-ass testbench
 
 *** Dense fully binarised
-    - [ ] Write *popcount* module
+    - [=] Write *popcount* module
+    > Will just write a bunch of additions again
+    > Letting the synthesiser do whatever it wants seems the plan
     > Doesnt need to be parametric at first
     - [ ] Test weights localy
     - [ ] Write module printer script
@@ -98,9 +100,10 @@ version: 0.0.15
    - [x] Read BNN comparison paper
    > *First* BNN accelarator paper
    > Maybe check referrers for later works
-   - [ ] Read XnorBin
-   - [ ] Read XNORPop
-   - [ ] Read Bankman et. al
+   - [x] Read [XnorBin]
+   > Didn't I already read this
+   - [-] Read [XNORPop]
+   - [ ] Read [Bankman et. al]
    - [=] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
    - [ ] Read [FP-BNN paper]
@@ -143,3 +146,7 @@ version: 0.0.15
    [Cardio Notebook]{https://www.kaggle.com/code/johnmantios/cardiotocography-classification}
    [Pickled weights]{file:///home/dabbing/Documents/BinaryNeuralNetwork/datasets/pendigits/pendigit_weights.pk}
    [XNOR Neural Engine]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORNeuralEngine.pdf}
+   [XNORPop]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNOR-POP A Processing-in-Memory Architecture for Binary Convolutional Neural Networks in Wide-IO2 DRAMs.pdf}
+   [XnorBin]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORBIN A 95 TOpsW Hardware Accelerator for Binary Convolutional Neural Networks.pdf}
+   [Bankman et.al]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/An Always-On 3.8 μJ86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS.pdf}
+   [Popcount accelarator]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
