@@ -49,8 +49,16 @@ version: 0.0.15
     > Will just write a bunch of additions again
     > Letting the synthesiser do whatever it wants seems the plan
     > Doesnt need to be parametric at first
-    - [ ] Test weights localy
-    - [ ] Write module printer script
+    - [x] Test weights localy
+    -- [x] Find how to pass activations straight to single layer in keras
+    -- [x] Figure out what negative values from layer mean
+    > To get (0,1)@x answer from (-1, 1)@y answer: x=(y+len(x))/2
+    -- [x] Fix it calculates xor instead of xnor
+    -- [x] Write /gold/ fuction to return keras layer's answer
+    -- [x] Write function to get popcount answer from MAC answer
+    - [x] Write module printer script
+    -- [x] Edit fp*bin script
+    - [ ] Turn to full module
     - [ ] Test against Larq
 
 *** Exit batch-normalization with softmax
