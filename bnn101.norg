@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-23
+updated: 2022-11-25
 version: 0.0.15
 @end
 
@@ -43,6 +43,7 @@ version: 0.0.15
     > Propably will need to specify signed values
     - [x] Complete layer module
     - [x] Half-ass testbench
+    - [x] Merge dense layer with /batch/binarization/
 
 *** Dense fully binarised
     - [=] Write *popcount* module
@@ -58,8 +59,11 @@ version: 0.0.15
     -- [x] Write function to get popcount answer from MAC answer
     - [x] Write module printer script
     -- [x] Edit fp*bin script
-    - [ ] Turn to full module
-    - [ ] Test against Larq
+    - [x] Turn to full module
+    - [x] Use bit ranges instead of array index
+    - [x] Fix sign print error
+    - [x] Test against Larq
+    - [ ] Add comparators
 
 *** Exit batch-normalization with softmax
     - [ ] Generalise first scipt to print threshholds here too
