@@ -17,6 +17,7 @@ version: 0.0.15
    - [_] What tools are there for turning trained models to custom hardware?
    > So far seen _PYNQ_+(only relevant for xilinx© zynq platrforms)+ and _LeFlow_+(seems abandoned)+
    > I dont actually think those are gonna help, too general purpose and obtuse
+   - [ ] Mathematical description of finding common patterns of wires in sums
 
 ** Hands-on
    Seems like the only real option is Larq
@@ -31,6 +32,12 @@ version: 0.0.15
    > Need a *wrapper script* in cpp. Can pretty much copy-paste it.
    - [x] Prototype /parallel/ full precision * binary neuron
    - [x] Prototype /batch normalisation/ layer _as comparators_
+   - [x] Test network up to xnor-pop 
+   - [ ] Merge into one module and format a bit
+   - [ ] Send trained network and unfinished verilog implementation to proff.
+   > Mention realising last bnorm/softmax layer being a mistake due to requiring division
+   > Mention plan to train with pure xnor-pop exit later
+   > Mention most papers being more about memory usage etc
    - [ ] Train network with _ternary weights_
    - [ ] Train network with less bits for activations
 *** Batch normalisation prototype
@@ -46,10 +53,10 @@ version: 0.0.15
     - [x] Merge dense layer with /batch/binarization/
 
 *** Dense fully binarised
-    - [=] Write *popcount* module
+    - [_] Write *popcount* module
     > Will just write a bunch of additions again
     > Letting the synthesiser do whatever it wants seems the plan
-    > Doesnt need to be parametric at first
+    > Straightforward additions take less power than wallace
     - [x] Test weights localy
     -- [x] Find how to pass activations straight to single layer in keras
     -- [x] Figure out what negative values from layer mean
@@ -63,13 +70,9 @@ version: 0.0.15
     - [x] Use bit ranges instead of array index
     - [x] Fix sign print error
     - [x] Test against Larq
-    - [ ] Add comparators
+    - [_] Add comparators
+    - [_] Find formula for /x/ threshhold from /y/ one +see above+
 
-*** Exit batch-normalization with softmax
-    - [ ] Generalise first scipt to print threshholds here too
-    - [ ] Decide on implementation
-    > Maybe subtract thresholds then a select-max circuit
- 
 *** A comparison of UCI datasets
     - Arrythmia: Low accuracy, biggest ammount of MACs
     - Cardio: Complicated data structure
