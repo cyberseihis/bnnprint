@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-11-25
+updated: 2022-12-04
 version: 0.0.15
 @end
 
@@ -33,13 +33,20 @@ version: 0.0.15
    - [x] Prototype /parallel/ full precision * binary neuron
    - [x] Prototype /batch normalisation/ layer _as comparators_
    - [x] Test network up to xnor-pop 
-   - [ ] Merge into one module and format a bit
-   - [ ] Send trained network and unfinished verilog implementation to proff.
+   - [x] Merge into one module and format a bit
+   - [x] Send trained network and unfinished verilog implementation to proff.
+   - [ ] Create ssh key and send it to proff. to request server access
+   - [ ] Synthesise the pendigits_draft design and get power/area data
    > Mention realising last bnorm/softmax layer being a mistake due to requiring division
    > Mention plan to train with pure xnor-pop exit later
    > Mention most papers being more about memory usage etc
    - [ ] Train network with _ternary weights_
    - [ ] Train network with less bits for activations
+   - [ ] Iterative pruning with lottery-like retraining ternary network
+   - [ ] Loss function to increase ammount of zeros
+   - [ ] Train with skip connections
+   - [ ] Minimise common partial sums [Common subset algorithm]
+   - [ ] Find how to design analog circuits for popcount
 *** Batch normalisation prototype
     - [x] Read formula for comparator value from [XNOR Neural Engine]
     - [x] Implement formula in python script
@@ -101,6 +108,13 @@ version: 0.0.15
     - [x] Decide on an architecture
     > Fully connected gave better results than convoluting first
     - [x] Make sure it uses ints
+
+*** HAR training
+    - [ ] Check turning floating point to fixed point
+    - [ ] Turn datasets to fixed point
+    - [ ] Lookup ways to use collaboratory outside the browser
+    - [ ] Find larq layers for ternary weights
+    - [ ] Save trained network
 
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
@@ -165,3 +179,4 @@ version: 0.0.15
    [XnorBin]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORBIN A 95 TOpsW Hardware Accelerator for Binary Convolutional Neural Networks.pdf}
    [Bankman et.al]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/An Always-On 3.8 μJ86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS.pdf}
    [Popcount accelarator]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
+   [Common subset algorithm]{https://softwareengineering.stackexchange.com/questions/259861/finding-common-subsets-in-a-list-of-sets}
