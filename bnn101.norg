@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-04
+updated: 2022-12-05
 version: 0.0.15
 @end
 
@@ -35,12 +35,12 @@ version: 0.0.15
    - [x] Test network up to xnor-pop 
    - [x] Merge into one module and format a bit
    - [x] Send trained network and unfinished verilog implementation to proff.
-   - [ ] Create ssh key and send it to proff. to request server access
+   - [x] Create ssh key and send it to proff. to request server access
    - [ ] Synthesise the pendigits_draft design and get power/area data
    > Mention realising last bnorm/softmax layer being a mistake due to requiring division
    > Mention plan to train with pure xnor-pop exit later
    > Mention most papers being more about memory usage etc
-   - [ ] Train network with _ternary weights_
+   - [x] Train network with _ternary weights_
    - [ ] Train network with less bits for activations
    - [ ] Iterative pruning with lottery-like retraining ternary network
    - [ ] Loss function to increase ammount of zeros
@@ -92,29 +92,21 @@ version: 0.0.15
 *** Pendigits training
     - [x] Make model in Larq for /Pendigits/ dataset
     > Chosen because it seems simular to _MNIST_.
-    > -It has more possibilities for architecture than fully connected and such,I question picking it first-
-    > -Thinking of /2*3/ Conv. layer in the start-
     > Architecture is 16->16->10
     > Binarised accuracy of ~0.7
-    - [x] Check what -the original authors- other papers did
-    [Pendigits 2010]{file:///home/dabbing/Desktop/ceid/xarti/bnn/PendigitsPatternRecognitionLetters.pdf}
-    > Apparently multiple representations are in the dataset
-    > Not sure about SVM relevance(*NONE*)
-    - [x] See format of /inputs/outputs/ in MNIST
-    > Images: Just 3d array of pixel values per image
-    > Labels: Just 1d array of digits
-    - [x] Format dataset for keras
-    - [_] Pass dataset through [AutoKeras] just for lols
-    - [x] Decide on an architecture
-    > Fully connected gave better results than convoluting first
-    - [x] Make sure it uses ints
 
 *** HAR training
-    - [ ] Check turning floating point to fixed point
-    - [ ] Turn datasets to fixed point
-    - [ ] Lookup ways to use collaboratory outside the browser
-    - [ ] Find larq layers for ternary weights
-    - [ ] Save trained network
+    36% accuracy, horrible. Won't move forward with that for the moment
+    - [x] Download HAR dataset
+    - [x] Shrink data
+    Index and timestamps not useful, only use one device, ignore person
+    So only keep sensor data.
+    - [x] Check turning floating point to fixed point
+    - [x] Turn datasets to fixed point
+    - [_] Lookup ways to use collaboratory outside the browser
+    SSH banned smh
+    - [x] Find larq layers for ternary weights
+    - [x] Save trained network
 
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
@@ -131,7 +123,7 @@ version: 0.0.15
    > Maybe check referrers for later works
    - [x] Read [XnorBin]
    > Didn't I already read this
-   - [-] Read [XNORPop]
+   - [x] Read [XNORPop]
    - [ ] Read [Bankman et. al]
    - [=] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
@@ -141,9 +133,9 @@ version: 0.0.15
    - [x] Read up on [Ternary Weight Networks]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Ternary_Weight_Networks.pdf}
    - [x] Learn about [skip connections]{https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/}
    - [x] Learn about [attention transfer]{https://arxiv.org/pdf/1612.03928.pdf}
-   - [ ] Learn about Popcount Compressor Trees
-   - [ ] Learn about Popcount reduction trees
-   - [!] Search about softmax in bnns
+   - [x] Learn about Popcount Compressor Trees
+   - [x] Learn about Popcount reduction trees
+   - [_] Search about softmax in bnns
    > Don't know if they are the same
    - [=] Read remaining papers from proff. recomendations
    > Gotta find 'em first tho...
@@ -180,3 +172,4 @@ version: 0.0.15
    [Bankman et.al]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/An Always-On 3.8 μJ86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS.pdf}
    [Popcount accelarator]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
    [Common subset algorithm]{https://softwareengineering.stackexchange.com/questions/259861/finding-common-subsets-in-a-list-of-sets}
+   [Pendigits 2010]{file:///home/dabbing/Desktop/ceid/xarti/bnn/PendigitsPatternRecognitionLetters.pdf}
