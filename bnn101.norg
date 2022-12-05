@@ -10,14 +10,12 @@ version: 0.0.15
 
 * Checking out BNNs
 ** Figure out
-   - [?] Should I have the first layer have full precision inputs?
-   > Ask proff.
-   - [x] Is there a ready implementation of ternary `(-1,0,+1)` weights?
-   > Yes, /Larq/ has support for _Ternary Weight Networks_
    - [_] What tools are there for turning trained models to custom hardware?
    > So far seen _PYNQ_+(only relevant for xilinx© zynq platrforms)+ and _LeFlow_+(seems abandoned)+
    > I dont actually think those are gonna help, too general purpose and obtuse
    - [ ] Mathematical description of finding common patterns of wires in sums
+   > Idea for doing it with graphs in notebook
+   > Relevant thread: [Common subset algorithm]
 
 ** Hands-on
    Seems like the only real option is Larq
@@ -36,7 +34,6 @@ version: 0.0.15
    - [x] Merge into one module and format a bit
    - [x] Send trained network and unfinished verilog implementation to proff.
    - [x] Create ssh key and send it to proff. to request server access
-   - [ ] Synthesise the pendigits_draft design and get power/area data
    > Mention realising last bnorm/softmax layer being a mistake due to requiring division
    > Mention plan to train with pure xnor-pop exit later
    > Mention most papers being more about memory usage etc
@@ -94,8 +91,15 @@ version: 0.0.15
     > Chosen because it seems simular to _MNIST_.
     > Architecture is 16->16->10
     > Binarised accuracy of ~0.7
+    - [!] Synthesise the pendigits_draft design and get power/area data
+    - [ ] Train model with ternary weights
+    - [ ] Play with threshold to balance zero-count with accuracy
+    - [ ] Change print-script to handle 0 values
+    - [ ] Compare area and power of binarised and ternary
+
 
 *** HAR training
+    Accidentally used a different /HAR/ dataset than the paper used.
     36% accuracy, horrible. Won't move forward with that for the moment
     - [x] Download HAR dataset
     - [x] Shrink data
