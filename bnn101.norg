@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-05
+updated: 2022-12-08
 version: 0.0.15
 @end
 
@@ -91,7 +91,22 @@ version: 0.0.15
     > Chosen because it seems simular to _MNIST_.
     > Architecture is 16->16->10
     > Binarised accuracy of ~0.7
-    - [!] Synthesise the pendigits_draft design and get power/area data
+    - [-] Synthesise the pendigits_draft design and get power/area data
+    -- [x] Setup sshfs with server
+    -- [=] Find how to change the timescale
+    -- [x] Find where the printed library is located
+    Its the _EGFET_ library in the default libpath
+    -- [x] Set the correct library
+    -- [x] Fix module names to match env file
+    -- [x] Run synthesiser
+    5.9k/6k net are in violation what's up
+    -- [x] Copy tb
+    -- [x] Run simulation
+    Wait did it output anything
+    -- [x] Run power
+    Only leakage power reported, curious
+    -- [_] Run area
+    Its calculated on synthesys
     - [ ] Train model with ternary weights
     - [ ] Play with threshold to balance zero-count with accuracy
     - [ ] Change print-script to handle 0 values
