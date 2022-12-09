@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-08
+updated: 2022-12-09
 version: 0.0.15
 @end
 
@@ -44,8 +44,20 @@ version: 0.0.15
    - [ ] Train with skip connections
    - [ ] Minimise common partial sums [Common subset algorithm]
    - [ ] Find how to design analog circuits for popcount
+
+*** Synopsys stuff
+    - [x] Write a module with a random sum
+    - [x] Measure area of single sum
+    - [x] Have two completely unrelated sums for reference
+    - [x] Test whether putting two sums with different order increases cost from just one
+    - [x] Test whether putting an added term different between the two sums changes it
+    *Result:* compiler is smart enough to change the order properly
+    - [x] Find deprecation warning to set correct "/focus on area/" flag
+    Why does compile with high effort are give almost twice as much area as compile_ultra?
+    Why do all costs increase when it's supposed to be optimising?
+
 *** Batch normalisation prototype
-    - [x] Read formula for comparator value from [XNOR Neural Engine]
+    - [x] Read formula for comparator value from [XNOR Neural Engine] paper
     - [x] Implement formula in python script
     - [_] Save comparator values
     - [x] Test _comparison results_ match _Larq layer output_
@@ -128,8 +140,8 @@ version: 0.0.15
     - [x] Save trained network
 
 ** Reading up
-   - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
-   - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/ceid/xarti/bnn/A comprehensive review of Binary Neural Network.pdf}
+   - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/Papers/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
+   - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/Papers/bnn/A comprehensive review of Binary Neural Network.pdf}
    - [ ] Look for printed electronics paper implementations
    - [ ] Read the papers recomended on [larq guide]{https://docs.larq.dev/larq/guides/bnn-architecture/#further-references}
    - [-] Find papers for BNN accelarators
@@ -149,7 +161,7 @@ version: 0.0.15
    - [ ] Read [FP-BNN paper]
    - [x] Learn about [Batch normalisation]{https://deepai.org/machine-learning-glossary-and-terms/batch-normalization}
    - [x] Learn about [Max pooling]{https://deepai.org/machine-learning-glossary-and-terms/max-pooling}
-   - [x] Read up on [Ternary Weight Networks]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Ternary_Weight_Networks.pdf}
+   - [x] Read up on [Ternary Weight Networks]{file:///home/dabbing/Desktop/Papers/bnn/Ternary_Weight_Networks.pdf}
    - [x] Learn about [skip connections]{https://www.analyticsvidhya.com/blog/2021/08/all-you-need-to-know-about-skip-connections/}
    - [x] Learn about [attention transfer]{https://arxiv.org/pdf/1612.03928.pdf}
    - [x] Learn about Popcount Compressor Trees
@@ -159,7 +171,7 @@ version: 0.0.15
    - [=] Read remaining papers from proff. recomendations
    > Gotta find 'em first tho...
    > THE FUCKING VPN DOESN'T DO SHIT
-   - [x] Read [Fast Inference Framework]{file:///home/dabbing/Desktop/ceid/xarti/bnn/daBNN A Super Fast Inference Framework for Binary NeuralNetworks on ARM devices.pdf}
+   - [x] Read [Fast Inference Framework]{file:///home/dabbing/Desktop/Papers/bnn/daBNN A Super Fast Inference Framework for Binary NeuralNetworks on ARM devices.pdf}
    > Not relevant
 
 ** Components
@@ -182,13 +194,13 @@ version: 0.0.15
 
 ** References
    [AutoKeras]{https://autokeras.com/tutorial/image_classification/}
-   [FP-BNN]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/FP-BNN-On-FPGA-neurocomputing.pdf}
+   [FP-BNN]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/FP-BNN-On-FPGA-neurocomputing.pdf}
    [Cardio Notebook]{https://www.kaggle.com/code/johnmantios/cardiotocography-classification}
    [Pickled weights]{file:///home/dabbing/Documents/BinaryNeuralNetwork/datasets/pendigits/pendigit_weights.pk}
-   [XNOR Neural Engine]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORNeuralEngine.pdf}
-   [XNORPop]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNOR-POP A Processing-in-Memory Architecture for Binary Convolutional Neural Networks in Wide-IO2 DRAMs.pdf}
-   [XnorBin]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/XNORBIN A 95 TOpsW Hardware Accelerator for Binary Convolutional Neural Networks.pdf}
-   [Bankman et.al]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/An Always-On 3.8 μJ86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS.pdf}
-   [Popcount accelarator]{file:///home/dabbing/Desktop/ceid/xarti/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
+   [XNOR Neural Engine]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/XNORNeuralEngine.pdf}
+   [XNORPop]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/XNOR-POP A Processing-in-Memory Architecture for Binary Convolutional Neural Networks in Wide-IO2 DRAMs.pdf}
+   [XnorBin]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/XNORBIN A 95 TOpsW Hardware Accelerator for Binary Convolutional Neural Networks.pdf}
+   [Bankman et.al]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/An Always-On 3.8 μJ86% CIFAR-10 Mixed-Signal Binary CNN Processor With All Memory on Chip in 28-nm CMOS.pdf}
+   [Popcount accelarator]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
    [Common subset algorithm]{https://softwareengineering.stackexchange.com/questions/259861/finding-common-subsets-in-a-list-of-sets}
-   [Pendigits 2010]{file:///home/dabbing/Desktop/ceid/xarti/bnn/PendigitsPatternRecognitionLetters.pdf}
+   [Pendigits 2010]{file:///home/dabbing/Desktop/Papers/bnn/PendigitsPatternRecognitionLetters.pdf}
