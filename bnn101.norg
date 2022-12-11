@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-09
+updated: 2022-12-11
 version: 0.0.15
 @end
 
@@ -33,16 +33,21 @@ version: 0.0.15
    - [x] Test network up to xnor-pop 
    - [x] Merge into one module and format a bit
    - [x] Send trained network and unfinished verilog implementation to proff.
-   - [x] Create ssh key and send it to proff. to request server access
+   - [x] Create ssh key and send it to proff. to request server acces
    > Mention realising last bnorm/softmax layer being a mistake due to requiring division
    > Mention plan to train with pure xnor-pop exit later
    > Mention most papers being more about memory usage etc
+   - [ ] Have version control for google colab ipynb scripts
+   [Git in colab article]
    - [x] Train network with _ternary weights_
-   - [ ] Train network with less bits for activations
+   - [x] Train network with less bits for activations
    - [ ] Iterative pruning with lottery-like retraining ternary network
    - [ ] Loss function to increase ammount of zeros
+   _Generalise to heuristic for area/power cost_
    - [ ] Train with skip connections
-   - [ ] Minimise common partial sums [Common subset algorithm]
+   - [=] Train ensemble of bnns and prune them harder
+   - [=] Minimise common partial sums [Common subset algorithm]
+   I now think synopsys just doesn't need that much help
    - [ ] Find how to design analog circuits for popcount
 
 *** Synopsys stuff
@@ -52,6 +57,11 @@ version: 0.0.15
     - [x] Test whether putting two sums with different order increases cost from just one
     - [x] Test whether putting an added term different between the two sums changes it
     *Result:* compiler is smart enough to change the order properly
+    - [ ] Test inlined pair with some operands same and some inversed versus with explicit
+    sum of common and different elements
+    - [ ] Test inlined bunch of additions and subtractions *versus* explicit sum of positives minus
+    sum of negatives
+    - [ ] Test subtractions with comparison versus inversions with changed comparator
     - [x] Find deprecation warning to set correct "/focus on area/" flag
     Why does compile with high effort are give almost twice as much area as compile_ultra?
     Why do all costs increase when it's supposed to be optimising?
@@ -119,9 +129,15 @@ version: 0.0.15
     Only leakage power reported, curious
     -- [_] Run area
     Its calculated on synthesys
-    - [ ] Train model with ternary weights
-    - [ ] Play with threshold to balance zero-count with accuracy
-    - [ ] Change print-script to handle 0 values
+    - [x] Train without batch-normalization
+    Accuracy fell significantly, I will just keep it
+    - [x] Train model with ternary weights
+    - [x] Use keras tuner to decide on model hyperparameters
+    - [x] Train with 4 bit accuracy (so /8)
+    - [=] Play with threshold to balance zero-count with accuracy
+    Currently threshold is handled by the tuner
+    - [!] Change print-script to handle 0 values
+    -- [ ] Check /_amaranth_/ library basics
     - [ ] Compare area and power of binarised and ternary
 
 
@@ -144,9 +160,10 @@ version: 0.0.15
    - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/Papers/bnn/A comprehensive review of Binary Neural Network.pdf}
    - [ ] Look for printed electronics paper implementations
    - [ ] Read the papers recomended on [larq guide]{https://docs.larq.dev/larq/guides/bnn-architecture/#further-references}
-   - [-] Find papers for BNN accelarators
+   - [_] Find papers for BNN accelarators
+   +Tautology+
    - [!] Check referrers of early papers for cool papers
-   - [!] Re-read printed electronics paper by prof.
+   - [x] Re-read printed electronics paper by prof.
    - [x] Read YodaNN paper
    > Mostly about caching inputs etc
    - [x] Read BNN comparison paper
@@ -156,9 +173,12 @@ version: 0.0.15
    > Didn't I already read this
    - [x] Read [XNORPop]
    - [ ] Read [Bankman et. al]
-   - [=] Read low latency with layer parallelisations
+   Useful for analog implementation
+   - [x] Read [BinaryEnsembleNetwork]
+   - [ ] Read [Compressing Ternary Networks]
+   - [_] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
-   - [ ] Read [FP-BNN paper]
+   - [x] Read [FP-BNN paper]
    - [x] Learn about [Batch normalisation]{https://deepai.org/machine-learning-glossary-and-terms/batch-normalization}
    - [x] Learn about [Max pooling]{https://deepai.org/machine-learning-glossary-and-terms/max-pooling}
    - [x] Read up on [Ternary Weight Networks]{file:///home/dabbing/Desktop/Papers/bnn/Ternary_Weight_Networks.pdf}
@@ -204,3 +224,5 @@ version: 0.0.15
    [Popcount accelarator]{file:///home/dabbing/Desktop/Papers/bnn/Accelarate/A 2.1GHz 6.5mW 64-bit Unified PopCountBitScan Datapath Unit for 65nm High-Performance Microprocessor Execution Cores.pdf}
    [Common subset algorithm]{https://softwareengineering.stackexchange.com/questions/259861/finding-common-subsets-in-a-list-of-sets}
    [Pendigits 2010]{file:///home/dabbing/Desktop/Papers/bnn/PendigitsPatternRecognitionLetters.pdf}
+   [Git in colab article]{https://medium.com/geekculture/using-git-github-on-google-colaboratory-7ef3b76fe61b}
+   [BinaryEnsembleNetwork]
