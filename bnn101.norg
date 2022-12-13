@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-13
+updated: 2022-12-14
 version: 0.0.15
 @end
 
@@ -37,6 +37,7 @@ version: 0.0.15
    > Mention realising last bnorm/softmax layer being a mistake due to requiring division
    > Mention plan to train with pure xnor-pop exit later
    > Mention most papers being more about memory usage etc
+   - [x] Write email for progress report
    - [ ] Have version control for google colab ipynb scripts
    [Git in colab article]
    - [x] Train network with _ternary weights_
@@ -57,9 +58,9 @@ version: 0.0.15
     - [x] Test whether putting two sums with different order increases cost from just one
     - [x] Test whether putting an added term different between the two sums changes it
     *Result:* compiler is smart enough to change the order properly
-    - [ ] Test inlined pair with some operands same and some inversed versus with explicit
+    - [x] Test inlined pair with some operands same and some inversed versus with explicit
     sum of common and different elements
-    - [ ] Test inlined bunch of additions and subtractions *versus* explicit sum of positives minus
+    - [x] Test inlined bunch of additions and subtractions *versus* explicit sum of positives minus
     sum of negatives
     - [ ] Test subtractions with comparison versus inversions with changed comparator
     - [x] Find deprecation warning to set correct "/focus on area/" flag
@@ -157,7 +158,10 @@ version: 0.0.15
 
 *** ONNX distraction
     - [x] Turn pendigits ternary model to ONNX
-    - [ ] Check contents of ONNX model
+    - [x] Check contents of ONNX model
+    - [ ] Get weights out of ONNX model
+    - [x] Compile ONNX from tflite output of larq compute engine
+    - [ ] Find what LCE_Quantization layer does exactly
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/Papers/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
    - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/Papers/bnn/A comprehensive review of Binary Neural Network.pdf}
