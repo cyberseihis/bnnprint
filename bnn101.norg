@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-15
+updated: 2022-12-16
 version: 0.0.15
 @end
 
@@ -63,6 +63,8 @@ version: 0.0.15
     - [x] Test inlined bunch of additions and subtractions *versus* explicit sum of positives minus
     sum of negatives
     - [ ] Test subtractions with comparison versus inversions with changed comparator
+    - [x] Test one-sided versus two-sided comparison
+    _Unexpected_: One-sided won in terms of area. Ask why?
     - [x] Find deprecation warning to set correct "/focus on area/" flag
     Why does compile with high effort are give almost twice as much area as compile_ultra?
     Why do all costs increase when it's supposed to be optimising?
@@ -185,7 +187,7 @@ version: 0.0.15
    - [x] Read [Compressing Ternary Networks]
    *Very relevant to what I was trying to do with training*
    - [ ] Read [BNNs without BatchNorm]
-   - [ ] Read [TNNs with custom adder trees]
+   - [x] Read [TNNs with custom adder trees]
    - [_] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
    - [x] Read [FP-BNN paper]
