@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-14
+updated: 2022-12-15
 version: 0.0.15
 @end
 
@@ -185,6 +185,7 @@ version: 0.0.15
    - [x] Read [Compressing Ternary Networks]
    *Very relevant to what I was trying to do with training*
    - [ ] Read [BNNs without BatchNorm]
+   - [ ] Read [TNNs with custom adder trees]
    - [_] Read low latency with layer parallelisations
    > Not sure how relevant low latency is to me
    - [x] Read [FP-BNN paper]
@@ -238,3 +239,4 @@ version: 0.0.15
    [BinaryEnsembleNetwork]{file:///home/dabbing/Desktop/Papers/bnn/Binary Ensemble Neural Network More Bits per Network or More Networks per Bit.pdf}
    [Compressing Ternary Networks]{file:///home/dabbing/Desktop/Papers/bnn/Compressing  Low Precision Deep Neural Networks Using Sparsity-Induced Regularization in Ternary Networks.pdf}
    [BNNs without BatchNorm]
+   [TNNs with custom adder trees]
