@@ -42,6 +42,9 @@ version: 0.0.15
    [Git in colab article]
    - [x] Train network with _ternary weights_
    - [x] Train network with less bits for activations
+   - [ ] Figure limits for area/power in printed electronics
+   Check what previous papers used as benchmark
+   - [ ] Prototype fully sequencial per layer solution
    - [ ] Iterative pruning with lottery-like retraining ternary network
    - [ ] Loss function to increase ammount of zeros
    _Generalise to heuristic for area/power cost_
@@ -68,6 +71,8 @@ version: 0.0.15
     - [x] Find deprecation warning to set correct "/focus on area/" flag
     Why does compile with high effort are give almost twice as much area as compile_ultra?
     Why do all costs increase when it's supposed to be optimising?
+    - [ ] Run area/power measurements for different ammounts of neurons/bitwidths/
+    additions/subtractions per neuron to get data for cost heuristic
 
 *** Batch normalisation prototype
     - [x] Read formula for comparator value from [XNOR Neural Engine] paper
@@ -158,6 +163,11 @@ version: 0.0.15
     - [x] Find larq layers for ternary weights
     - [x] Save trained network
 
+*** Clash
+    - [ ] Install clash [Clash install]
+    - [ ] Prototype simple addtion/subtraction neuron
+    - [ ] Make function from ternary weight array to neuron
+
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/Papers/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
    - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/Papers/bnn/A comprehensive review of Binary Neural Network.pdf}
@@ -236,3 +246,4 @@ version: 0.0.15
    [Compressing Ternary Networks]{file:///home/dabbing/Desktop/Papers/bnn/Compressing  Low Precision Deep Neural Networks Using Sparsity-Induced Regularization in Ternary Networks.pdf}
    [BNNs without BatchNorm]
    [TNNs with custom adder trees]
+   [Clash install]{https://clash-lang.readthedocs.io/en/latest/getting-started/installing.htmlcxc}
