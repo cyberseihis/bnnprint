@@ -4,7 +4,7 @@ description: For exploration of bnns prior to actual thesis implementation
 authors: dabbing
 categories: ceid
 created: 2022-11-05
-updated: 2022-12-16
+updated: 2023-01-09
 version: 0.0.15
 @end
 
@@ -158,12 +158,6 @@ version: 0.0.15
     - [x] Find larq layers for ternary weights
     - [x] Save trained network
 
-*** ONNX distraction
-    - [x] Turn pendigits ternary model to ONNX
-    - [x] Check contents of ONNX model
-    - [ ] Get weights out of ONNX model
-    - [x] Compile ONNX from tflite output of larq compute engine
-    - [ ] Find what LCE_Quantization layer does exactly
 ** Reading up
    - [x] Read the [training bnns paper]{file:///home/dabbing/Desktop/Papers/bnn/Training_Binary_Neyral_Networks_With_Real_To_Binary_Convolutions.pdf}
    - [x] Read the bnn [meta-paper]{file:///home/dabbing/Desktop/Papers/bnn/A comprehensive review of Binary Neural Network.pdf}
