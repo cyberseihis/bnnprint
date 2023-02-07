@@ -1,0 +1,11 @@
+pendigits
+har [XYZ][Mean/Std][Acc/Gyro]
+arrythmia not age..weight can delete 3 empty classes
+redwine 
+whitewine why does white do more macs than red?
+cardio 
+gasId Cant find it
+
+class only seems to account for 1 ouput node, what?
+
+consider re-adding the extra features then hardcoding them in printing

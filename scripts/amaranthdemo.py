@@ -1,4 +1,6 @@
 # import amaranth
+from amaranth import *
+
 
 # hardcode weights
 
