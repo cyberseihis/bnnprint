@@ -4,6 +4,6 @@ arrythmia cleaned
 redwine not all classes used
 whitewine cleaned
 cardio cleaned
-gasId Cant find it
+gasId cleaned
 
 consider re-adding the extra features then hardcoding them in printing
