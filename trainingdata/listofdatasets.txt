@@ -5,5 +5,3 @@ redwine not all classes used
 whitewine cleaned
 cardio cleaned
 gasId cleaned
-
-consider re-adding the extra features then hardcoding them in printing
