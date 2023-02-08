@@ -28,3 +28,12 @@ def modify_and_save_csv(filename, modify_func):
 def norm_labels():
     for fname in get_csv_filenames():
         modify_and_save_csv(fname, replace_with_index)
+
+
+def normalize_df(df):
+    df_without_last = df.iloc[:, :-1].apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)))
+    return df_without_last, df.iloc[:, -1]
+
+def split_and_normalize_df(df):
+    df_without_last, df_last = normalize_df(df)
+    return pd.DataFrame(df_without_last), pd.DataFrame(df_last)
