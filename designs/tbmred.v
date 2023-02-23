@@ -8,25 +8,24 @@ module tbmred;
   
   wire [N*K-1:0] in;
   wire [N*I-1:0] iin;
-  wire [(N+1)/2*K-1:0] out;
-  wire [(N+1)/2*I-1:0] iout;
+  /* wire [(N+1)/2*K-1:0] out; */
+  /* wire [(N+1)/2*I-1:0] iout; */
+  wire [I-1:0] outimax;
   
-  assign in =  32'h120923d3;
+  assign in =  32'h12e923d3;
   assign iin = 32'h01234567;
 
   // Instantiate module under test
-  maxreducer #(.N(N), .K(K), .I(I)) dut (
+  maxwrap #(.N(N), .K(K), .I(I)) dut (
     .in(in),
     .iin(iin),
-    .out(out),
-    .iout(iout)
+    .outimax(outimax)
   );
   
   // Write output numbers to file
   initial begin
     # 10
-    $displayh(out);
-    $displayh(iout);
+    $displayh(outimax);
     $finish;
   end
   
