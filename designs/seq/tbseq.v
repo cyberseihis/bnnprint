@@ -2,16 +2,17 @@ module tbseq;
 
   parameter N = 4;
   parameter B = 4;
+  parameter M = 4;
   
   wire [N*B-1:0] data;
-  wire out;
+  wire [M-1:0]out;
   reg rst;
   reg clk;
   
-  assign data =  16'h12cf;
+  assign data =  16'h1234;
 
   // Instantiate module under test
-  seqq #(.N(N), .B(B), .M(1)) dut (
+  seqq #(.N(N), .B(B), .M(M)) dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -39,7 +40,7 @@ module tbseq;
     clk <= ~clk;
     # 10
     $display("huh");
-    $displayh(out);
+    $displayb(out);
     $finish;
   end
   

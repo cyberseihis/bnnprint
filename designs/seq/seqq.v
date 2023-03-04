@@ -1,37 +1,40 @@
 module seqq #(
   parameter N = 4,
   parameter B = 4,
-  parameter M = 1
+  parameter M = 4
   ) (
   input clk,
   input rst,
   input [N*B-1:0] data,
-  output out
+  output [M-1:0] out
   );
   
   reg [$clog2(N)-1:0] cnt;
-  wire [N-1:0] weis;
+  wire [M*N-1:0] weis;
+  wire [M-1:0] weit;
   wire [B-1:0] in;
   wire put;
-  wire as;
   
   assign weis =
       `include "weis.wei"
       ;
-
-  // Instantiate module under test
-  accum #(.N(N), .B(B)) acc1 (
-    .data_in(in),
-    .clk(clk),
-    .put(put),
-    .rst(rst),
-    .add_sub(as),
-    .out(out)
-  );
+  genvar i;
+  generate
+    for (i=0;i<M;i=i+1) begin
+      accum #(.N(N), .B(B)) acc1 (
+        .data_in(in),
+        .clk(clk),
+        .put(put),
+        .rst(rst),
+        .add_sub(weit[i]),
+        .out(out[i])
+      );
+    end
+  endgenerate
 
   assign put = cnt==N-1;
-  assign as = weis[cnt];
   assign in = data[cnt*B+:B];
+  assign weit = weis[cnt*M+:M];
 
   always @(posedge clk or posedge rst) begin
       if(rst || cnt == N-1) begin
