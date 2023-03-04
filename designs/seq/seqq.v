@@ -37,10 +37,10 @@ module seqq #(
   assign weit = weis[cnt*M+:M];
 
   always @(posedge clk or posedge rst) begin
-      if(rst || cnt == N-1) begin
+      if(rst) begin
           cnt <= 0;
       end
-      else begin
+      else if(!put) begin
           cnt <= cnt + 1;
       end
   end

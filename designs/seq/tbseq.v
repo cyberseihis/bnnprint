@@ -9,7 +9,7 @@ module tbseq;
   reg rst;
   reg clk;
   
-  assign data =  16'h1234;
+  assign data =  16'h1238;
 
   // Instantiate module under test
   seqq #(.N(N), .B(B), .M(M)) dut (
@@ -34,10 +34,10 @@ module tbseq;
     clk <= ~clk;
     # 10
     clk <= ~clk;
-    # 10
-    clk <= ~clk;
-    # 10
-    clk <= ~clk;
+    /* # 10 */
+    /* clk <= ~clk; */
+    /* # 10 */
+    /* clk <= ~clk; */
     # 10
     $display("huh");
     $displayb(out);
