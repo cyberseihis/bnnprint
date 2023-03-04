@@ -43,6 +43,7 @@ module seqq #(
       else if(!put) begin
           cnt <= cnt + 1;
       end
+      $display("Time = %d, my_reg = %d", $time, cnt);
   end
   
 endmodule
