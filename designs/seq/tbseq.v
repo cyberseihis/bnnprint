@@ -8,7 +8,7 @@ module tbseq;
   reg rst;
   reg clk;
   
-  assign data =  16'h12bf;
+  assign data =  16'h12cf;
 
   // Instantiate module under test
   seqq #(.N(N), .B(B), .M(1)) dut (
@@ -24,10 +24,6 @@ module tbseq;
     clk <= 0;
     # 10
     rst <= 0;
-    clk <= ~clk;
-    # 10
-    clk <= ~clk;
-    # 10
     clk <= ~clk;
     # 10
     clk <= ~clk;

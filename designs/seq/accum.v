@@ -7,15 +7,18 @@ module accum #(parameter N = 4, parameter B = 8)(
     output reg out
 );
 reg signed [B+N-1:0] acc;
+wire signed next_acc;
+assign next_acc = add_sub ? acc + data_in:acc - data_in;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         acc <= 0;
     end else begin
-        acc <= add_sub ? acc + data_in:acc - data_in;
-    end
     if (put) begin
-        $display(acc);
-        out <= acc >= 0;
+        $display(next_acc);
+        out <= next_acc >= 0;
+    end
+    else
+        acc <= next_acc;
     end
 end
 

@@ -9,12 +9,11 @@ module seqq #(
   output out
   );
   
-  reg [$clog2(N+1)-1:0] cnt;
+  reg [$clog2(N)-1:0] cnt;
   wire [N-1:0] weis;
   wire [B-1:0] in;
   wire put;
   wire as;
-  wire [$clog2(N+1)-1:0]icnt;
   
   assign weis =
       `include "weis.wei"
@@ -30,13 +29,12 @@ module seqq #(
     .out(out)
   );
 
-  assign put = cnt==N;
-  assign icnt = put?0:cnt;
-  assign as = weis[icnt];
-  assign in = data[icnt*B+:B];
+  assign put = cnt==N-1;
+  assign as = weis[cnt];
+  assign in = data[cnt*B+:B];
 
   always @(posedge clk or posedge rst) begin
-      if(rst || cnt == N) begin
+      if(rst || cnt == N-1) begin
           cnt <= 0;
       end
       else begin
