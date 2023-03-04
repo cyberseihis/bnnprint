@@ -8,6 +8,7 @@ module tbacc;
   wire [N*B-1:0] data;
   wire [N-1:0] weis;
   wire out;
+  reg put;
   reg [B-1:0] in;
   reg as;
   reg rst;
@@ -20,6 +21,7 @@ module tbacc;
   accum #(.N(N), .B(B)) dut (
     .data_in(in),
     .clk(clk),
+    .put(put),
     .rst(rst),
     .add_sub(as),
     .out(out)
@@ -27,6 +29,7 @@ module tbacc;
   
   // Write output numbers to file
   initial begin
+    put <= 0;
     rst <= 1;
     clk <= 0;
     # 10
@@ -57,9 +60,11 @@ module tbacc;
     as <= weis[3];
     # 10
     rst <= 1;
+    put <= 1;
     clk <= 0;
     # 10
     rst <= 0;
+    put <= 0;
     clk <= 1;
     # 10
     $displayh(out);
