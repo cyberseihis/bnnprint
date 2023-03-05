@@ -13,7 +13,8 @@ always @(posedge clk or posedge rst) begin
         acc <= 0;
     end else if (!put) begin
         acc <= acc+data_in;
-    end else $display(acc);
+        $display("ba %d",acc);
+    end
 end
 
 endmodule
