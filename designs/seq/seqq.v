@@ -6,7 +6,8 @@ module seqq #(
   input clk,
   input rst,
   input [N*B-1:0] data,
-  output [M-1:0] out
+  output [M-1:0] out,
+  output done
   );
   
   reg [$clog2(N)-1:0] cnt;
@@ -14,6 +15,8 @@ module seqq #(
   wire [M-1:0] weit;
   wire [B-1:0] in;
   wire put;
+
+  assign done = put;
   
   assign weis =
       `include "weis.wei"
@@ -42,8 +45,7 @@ module seqq #(
       end
       else if(!put) begin
           cnt <= cnt + 1;
-      end
-      $display("Time = %d, my_reg = %d", $time, cnt);
+      end else $display("Time = %t, mid = %b", $time, out);
   end
   
 endmodule
