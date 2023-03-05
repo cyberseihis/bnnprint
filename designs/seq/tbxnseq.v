@@ -33,7 +33,7 @@ module tbxnseq;
     #5
     # 190
     enable <= 1;
-    # 80
+    # 180
     $display("huh");
     $display("sums %b",sums);
     $finish;

@@ -20,8 +20,8 @@ module xnorseqq #(
 
   assign data_n = ~data;
   
-  initial
-      $displayb(Weights);
+  /* initial */
+  /*     $displayb(Weights); */
 
   genvar j;
   genvar i;
@@ -29,8 +29,8 @@ module xnorseqq #(
       for(j=0;j<M;j=j+1)begin
         localparam weit = Weights[j*N+:N];
         wire [N-1:0] sels;
-        initial
-            $display("glitter %d %b",j,weit);
+        /* initial */
+        /*     $display("glitter %d %b",j,weit); */
         for(i=0;i<N;i=i+1)begin
             if(weit[i])
                 assign sels[i] = data[i];
@@ -59,7 +59,6 @@ module xnorseqq #(
               cnt <= cnt + 1;
           end else begin
               put <= 1;
-              $display("x %t %b",$time,sums);
           end
       end
   end
