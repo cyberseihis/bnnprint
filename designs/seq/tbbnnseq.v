@@ -10,7 +10,7 @@ module tbbnnseq;
   reg rst;
   reg clk;
   
-  assign data =  64'h8f4d96400498fe6f;
+  assign data =  64'h2e28c690130a5fff;
   localparam SumL = $clog2(M+1);
   wire [$clog2(C)-1:0] klass;
 
