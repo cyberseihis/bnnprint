@@ -15,7 +15,7 @@ always @(posedge clk or posedge rst) begin
         acc <= 0;
     end else if (!put) begin
         acc <= next_acc;
-    end else $display(next_acc);
+    end //else $display(next_acc);
 end
 
 endmodule

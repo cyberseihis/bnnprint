@@ -19,7 +19,7 @@ module seqq #(
   assign done = put;
   
   assign weis =
-      `include "weis.wei"
+      `include "pweis.wei"
       ;
   genvar i;
   generate
