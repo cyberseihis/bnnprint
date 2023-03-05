@@ -7,9 +7,6 @@ module argmax #(
     output [I-1:0] outimax
 );
 
-localparam G = $clog2(N); // numoflayers
-// Generate multiple instances of the f module
-
 wire [N*I-1:0] startindz;
 
 genvar j;
@@ -19,24 +16,10 @@ for (j = 0; j < N; j = j + 1) begin : whatss
 end
 endgenerate
 
-
-wire [N*K-1:0] valz [G:0];
-wire [N*I-1:0] indz [G:0];
-
-assign valz[0] = inx;
-assign indz[0] = startindz;
-
-genvar i,n;
-for (i = 1; i <= G; i = i + 1) begin : f_instances
-    maxreducer #(.N(i), .K(K), .I(I)) mxr (
-        .in(valz[i-1]),
-        .iin(indz[i-1]),
-        .out(valz[i]),
-        .iout(indz[i])
-    );
-    assign n = (n+1)/2;
-end
-
-assign outimax = indz[G];
+maxwrap #(.N(N),.K(K),.I(I)) mxw (
+    .in(inx),
+    .iin(startindz),
+    .outimax(outimax)
+);
 
 endmodule

@@ -7,18 +7,13 @@ module tbmred;
   parameter I = 4;
   
   wire [N*K-1:0] in;
-  wire [N*I-1:0] iin;
-  /* wire [(N+1)/2*K-1:0] out; */
-  /* wire [(N+1)/2*I-1:0] iout; */
   wire [I-1:0] outimax;
   
-  assign in =  32'h12e923d3;
-  assign iin = 32'h01234567;
+  assign in =  32'h12e9f3d3;
 
   // Instantiate module under test
-  maxwrap #(.N(N), .K(K), .I(I)) dut (
-    .in(in),
-    .iin(iin),
+  argmax #(.N(N), .K(K), .I(I)) dut (
+    .inx(in),
     .outimax(outimax)
   );
   
