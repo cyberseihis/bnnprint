@@ -14,6 +14,7 @@ always @(posedge clk or posedge rst) begin
         $display(N);
     end else if (!put) begin
         acc <= acc+data_in;
+        $display("tt %t",$time);
         /* $display("ba %d",acc); */
     end
 end

@@ -5,6 +5,7 @@ module xnorseqq #(
   input clk,
   input rst,
   input [N-1:0] data,
+  input enable,
   /* output [M-1:0] out */
   output [M*SumL-1:0] sums
   );
@@ -39,7 +40,7 @@ module xnorseqq #(
         binaccum #(.N(N)) popc (
             .data_in(sels[cnt]),
             .clk(clk),
-            .put(put),
+            .put(put | (~enable)),
             .rst(rst),
             .acc(sums[j*SumL+:SumL])
         );
@@ -53,10 +54,13 @@ module xnorseqq #(
           cnt <= 0;
           put <= 0;
       end
-      else if(!off) begin
-          cnt <= cnt + 1;
-      end else begin
-          put <= 1;
+      else if (enable) begin
+          if(!off) begin
+              cnt <= cnt + 1;
+          end else begin
+              put <= 1;
+              $display("x %t %b",$time,sums);
+          end
       end
   end
   
