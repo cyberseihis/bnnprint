@@ -2,7 +2,8 @@
 
 module tbinacc;
 
-  parameter N = 4;
+  parameter DD = 12'he4;
+  localparam N = DD[3:0];
   
   wire [N-1:0] data;
   wire [N-1:0] out;
@@ -48,6 +49,10 @@ module tbinacc;
     in <= data[3];
     # 10
     put <= 1;
+    clk <= 0;
+    # 10
+    clk <= 1;
+    # 10
     clk <= 0;
     # 10
     clk <= 1;

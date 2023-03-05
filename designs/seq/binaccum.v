@@ -11,9 +11,10 @@ module binaccum #(
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         acc <= 0;
+        $display(N);
     end else if (!put) begin
         acc <= acc+data_in;
-        $display("ba %d",acc);
+        /* $display("ba %d",acc); */
     end
 end
 
