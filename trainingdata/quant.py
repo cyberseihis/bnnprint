@@ -34,7 +34,7 @@ def write_strings_to_file(strings, file_path):
 
 def csv_to_activations(fnm):
     df = pd.read_csv(fnm, header=None)
-    df = df.iloc[:-1]
+    df = df.iloc[:, :-1]
     hd4 = hexiby(df)
     write_strings_to_file(hd4, fnm+".activations")
 
