@@ -1,11 +1,17 @@
 module bndemo();
 localparam SumL = $clog2(M+1);
+localparam IumL = $clog2(N+1)+B;
 wire [N*B-1:0] inm;
 wire [M-1:0] mid;
 wire [M-1:0] mid_n;
 wire [C*SumL-1:0] out; 
 assign mid_n = ~mid;
 assign inm = 64'h8f4d96400498fe6f;
+/* 8f4d96400498fe6f */
+/* 0e4f7c572260b0f1 */
+/* 095bceffcc884430 */
+/* 0f1f1b37e5f7c4b0 */
+/* 0b8dffddaa665380 */
 parameter N = 16;
 parameter M = 40;
 parameter B = 4;
@@ -62,6 +68,7 @@ assign out[9*SumL+:SumL] = + mid_n[0] + mid_n[1] + mid_n[2] + mid_n[3] + mid[4] 
 
 initial begin
     #10
+    $display("mid %b",mid);
     $display("ouch %d %d", 9-0, out[0*SumL+:SumL]);
     $display("ouch %d %d", 9-1, out[1*SumL+:SumL]);
     $display("ouch %d %d", 9-2, out[2*SumL+:SumL]);
