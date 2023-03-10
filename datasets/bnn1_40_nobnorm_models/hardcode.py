@@ -58,7 +58,7 @@ def bineur(i, ar):
 
 def neur(i, ar):
     bod = ' '.join([cel(i, w) for i, w in enumerate(ar)])
-    al = f"assign mid[{i}] = {bod} >= 0;"
+    al = f"assign vmid[{i}] = {bod};\nassign mid[{i}] = vmid[{i}] >= 0;"
     return al
 
 
