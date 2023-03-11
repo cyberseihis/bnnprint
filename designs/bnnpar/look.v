@@ -1,3 +1,59 @@
+module tbbndemo();
+reg [N*B-1:0] inp;
+wire [$clog2(C)-1:0] klass;
+wire [N*B-1:0] testcases [Ts-1:0];
+
+parameter N = 16;
+parameter M = 40;
+parameter B = 4;
+parameter C = 10;
+parameter Ts = 5;
+
+assign testcases[0] = 64'h8f4d96400498fe6f;
+assign testcases[1] = 64'h0e4f7c572260b0f1;
+assign testcases[2] = 64'h095bceffcc884430;
+assign testcases[3] = 64'h0f1f1b37e5f7c4b0;
+assign testcases[4] = 64'h0b8dffddaa665380;
+
+bndemo #(.N(N), .B(B), .M(M), .C(C)) dut (.inp(inp),.klass(klass));
+
+integer i;
+initial begin
+    inp = testcases[0];
+    for(i=0;i<Ts;i=i+1) begin
+        inp = testcases[i];
+        #10
+        $displayh(i);
+        $display("%h %h %d",inp,dut.out,klass);
+    end
+end
+
+endmodule
+module bndemo #(
+    parameter N = 4,
+    parameter B = 4,
+    parameter M = 4,
+    parameter C = 4
+) (
+    input [N*B-1:0] inp,
+    output [$clog2(C)-1:0] klass
+);
+localparam SumL = $clog2(M+1);
+localparam IumL = $clog2(N+1)+B;
+wire unsigned [B-1:0] inm [N-1:0];
+wire [M-1:0] mid;
+wire unsigned [IumL-1:0] pmid [M-1:0];
+wire unsigned [IumL-1:0] nmid [M-1:0];
+wire [M-1:0] mid_n;
+wire [C*SumL-1:0] out; 
+assign mid_n = ~mid;
+
+genvar i;
+generate
+    for(i=0;i<N;i=i+1)
+        assign inm[N-1-i] = inp[i*B+:B];
+endgenerate
+
 assign pmid[0] = + inm[1] + inm[6] + inm[8] + inm[9] + inm[11] + inm[13];
 assign nmid[0] = + inm[0] + inm[2] + inm[3] + inm[4] + inm[5] + inm[7] + inm[10] + inm[12] + inm[14] + inm[15];
 assign mid[0] = pmid[0] >= nmid[0];
@@ -127,3 +183,121 @@ assign out[6*SumL+:SumL] = + mid_n[0] + mid_n[1] + mid_n[2] + mid[3] + mid_n[4] 
 assign out[7*SumL+:SumL] = + mid_n[0] + mid[1] + mid[2] + mid_n[3] + mid[4] + mid[5] + mid[6] + mid_n[7] + mid_n[8] + mid_n[9] + mid[10] + mid_n[11] + mid_n[12] + mid_n[13] + mid_n[14] + mid[15] + mid[16] + mid[17] + mid[18] + mid_n[19] + mid_n[20] + mid_n[21] + mid_n[22] + mid[23] + mid[24] + mid_n[25] + mid[26] + mid_n[27] + mid_n[28] + mid_n[29] + mid[30] + mid_n[31] + mid[32] + mid_n[33] + mid[34] + mid[35] + mid[36] + mid_n[37] + mid[38] + mid_n[39];
 assign out[8*SumL+:SumL] = + mid_n[0] + mid_n[1] + mid_n[2] + mid_n[3] + mid_n[4] + mid_n[5] + mid_n[6] + mid_n[7] + mid_n[8] + mid_n[9] + mid_n[10] + mid_n[11] + mid[12] + mid[13] + mid[14] + mid[15] + mid_n[16] + mid_n[17] + mid[18] + mid[19] + mid_n[20] + mid[21] + mid[22] + mid[23] + mid_n[24] + mid[25] + mid_n[26] + mid[27] + mid[28] + mid[29] + mid[30] + mid_n[31] + mid[32] + mid[33] + mid_n[34] + mid[35] + mid[36] + mid[37] + mid[38] + mid_n[39];
 assign out[9*SumL+:SumL] = + mid_n[0] + mid_n[1] + mid_n[2] + mid_n[3] + mid[4] + mid[5] + mid_n[6] + mid_n[7] + mid_n[8] + mid[9] + mid[10] + mid_n[11] + mid[12] + mid_n[13] + mid_n[14] + mid_n[15] + mid_n[16] + mid[17] + mid[18] + mid_n[19] + mid[20] + mid[21] + mid_n[22] + mid[23] + mid[24] + mid[25] + mid[26] + mid[27] + mid_n[28] + mid[29] + mid_n[30] + mid_n[31] + mid_n[32] + mid_n[33] + mid_n[34] + mid[35] + mid_n[36] + mid_n[37] + mid_n[38] + mid_n[39];
+
+argmax #(.N(C),.I($clog2(C)),.K(SumL)) result (
+    .inx(out),
+    .outimax(klass)
+);
+endmodule
+module argmax #(
+    parameter N = 9,
+    parameter K = 4,
+    parameter I = 4
+) (
+    input [N*K-1:0] inx,
+    output [I-1:0] outimax
+);
+
+wire [N*I-1:0] startindz;
+
+genvar j;
+generate
+for (j = 0; j < N; j = j + 1) begin : whatss
+    assign startindz[j*I+:I] = j;
+end
+endgenerate
+
+maxwrap #(.N(N),.K(K),.I(I)) mxw (
+    .in(inx),
+    .iin(startindz),
+    .outimax(outimax)
+);
+
+endmodule
+module maxwrap #(
+  parameter N = 8,
+  parameter K = 4,
+  parameter I = 2
+) (
+  input [N*K-1:0] in,
+  input [N*I-1:0] iin,
+  output [I-1:0] outimax
+);
+
+if (N!=1) begin: xdg
+
+wire [(N+1)/2*K-1:0] out;
+wire [(N+1)/2*I-1:0] iout;
+
+maxreducer #(.N(N), .K(K), .I(I)) mxr (
+    .in(in),
+    .iin(iin),
+    .out(out),
+    .iout(iout)
+);
+
+
+maxwrap #(.N((N+1)/2), .K(K), .I(I)) mwp (
+    .in(out),
+    .iin(iout),
+    .outimax(outimax)
+);
+end
+else 
+    assign outimax = iin;
+
+
+
+
+endmodule
+module maxreducer #(
+  parameter N = 8,
+  parameter K = 4,
+  parameter I = 2
+) (
+  input [N*K-1:0] in,
+  input [N*I-1:0] iin,
+  output [(N+1)/2*K-1:0] out,
+  output [(N+1)/2*I-1:0] iout
+);
+
+  // Generate multiple instances of the f module
+  genvar i;
+  generate
+    for (i = 0; i < (N+1)/2; i = i + 1) begin : f_instances
+      if (i == (N+1)/2 - 1 && N % 2 == 1) begin
+        // If there is an odd number of elements, pass the last one through
+        assign out[i*K +: K] = in[N*K-K +: K];
+        assign iout[i*I +: I] = iin[N*I-I +: I];
+      end else begin
+        max_module #(.K(K),.I(I)) maxx (
+          .a(in[i*2*K +: K]),
+          .b(in[i*2*K+K +: K]), // add K to the starting index
+          .ia(iin[i*2*I +: I]),
+          .ib(iin[i*2*I+I +: I]), // add I to the starting index
+          .max_out(out[i*K +: K]),
+          .imax_out(iout[i*I +: I])
+        );
+      end
+    end
+  endgenerate
+
+endmodule
+
+module max_module #(
+  parameter K = 8,
+  parameter I = 2
+) (
+  input [K-1:0] a,
+  input [K-1:0] b,
+  input [I-1:0] ia,
+  input [I-1:0] ib,
+  output [K-1:0] max_out,
+  output [I-1:0] imax_out
+);
+
+    assign max_out = (a >= b) ? a:b;
+    assign imax_out = (a >= b) ? ia:ib;
+
+endmodule
+
