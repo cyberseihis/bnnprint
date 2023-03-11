@@ -2,7 +2,7 @@ module bndemo();
 localparam SumL = $clog2(M+1);
 localparam IumL = $clog2(N+1)+B;
 /* localparam IumL = 20; */
-wire [N*B-1:0] inp;
+reg [N*B-1:0] inp;
 wire unsigned [B-1:0] inm [N-1:0];
 wire [M-1:0] mid;
 wire unsigned [IumL-1:0] pmid [M-1:0];
@@ -10,12 +10,6 @@ wire unsigned [IumL-1:0] nmid [M-1:0];
 wire [M-1:0] mid_n;
 wire [C*SumL-1:0] out; 
 assign mid_n = ~mid;
-assign inp = 64'h0b8dffddaa665380;
-/* 8f4d96400498fe6f */
-/* 0e4f7c572260b0f1 */
-/* 095bceffcc884430 */
-/* 0f1f1b37e5f7c4b0 */
-/* 0b8dffddaa665380 */
 
 genvar i;
 generate
@@ -159,11 +153,26 @@ assign out[9*SumL+:SumL] = + mid_n[0] + mid_n[1] + mid_n[2] + mid_n[3] + mid[4] 
 
 integer j;
 initial begin
-    #10
-    $display("mid %b",mid);
-    for(j=0;j<C;j=j+1)
-        $display("out %d %d",j,out[j*SumL+:SumL]);
-
+    /* $display("mid %b",mid); */
+    inp <= 64'h8f4d96400498fe6f;
+    showout();
+    inp <= 64'h0e4f7c572260b0f1;
+    showout();
+    inp <= 64'h095bceffcc884430;
+    showout();
+    inp <= 64'h0f1f1b37e5f7c4b0;
+    showout();
+    inp <= 64'h0b8dffddaa665380;
+    showout();
 end
 
+task showout();
+    begin
+    #10
+    $write("%h [",inp);
+    for(j=0;j<C;j=j+1)
+        $write("%d,",out[j*SumL+:SumL]);
+    $display("]");
+    end
+endtask
 endmodule
