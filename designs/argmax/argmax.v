@@ -12,7 +12,7 @@ wire [N*I-1:0] startindz;
 genvar j;
 generate
 for (j = 0; j < N; j = j + 1) begin : whatss
-    assign startindz[j*I+:I] = (N-1)-j;
+    assign startindz[j*I+:I] = j;
 end
 endgenerate
 

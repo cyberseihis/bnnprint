@@ -16,6 +16,7 @@ module maxreducer #(
       if (i == (N+1)/2 - 1 && N % 2 == 1) begin
         // If there is an odd number of elements, pass the last one through
         assign out[i*K +: K] = in[N*K-K +: K];
+        assign iout[i*I +: I] = iin[N*I-I +: I];
       end else begin
         max_module #(.K(K),.I(I)) maxx (
           .a(in[i*2*K +: K]),

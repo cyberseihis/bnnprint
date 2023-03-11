@@ -1,5 +1,3 @@
-`timescale 1ns/1ns
-
 module tbmred;
 
   parameter N = 8;
@@ -20,7 +18,7 @@ module tbmred;
   // Write output numbers to file
   initial begin
     # 10
-    $displayh(outimax);
+    $display("tbmred %h",outimax);
     $finish;
   end
   
