@@ -1,5 +1,6 @@
 import h5py
 import numpy as np
+import os
 
 
 def paradump_weights(filename):
@@ -7,23 +8,14 @@ def paradump_weights(filename):
     sw0 = h5['q_dense/q_dense/kernel:0'][:, :]
     sw1 = h5['q_dense_1/q_dense_1/kernel:0'][:, :]
     # Need to transpose to allign rows with neurons
-    # Add param calculation
-    N, M = sw0.shape
-    B = 4
-    _, C = sw1.shape
-    paramN = f"parameter N = {N};\n"
-    paramM = f"parameter M = {M};\n"
-    paramC = f"parameter C = {C};\n"
-    paramB = f"parameter B = {B};\n"
-    params = paramN+paramM+paramB+paramC
     bw0 = biny(sw0.T)
     bw1 = biny(sw1.T)
     hard0 = layep(bw0)
     hard1 = layebin(bw1)
     print(bw0)
     h5.close()
-    with open('bitstr'+filename, 'w') as file:
-        file.write(params+hard0+hard1)
+    with open('bnnprints/'+filename+'.hrdcd', 'w') as file:
+        file.write(hard0+hard1)
 
 
 def layep(mat):
@@ -67,3 +59,9 @@ def neur(i, ar):
 def biny(a):
     b = np.sign(a)
     return np.maximum(b, 0)
+
+
+def get_weight_filenames():
+    filenames = os.listdir()
+    csv_filenames = [filename for filename in filenames if filename.startswith("weight")]
+    return csv_filenames
