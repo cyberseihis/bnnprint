@@ -38,9 +38,8 @@ def layebin(mat):
     return bod
 
 
-def cel(i, w):
-    x = "+" if w == 1 else "-"
-    f = f"{x} inm[{i}*B+:B]"
+def cel(i):
+    f = f"+ inm[{i}]"
     return f
 
 
@@ -57,8 +56,11 @@ def bineur(i, ar):
 
 
 def neur(i, ar):
-    bod = ' '.join([cel(i, w) for i, w in enumerate(ar)])
-    al = f"assign vmid[{i}] = {bod};\nassign mid[{i}] = vmid[{i}] >= 0;"
+    poses = [i for i, a in enumerate(ar) if a == 1]
+    neges = [i for i, a in enumerate(ar) if a != 1]
+    bodp = ' '.join([cel(i) for i in poses])
+    bodn = ' '.join([cel(i) for i in neges])
+    al = f"assign pmid[{i}] = {bodp};\nassign nmid[{i}] = {bodn};\nassign mid[{i}] = pmid[{i}] >= nmid[{i}];"
     return al
 
 
