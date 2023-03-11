@@ -23,7 +23,7 @@ generate
         assign inm[N-1-i] = inp[i*B+:B];
 endgenerate
 
-`include "works_prin.h5"
+`include `HRDCD
 
 argmax #(.N(C),.I($clog2(C)),.K(SumL)) result (
     .inx(out),

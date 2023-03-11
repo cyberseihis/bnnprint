@@ -1,0 +1,2 @@
+`define TBPARAMS "pendigits.csv.tbp"
+`define HRDCD "weightspendigits.csv.h5.hrdcd"

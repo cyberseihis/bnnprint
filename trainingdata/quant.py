@@ -47,11 +47,13 @@ def csv_to_tbparams(fnm):
     _, N = df.shape
     M = 40
     B = 4
+    Ts = 5
     paramN = f"parameter N = {N};"
     paramM = f"parameter M = {M};"
     paramC = f"parameter C = {C};"
     paramB = f"parameter B = {B};"
-    params = [paramN, paramM, paramB, paramC]
+    paramTs = f"parameter Ts = {Ts};"
+    params = [paramN, paramM, paramB, paramC, paramTs]
     hd4 = hexiby(df)
     hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
            for i, a in enumerate(hd4[0:5])]

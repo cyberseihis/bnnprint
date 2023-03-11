@@ -2,6 +2,7 @@ parameter N = 19;
 parameter M = 40;
 parameter B = 4;
 parameter C = 3;
+parameter Ts = 5;
 assign testcases[0] = 76'h4000d18100621208964;
 assign testcases[1] = 76'h8203140320b3a52a991;
 assign testcases[2] = 76'h8103140420b3a42a991;
