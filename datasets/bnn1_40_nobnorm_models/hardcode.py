@@ -60,7 +60,7 @@ def neur(i, ar):
     neges = [i for i, a in enumerate(ar) if a != 1]
     bodp = ' '.join([cel(i) for i in poses])
     bodn = ' '.join([cel(i) for i in neges])
-    al = f"assign mid[{i}] = {bodp} >= {bodn};"
+    al = f"assign pmid[{i}] = {bodp};\nassign nmid[{i}] = {bodn};\nassign mid[{i}] = pmid[{i}] >= nmid[{i}];"
     return al
 
 
