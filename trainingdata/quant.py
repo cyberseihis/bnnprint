@@ -39,9 +39,35 @@ def csv_to_activations(fnm):
     write_strings_to_file(hd4, fnm+".activations")
 
 
+def csv_to_tbparams(fnm):
+    df = pd.read_csv(fnm, header=None)
+    dy = df.iloc[:, -1]
+    df = df.iloc[:, :-1]
+    C = dy.nunique()
+    _, N = df.shape
+    M = 40
+    B = 4
+    paramN = f"parameter N = {N};"
+    paramM = f"parameter M = {M};"
+    paramC = f"parameter C = {C};"
+    paramB = f"parameter B = {B};"
+    params = [paramN, paramM, paramB, paramC]
+    hd4 = hexiby(df)
+    hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
+           for i, a in enumerate(hd4[0:5])]
+    tbpr = params+hd5
+    write_strings_to_file(tbpr, "tbparams/"+fnm+".tbp")
+    # print(tbpr, "tbparams/"+fnm+".tbp")
+
+
 def mnn():
     for fnm in get_csv_filenames():
         csv_to_activations(fnm)
+
+
+def save_tbparams():
+    for fnm in get_csv_filenames():
+        csv_to_tbparams(fnm)
 
 
 def chknonan():
