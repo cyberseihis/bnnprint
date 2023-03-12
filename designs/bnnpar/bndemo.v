@@ -1,17 +1,17 @@
-`ifndef BNAME
-`define BNAME bndemo
+`ifndef DUTNAME
+`define DUTNAME bndemo
 parameter N = 4;
 parameter B = 4;
 parameter M = 4;
 parameter C = 4;
 `endif
-`ifdef PARAMS
-`include `PARAMS
-`endif
-module `BNAME (
+module `DUTNAME (
     input [N*B-1:0] inp,
     output [$clog2(C)-1:0] klass
 );
+`ifdef PARAMS
+`include `PARAMS
+`endif
 localparam SumL = $clog2(M+1);
 localparam IumL = $clog2(N+1)+B;
 wire unsigned [B-1:0] inm [N-1:0];

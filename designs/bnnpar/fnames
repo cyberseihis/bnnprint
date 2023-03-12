@@ -1,6 +1,0 @@
-+define+BNAME=winered
-+define+TESTCASES="winequality-red.csv.tbp"
-+define+PARAMS="winequality-red.csv.par"
-+define+HRDCD="weightswinequality-red.csv.h5.hrdcd"
-+incdir+../../datasets/bnn1_40_nobnorm_models/bnnprints/
-+incdir+../../trainingdata/tbparams/
