@@ -1,5 +1,13 @@
 import subprocess
 
+datasets = [
+    "cardio",
+    "gasId",
+    "Har",
+    "pendigits",
+    "winequality-red",
+    "winequality-white"]
+
 
 def replace_string_in_file(
         input_file_path, search_string, replace_string, output_file_path):
@@ -35,3 +43,8 @@ def mk_dump(name):
     write_cmdfile(name)
     mk_dut(name)
     mk_tb(name)
+
+
+def dump_all():
+    for dset in datasets:
+        mk_dump(dset)
