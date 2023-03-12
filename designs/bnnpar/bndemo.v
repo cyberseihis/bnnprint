@@ -1,12 +1,14 @@
 `ifndef BNAME
 `define BNAME bndemo
+parameter N = 4;
+parameter B = 4;
+parameter M = 4;
+parameter C = 4;
 `endif
-module `BNAME #(
-    parameter N = 4,
-    parameter B = 4,
-    parameter M = 4,
-    parameter C = 4
-) (
+`ifdef PARAMS
+`include `PARAMS
+`endif
+module `BNAME (
     input [N*B-1:0] inp,
     output [$clog2(C)-1:0] klass
 );

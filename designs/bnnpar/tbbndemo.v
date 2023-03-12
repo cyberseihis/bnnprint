@@ -1,11 +1,22 @@
+`ifndef BNAME
+`define BNAME bndemo
+parameter N = 4;
+parameter B = 4;
+parameter M = 4;
+parameter C = 4;
+parameter Ts = 5;
+`endif
 module tbbndemo();
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-`include `TBPARAMS
+`ifdef PARAMS
+`include `PARAMS
+`include `TESTCASES
+`endif
 
-`BNAME #(.N(N), .B(B), .M(M), .C(C)) dut (.inp(inp),.klass(klass));
+`BNAME dut (.inp(inp),.klass(klass));
 
 integer i;
 initial begin

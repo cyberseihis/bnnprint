@@ -57,8 +57,8 @@ def csv_to_tbparams(fnm):
     hd4 = hexiby(df)
     hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
            for i, a in enumerate(hd4[0:5])]
-    tbpr = params+hd5
-    write_strings_to_file(tbpr, "tbparams/"+fnm+".tbp")
+    write_strings_to_file(hd5, "tbparams/"+fnm+".tbp")
+    write_strings_to_file(params, "tbparams/"+fnm+".par")
     # print(tbpr, "tbparams/"+fnm+".tbp")
 
 
