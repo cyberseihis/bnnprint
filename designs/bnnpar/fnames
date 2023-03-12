@@ -1,2 +1,5 @@
-`define TBPARAMS "pendigits.csv.tbp"
-`define HRDCD "weightspendigits.csv.h5.hrdcd"
++define+BNAME=muhbname
++define+TBPARAMS="winequality-red.csv.tbp"
++define+HRDCD="weightswinequality-red.csv.h5.hrdcd"
++incdir+../../datasets/bnn1_40_nobnorm_models/bnnprints/
++incdir+../../trainingdata/tbparams/

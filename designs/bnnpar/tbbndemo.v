@@ -3,10 +3,9 @@ reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-`include "fnames"
 `include `TBPARAMS
 
-bndemo #(.N(N), .B(B), .M(M), .C(C)) dut (.inp(inp),.klass(klass));
+`BNAME #(.N(N), .B(B), .M(M), .C(C)) dut (.inp(inp),.klass(klass));
 
 integer i;
 initial begin
@@ -14,8 +13,9 @@ initial begin
     for(i=0;i<Ts;i=i+1) begin
         inp = testcases[i];
         #10
-        $displayh(i);
-        $display("%h %h %d",inp,dut.out,klass);
+        /* $displayh(i); */
+        /* $display("%h %h %d",inp,dut.out,klass); */
+        $display("%d",klass);
     end
 end
 

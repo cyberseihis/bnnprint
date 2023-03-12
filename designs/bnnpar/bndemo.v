@@ -1,4 +1,7 @@
-module bndemo #(
+`ifndef BNAME
+`define BNAME bndemo
+`endif
+module `BNAME #(
     parameter N = 4,
     parameter B = 4,
     parameter M = 4,
@@ -23,7 +26,9 @@ generate
         assign inm[N-1-i] = inp[i*B+:B];
 endgenerate
 
+`ifdef HRDCD
 `include `HRDCD
+`endif
 
 argmax #(.N(C),.I($clog2(C)),.K(SumL)) result (
     .inx(out),
