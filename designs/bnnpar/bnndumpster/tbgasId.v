@@ -7,17 +7,21 @@
 
 
 
-module tbgasId();
+module tbgasId #(
+
+parameter N = 128,
+parameter M = 40,
+parameter B = 4,
+parameter C = 6,
+parameter Ts = 5
+
+
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-
-parameter N = 128;
-parameter M = 40;
-parameter B = 4;
-parameter C = 6;
-parameter Ts = 5;
 
 assign testcases[0] = 512'h10000fef10000fff41000fff50000fff20000fff30000fff30000fef30000fef10000fff10000fff21000fff21000fff21000fff21100fff21000fef21000fef;
 assign testcases[1] = 512'h10100fef10100fff41000fff50000fff20000fff30000fff30000fef40000fef10100fff10110fff21100fef21000fef22100fff22100fff21000fef21000fef;

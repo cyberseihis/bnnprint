@@ -5,13 +5,14 @@ parameter B = 4;
 parameter M = 4;
 parameter C = 4;
 `endif
-module `DUTNAME (
-    input [N*B-1:0] inp,
-    output [$clog2(C)-1:0] klass
-);
+module `DUTNAME #(
 `ifdef PARAMS
 `include `PARAMS
 `endif
+)(
+    input [N*B-1:0] inp,
+    output [$clog2(C)-1:0] klass
+);
 localparam SumL = $clog2(M+1);
 localparam IumL = $clog2(N+1)+B;
 wire unsigned [B-1:0] inm [N-1:0];

@@ -7,13 +7,17 @@ parameter M = 4;
 parameter C = 4;
 parameter Ts = 5;
 `endif
-module `TBNAME();
+module `TBNAME #(
+`ifdef PARAMS
+`include `PARAMS
+`endif
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-`ifdef PARAMS
-`include `PARAMS
+`ifdef TESTCASES
 `include `TESTCASES
 `endif
 

@@ -7,17 +7,21 @@
 
 
 
-module tbwinequality-red();
+module tbwinequality-red #(
+
+parameter N = 11,
+parameter M = 40,
+parameter B = 4,
+parameter C = 6,
+parameter Ts = 5
+
+
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-
-parameter N = 11;
-parameter M = 40;
-parameter B = 4;
-parameter C = 6;
-parameter Ts = 5;
 
 assign testcases[0] = 44'h46012229a22;
 assign testcases[1] = 44'h58022538633;

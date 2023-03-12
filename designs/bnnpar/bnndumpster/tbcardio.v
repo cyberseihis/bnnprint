@@ -7,17 +7,21 @@
 
 
 
-module tbcardio();
+module tbcardio #(
+
+parameter N = 19,
+parameter M = 40,
+parameter B = 4,
+parameter C = 3,
+parameter Ts = 5
+
+
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-
-parameter N = 19;
-parameter M = 40;
-parameter B = 4;
-parameter C = 3;
-parameter Ts = 5;
 
 assign testcases[0] = 76'h4000d18100621208964;
 assign testcases[1] = 76'h8203140320b3a52a991;

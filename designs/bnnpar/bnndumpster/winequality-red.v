@@ -5,18 +5,19 @@
 
 
 
-module winequality-red (
+module winequality-red #(
+
+parameter N = 11,
+parameter M = 40,
+parameter B = 4,
+parameter C = 6,
+parameter Ts = 5
+
+
+)(
     input [N*B-1:0] inp,
     output [$clog2(C)-1:0] klass
 );
-
-parameter N = 11;
-parameter M = 40;
-parameter B = 4;
-parameter C = 6;
-parameter Ts = 5;
-
-
 localparam SumL = $clog2(M+1);
 localparam IumL = $clog2(N+1)+B;
 wire unsigned [B-1:0] inm [N-1:0];

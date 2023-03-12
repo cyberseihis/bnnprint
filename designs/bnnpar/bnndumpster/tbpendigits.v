@@ -7,17 +7,21 @@
 
 
 
-module tbpendigits();
+module tbpendigits #(
+
+parameter N = 16,
+parameter M = 40,
+parameter B = 4,
+parameter C = 10,
+parameter Ts = 5
+
+
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-
-parameter N = 16;
-parameter M = 40;
-parameter B = 4;
-parameter C = 10;
-parameter Ts = 5;
 
 assign testcases[0] = 64'h8f4d96400498fe6f;
 assign testcases[1] = 64'h0e4f7c572260b0f1;

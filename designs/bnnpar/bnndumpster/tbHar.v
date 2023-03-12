@@ -7,17 +7,21 @@
 
 
 
-module tbHar();
+module tbHar #(
+
+parameter N = 12,
+parameter M = 40,
+parameter B = 4,
+parameter C = 6,
+parameter Ts = 5
+
+
+)();
+reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
 
-
-parameter N = 12;
-parameter M = 40;
-parameter B = 4;
-parameter C = 6;
-parameter Ts = 5;
 
 assign testcases[0] = 48'hb9811498a121;
 assign testcases[1] = 48'hb9700187a110;

@@ -48,11 +48,11 @@ def csv_to_tbparams(fnm):
     M = 40
     B = 4
     Ts = 5
-    paramN = f"parameter N = {N};"
-    paramM = f"parameter M = {M};"
-    paramC = f"parameter C = {C};"
-    paramB = f"parameter B = {B};"
-    paramTs = f"parameter Ts = {Ts};"
+    paramN = f"parameter N = {N},"
+    paramM = f"parameter M = {M},"
+    paramC = f"parameter C = {C},"
+    paramB = f"parameter B = {B},"
+    paramTs = f"parameter Ts = {Ts}"
     params = [paramN, paramM, paramB, paramC, paramTs]
     hd4 = hexiby(df)
     hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
