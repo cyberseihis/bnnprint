@@ -10,9 +10,10 @@ module xnorseqq #(
   output [M*SumL-1:0] sums
   );
   
-  `include "muh.name"
-  `include `WFILE
-
+  `ifndef WEIGHTS1
+  `include "penxweis.wei"
+  `endif
+  localparam Weights = `WEIGHTS1 ;
   localparam SumL = $clog2(N+1);
   reg [$clog2(N)-1:0] cnt;
   reg put;

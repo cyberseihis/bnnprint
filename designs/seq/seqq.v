@@ -11,16 +11,17 @@ module seqq #(
   );
   
   reg [$clog2(N)-1:0] cnt;
-  wire [M*N-1:0] weis;
+  /* wire [M*N-1:0] weis; */
   wire [M-1:0] weit;
   wire [B-1:0] in;
   wire put;
 
   assign done = put;
   
-  assign weis =
-      `include "pweis.wei"
-      ;
+  `ifndef WEIGHTS0
+  `include "penxweis.wei"
+  `endif
+  localparam Weights = `WEIGHTS0 ;
   genvar i;
   generate
     for (i=0;i<M;i=i+1) begin
@@ -37,7 +38,7 @@ module seqq #(
 
   assign put = cnt==N-1;
   assign in = data[cnt*B+:B];
-  assign weit = weis[cnt*M+:M];
+  assign weit = Weights[cnt*M+:M];
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin

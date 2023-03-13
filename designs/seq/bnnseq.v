@@ -1,8 +1,16 @@
-module bnnseq #(
-  parameter N = 4,
-  parameter B = 4,
-  parameter M = 4,
-  parameter C = 4
+`ifndef DUTNAME
+`define DUTNAME bnnseq
+parameter N = 4;
+parameter B = 4;
+parameter M = 4;
+parameter C = 4;
+`else
+    `include `BSTRINGS
+`endif
+module `DUTNAME #(
+`ifdef PARAMS
+`include `PARAMS
+`endif
   ) (
   input clk,
   input rst,

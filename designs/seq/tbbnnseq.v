@@ -8,7 +8,7 @@ module tbbnnseq;
 
   
   reg [B*N-1:0] data;
-  wire [B*N-1:0] testcases [Ts];
+  wire [B*N-1:0] testcases [Ts-1:0];
   reg rst;
   reg clk;
   localparam period=10;
@@ -27,7 +27,7 @@ assign testcases[4] = 64'h0b8dffddaa665380;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- bnnseq #(.N(N), .B(B), .M(M), .C(C)) dut (
+ blmao #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
