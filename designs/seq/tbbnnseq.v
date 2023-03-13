@@ -4,13 +4,18 @@ module tbbnnseq;
   localparam M = 40;
   localparam B = 4;
   localparam C = 10;
+  localparam Ts = 5;
 
   
-  wire [B*N-1:0] data;
+  reg [B*N-1:0] data;
+  wire [B*N-1:0] testcases [Ts];
   reg rst;
   reg clk;
+  localparam period=10;
+  localparam halfT=period/2;
+
   
-  assign data =  64'h8f4d96400498fe6f;
+  assign testcases[0] =  64'h8f4d96400498fe6f;
   localparam SumL = $clog2(M+1);
   wire [$clog2(C)-1:0] klass;
 
@@ -22,24 +27,27 @@ module tbbnnseq;
     .klass(klass)
   );
   
-  always #5 clk <= ~clk;
+  always #halfT clk <= ~clk;
 
   integer i;
-  // Write output numbers to file
   initial begin
-    $monitor("sums %h %0t",dut.sums,$time);
-    $monitor("1done %h %0t",dut.layers.layer1.done,$time);
+    /* $monitor("sums %h %0t",dut.sums,$time); */
+    /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
+    runtestcase(0);
+    $finish;
+  end
+
+  task runtestcase(input integer i); begin
+    data <= testcases[i];
     rst <= 1;
     clk <= 0;
     #2
     rst <= 0;
-    #3
-    #((N+M-2)*10)
-    #1
-    thesums();
-    $finish;
+    #(period-2)
+    #((N+M-1)*period)
+    $display("%h %d",data,(C-1-klass));
   end
-
+  endtask
 
   task thesums(); begin
     $write("[");
