@@ -1,6 +1,7 @@
 module xnorseqq #(
   parameter N = 4,
-  parameter M = 4
+  parameter M = 4,
+  parameter Weights = 0
   ) (
   input clk,
   input rst,
@@ -10,10 +11,6 @@ module xnorseqq #(
   output [M*SumL-1:0] sums
   );
   
-  `ifndef WEIGHTS1
-  `include "penxweis.wei"
-  `endif
-  localparam Weights = `WEIGHTS1 ;
   localparam SumL = $clog2(N+1);
   reg [$clog2(N)-1:0] cnt;
   reg put;

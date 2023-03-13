@@ -1,7 +1,8 @@
 module seqq #(
   parameter N = 4,
   parameter B = 4,
-  parameter M = 4
+  parameter M = 4,
+  parameter [M*N-1:0] Weights = 0
   ) (
   input clk,
   input rst,
@@ -18,10 +19,6 @@ module seqq #(
 
   assign done = put;
   
-  `ifndef WEIGHTS0
-  `include "penxweis.wei"
-  `endif
-  localparam Weights = `WEIGHTS0 ;
   genvar i;
   generate
     for (i=0;i<M;i=i+1) begin

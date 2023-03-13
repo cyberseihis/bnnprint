@@ -2,7 +2,9 @@ module seqlego #(
   parameter N = 4,
   parameter B = 4,
   parameter M = 4,
-  parameter C = 4
+  parameter C = 4,
+  parameter Weights0 = 0,
+  parameter Weights1 = 0
   ) (
   input clk,
   input rst,
@@ -14,7 +16,7 @@ module seqlego #(
   wire [M-1:0] midd;
   wire nxt;
 
-  seqq #(.N(N),.B(B),.M(M)) layer1 (
+  seqq #(.N(N),.B(B),.M(M),.Weights(Weights0)) layer1 (
     .clk(clk),
     .rst(rst),
     .data(data),
@@ -22,7 +24,7 @@ module seqlego #(
     .done(nxt)
   );
 
- xnorseqq #(.N(M),.M(C)) layer2 (
+ xnorseqq #(.N(M),.M(C),.Weights(Weights1)) layer2 (
     .clk(clk),
     .rst(rst),
     .enable(nxt),
