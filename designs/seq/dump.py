@@ -28,7 +28,7 @@ def write_cmdfile(datasetname):
 
 def mk_dut(name):
     cmd = f"iverilog -c cmdfile.cmd -y ../argmax/ " \
-        f"bnnseq.v components/*.v -o bnndumpster/{name}_bnn_seq.v -E"
+        f"bnnseq.v -o bnndumpster/{name}_bnn_seq.v -E"
     res = subprocess.check_output(cmd, shell=True)
     print(res)
 
