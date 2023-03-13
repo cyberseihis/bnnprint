@@ -13,7 +13,7 @@ module bnnseq #(
   localparam SumL = $clog2(M+1);
   wire [SumL*C-1:0] sums;
 
-  seqlego #(.N(N),.B(B),.M(M),.C(C)) layer1 (
+  seqlego #(.N(N),.B(B),.M(M),.C(C)) layers (
     .clk(clk),
     .rst(rst),
     .data(data),

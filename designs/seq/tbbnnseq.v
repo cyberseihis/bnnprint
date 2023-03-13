@@ -28,12 +28,14 @@ module tbbnnseq;
   // Write output numbers to file
   initial begin
     $monitor("sums %h %0t",dut.sums,$time);
+    $monitor("1done %h %0t",dut.layers.layer1.done,$time);
     rst <= 1;
     clk <= 0;
     #2
     rst <= 0;
     #3
-    # 1000
+    #((N+M-2)*10)
+    #1
     thesums();
     $finish;
   end
