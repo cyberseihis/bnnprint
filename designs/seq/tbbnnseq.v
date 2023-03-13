@@ -10,7 +10,7 @@ module tbbnnseq;
   reg rst;
   reg clk;
   
-  assign data =  64'h2e28c690130a5fff;
+  assign data =  64'h8f4d96400498fe6f;
   localparam SumL = $clog2(M+1);
   wire [$clog2(C)-1:0] klass;
 
@@ -22,20 +22,29 @@ module tbbnnseq;
     .klass(klass)
   );
   
-  always #10 clk <= ~clk;
+  always #5 clk <= ~clk;
 
+  integer i;
   // Write output numbers to file
   initial begin
+    $monitor("sums %h %0t",dut.sums,$time);
     rst <= 1;
     clk <= 0;
-    #5
+    #2
     rst <= 0;
-    #5
-    # 2000
-    $display("huh");
-    $display("klass %d",klass);
+    #3
+    # 1000
+    thesums();
     $finish;
   end
 
-endmodule
 
+  task thesums(); begin
+    $write("[");
+    for(i=0;i<C;i=i+1)
+        $write(" %d,",dut.sums[i*SumL+:SumL]);
+    $display("]");
+  end
+  endtask
+
+endmodule

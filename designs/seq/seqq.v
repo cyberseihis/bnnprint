@@ -45,7 +45,8 @@ module seqq #(
       end
       else if(!put) begin
           cnt <= cnt + 1;
-      end else $display("Time = %t, mid = %b", $time, out);
+      end
+      /* else $display("Time = %t, mid = %b", $time, out); */
   end
   
 endmodule
