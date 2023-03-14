@@ -9,7 +9,7 @@ module seqlego #(
   input clk,
   input rst,
   input [N*B-1:0] data,
-  output [SumL*C-1:0] out
+  output [$clog2(M+1)*C-1:0] out
   );
   
   localparam SumL = $clog2(M+1);

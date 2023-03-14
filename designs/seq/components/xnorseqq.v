@@ -8,7 +8,7 @@ module xnorseqq #(
   input [N-1:0] data,
   input enable,
   /* output [M-1:0] out */
-  output [M*SumL-1:0] sums
+  output [M*$clog2(N+1)-1:0] sums
   );
   
   localparam SumL = $clog2(N+1);
