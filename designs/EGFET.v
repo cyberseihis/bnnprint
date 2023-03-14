@@ -38,8 +38,10 @@
 
 
 `celldefine
-module DFFNRX1 (D, CP, RST_N, Q);
-    dflop dfflop (.D(D),.CP(CP),.RST_N(RST_N),.Q(Q));
+module DFFNRX1 (D, CP, RST_N, Q, Q_bar);
+    output Q, Q_bar;
+    input D, CP, RST_N;
+    dflop dfflop (Q, D, ~CP, RST_N);
 endmodule
 `endcelldefine
 
