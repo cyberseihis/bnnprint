@@ -35,104 +35,130 @@
 
 
 `timescale 1ns/10ps
+
+
 `celldefine
-module DFFNRX1 (Q_bar, R, RST_N, Q, CP);
-	output Q_bar;
-	input R, RST_N, Q, CP;
-	reg notifier;
-	wire delayed_D, delayed_RST_N, delayed_Q, delayed_CP;
-
-	// Function
-	wire int_fwire_d, int_fwire_IQ_bar, xcr_0;
-
-	not (int_fwire_d, delayed_D);
-	altos_dff_sr_err (xcr_0, delayed_CP, int_fwire_d, delayed_Q, delayed_RST_N);
-	altos_dff_sr_1 (int_fwire_IQ_bar, notifier, delayed_CP, int_fwire_d, delayed_Q, delayed_RST_N, xcr_0);
-	buf (Q_bar, int_fwire_IQ_bar);
-
-	// Timing
-
-	// Additional timing wires
-	wire adacond0, adacond1, adacond2;
-	wire adacond3, adacond4, adacond5;
-	wire adacond6, adacond7, adacond8;
-	wire CP__bar, D__bar, RST_N__bar;
-	wire Q__bar;
-
-
-	// Additional timing gates
-	not (Q__bar, Q);
-	not (RST_N__bar, RST_N);
-	and (adacond0, RST_N__bar, Q__bar);
-	not (D__bar, R);
-	and (adacond1, D__bar, Q__bar);
-	and (adacond2, CP, Q__bar);
-	not (CP__bar, CP);
-	and (adacond3, CP__bar, Q__bar);
-	and (adacond4, R, RST_N__bar);
-	and (adacond5, CP, RST_N__bar);
-	and (adacond6, CP__bar, RST_N__bar);
-	and (adacond7, R, RST_N__bar, Q__bar);
-	and (adacond8, D__bar, RST_N__bar, Q__bar);
-
-	specify
-		if ((CP & ~Q))
-			(posedge RST_N => (Q_bar+:1'b0)) = 0;
-		if ((~CP & R & ~Q))
-			(posedge RST_N => (Q_bar+:1'b0)) = 0;
-		if ((~CP & ~R & ~Q))
-			(posedge RST_N => (Q_bar+:1'b0)) = 0;
-		ifnone (posedge RST_N => (Q_bar+:1'b0)) = 0;
-		if ((CP & RST_N))
-			(negedge Q => (Q_bar+:1'b0)) = 0;
-		if ((~CP & R & RST_N))
-			(negedge Q => (Q_bar+:1'b0)) = 0;
-		if ((~CP & ~R & RST_N))
-			(negedge Q => (Q_bar+:1'b0)) = 0;
-		ifnone (negedge Q => (Q_bar+:1'b0)) = 0;
-		if ((CP & RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		if ((CP & ~RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		if ((~CP & R & RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		if ((~CP & R & ~RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		if ((~CP & ~R & RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		if ((~CP & ~R & ~RST_N))
-			(posedge Q => (Q_bar+:1'b1)) = 0;
-		ifnone (posedge Q => (Q_bar+:1'b1)) = 0;
-		(posedge CP => (Q_bar+:!R)) = 0;
-		$setuphold (posedge CP &&& adacond0, posedge R &&& adacond0, 0, 0, notifier,,, delayed_CP, delayed_D);
-		$setuphold (posedge CP &&& adacond0, negedge R &&& adacond0, 0, 0, notifier,,, delayed_CP, delayed_D);
-		$setuphold (posedge CP, posedge R, 0, 0, notifier,,, delayed_CP, delayed_D);
-		$setuphold (posedge CP, negedge R, 0, 0, notifier,,, delayed_CP, delayed_D);
-		$setuphold (negedge Q &&& CP, negedge RST_N &&& CP, 0, 0, notifier,,, delayed_Q, delayed_RST_N);
-		$setuphold (negedge Q &&& ~CP, negedge RST_N &&& ~CP, 0, 0, notifier,,, delayed_Q, delayed_RST_N);
-		$setuphold (negedge Q, negedge RST_N, 0, 0, notifier,,, delayed_Q, delayed_RST_N);
-		$setuphold (negedge RST_N &&& CP, negedge Q &&& CP, 0, 0, notifier,,, delayed_RST_N, delayed_Q);
-		$setuphold (negedge RST_N &&& ~CP, negedge Q &&& ~CP, 0, 0, notifier,,, delayed_RST_N, delayed_Q);
-		$setuphold (negedge RST_N, negedge Q, 0, 0, notifier,,, delayed_RST_N, delayed_Q);
-		$recovery (negedge RST_N &&& adacond1, posedge CP &&& adacond1, 0, notifier);
-		$recovery (negedge RST_N, posedge CP, 0, notifier);
-		$hold (posedge CP &&& adacond1, negedge RST_N &&& adacond1, 0, notifier);
-		$hold (posedge CP, negedge RST_N, 0, notifier);
-		$recovery (negedge Q &&& adacond4, posedge CP &&& adacond4, 0, notifier);
-		$recovery (negedge Q, posedge CP, 0, notifier);
-		$hold (posedge CP &&& adacond4, negedge Q &&& adacond4, 0, notifier);
-		$hold (posedge CP, negedge Q, 0, notifier);
-		$width (posedge RST_N &&& adacond2, 0, 0, notifier);
-		$width (posedge RST_N &&& adacond3, 0, 0, notifier);
-		$width (posedge Q &&& adacond5, 0, 0, notifier);
-		$width (posedge Q &&& adacond6, 0, 0, notifier);
-		$width (posedge CP &&& adacond7, 0, 0, notifier);
-		$width (negedge CP &&& adacond7, 0, 0, notifier);
-		$width (posedge CP &&& adacond8, 0, 0, notifier);
-		$width (negedge CP &&& adacond8, 0, 0, notifier);
-	endspecify
+module DFFNRX1 (D, CP, RST_N, Q);
+    dflop dfflop (.D(D),.CP(CP),.RST_N(RST_N),.Q(Q));
 endmodule
 `endcelldefine
+
+primitive dflop (Q, D, CP, RST_N);
+    output Q;
+    input D, CP, RST_N;
+    reg Q;
+    
+    table
+        ? ?    0 : ? : 0;
+        ? (??) 0 : ? : 0;
+        0 (10) 1 : ? : 0;
+        1 (10) 1 : ? : 1;
+        0 (1?) 1 : 0 : 0;
+        1 (1?) 1 : 1 : 1;
+        ? (?1) 1 : ? : -;
+        (??) ? 1 : ? : -;
+    endtable
+
+endprimitive
+
+/* `celldefine */
+/* module DFFNRXAA (D, CP, RST_N, Q); */
+/* 	output Q; */
+/* 	input D, CP, RST_N; */
+/* 	reg notifier; */
+/* 	wire delayed_D, delayed_RST_N, delayed_Q, delayed_CP; */
+/**/
+/* 	// Function */
+/* 	wire int_fwire_d, int_fwire_IQ_bar, xcr_0; */
+/**/
+/* 	not (int_fwire_d, delayed_D); */
+/* 	altos_dff_sr_err (xcr_0, delayed_CP, int_fwire_d, delayed_Q, delayed_RST_N); */
+/* 	altos_dff_sr_1 (int_fwire_IQ_bar, notifier, delayed_CP, int_fwire_d, delayed_Q, delayed_RST_N, xcr_0); */
+/* 	buf (Q_bar, int_fwire_IQ_bar); */
+/**/
+/* 	// Timing */
+/**/
+/* 	// Additional timing wires */
+/* 	wire adacond0, adacond1, adacond2; */
+/* 	wire adacond3, adacond4, adacond5; */
+/* 	wire adacond6, adacond7, adacond8; */
+/* 	wire CP__bar, D__bar, RST_N__bar; */
+/* 	wire Q__bar; */
+/**/
+/**/
+/* 	// Additional timing gates */
+/* 	not (Q__bar, Q); */
+/* 	not (RST_N__bar, RST_N); */
+/* 	and (adacond0, RST_N__bar, Q__bar); */
+/* 	not (D__bar, R); */
+/* 	and (adacond1, D__bar, Q__bar); */
+/* 	and (adacond2, CP, Q__bar); */
+/* 	not (CP__bar, CP); */
+/* 	and (adacond3, CP__bar, Q__bar); */
+/* 	and (adacond4, R, RST_N__bar); */
+/* 	and (adacond5, CP, RST_N__bar); */
+/* 	and (adacond6, CP__bar, RST_N__bar); */
+/* 	and (adacond7, R, RST_N__bar, Q__bar); */
+/* 	and (adacond8, D__bar, RST_N__bar, Q__bar); */
+/**/
+/* 	specify */
+/* 		if ((CP & ~Q)) */
+/* 			(posedge RST_N => (Q_bar+:1'b0)) = 0; */
+/* 		if ((~CP & R & ~Q)) */
+/* 			(posedge RST_N => (Q_bar+:1'b0)) = 0; */
+/* 		if ((~CP & ~R & ~Q)) */
+/* 			(posedge RST_N => (Q_bar+:1'b0)) = 0; */
+/* 		ifnone (posedge RST_N => (Q_bar+:1'b0)) = 0; */
+/* 		if ((CP & RST_N)) */
+/* 			(negedge Q => (Q_bar+:1'b0)) = 0; */
+/* 		if ((~CP & R & RST_N)) */
+/* 			(negedge Q => (Q_bar+:1'b0)) = 0; */
+/* 		if ((~CP & ~R & RST_N)) */
+/* 			(negedge Q => (Q_bar+:1'b0)) = 0; */
+/* 		ifnone (negedge Q => (Q_bar+:1'b0)) = 0; */
+/* 		if ((CP & RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		if ((CP & ~RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		if ((~CP & R & RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		if ((~CP & R & ~RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		if ((~CP & ~R & RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		if ((~CP & ~R & ~RST_N)) */
+/* 			(posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		ifnone (posedge Q => (Q_bar+:1'b1)) = 0; */
+/* 		(posedge CP => (Q_bar+:!R)) = 0; */
+/* 		$setuphold (posedge CP &&& adacond0, posedge R &&& adacond0, 0, 0, notifier,,, delayed_CP, delayed_D); */
+/* 		$setuphold (posedge CP &&& adacond0, negedge R &&& adacond0, 0, 0, notifier,,, delayed_CP, delayed_D); */
+/* 		$setuphold (posedge CP, posedge R, 0, 0, notifier,,, delayed_CP, delayed_D); */
+/* 		$setuphold (posedge CP, negedge R, 0, 0, notifier,,, delayed_CP, delayed_D); */
+/* 		$setuphold (negedge Q &&& CP, negedge RST_N &&& CP, 0, 0, notifier,,, delayed_Q, delayed_RST_N); */
+/* 		$setuphold (negedge Q &&& ~CP, negedge RST_N &&& ~CP, 0, 0, notifier,,, delayed_Q, delayed_RST_N); */
+/* 		$setuphold (negedge Q, negedge RST_N, 0, 0, notifier,,, delayed_Q, delayed_RST_N); */
+/* 		$setuphold (negedge RST_N &&& CP, negedge Q &&& CP, 0, 0, notifier,,, delayed_RST_N, delayed_Q); */
+/* 		$setuphold (negedge RST_N &&& ~CP, negedge Q &&& ~CP, 0, 0, notifier,,, delayed_RST_N, delayed_Q); */
+/* 		$setuphold (negedge RST_N, negedge Q, 0, 0, notifier,,, delayed_RST_N, delayed_Q); */
+/* 		$recovery (negedge RST_N &&& adacond1, posedge CP &&& adacond1, 0, notifier); */
+/* 		$recovery (negedge RST_N, posedge CP, 0, notifier); */
+/* 		$hold (posedge CP &&& adacond1, negedge RST_N &&& adacond1, 0, notifier); */
+/* 		$hold (posedge CP, negedge RST_N, 0, notifier); */
+/* 		$recovery (negedge Q &&& adacond4, posedge CP &&& adacond4, 0, notifier); */
+/* 		$recovery (negedge Q, posedge CP, 0, notifier); */
+/* 		$hold (posedge CP &&& adacond4, negedge Q &&& adacond4, 0, notifier); */
+/* 		$hold (posedge CP, negedge Q, 0, notifier); */
+/* 		$width (posedge RST_N &&& adacond2, 0, 0, notifier); */
+/* 		$width (posedge RST_N &&& adacond3, 0, 0, notifier); */
+/* 		$width (posedge Q &&& adacond5, 0, 0, notifier); */
+/* 		$width (posedge Q &&& adacond6, 0, 0, notifier); */
+/* 		$width (posedge CP &&& adacond7, 0, 0, notifier); */
+/* 		$width (negedge CP &&& adacond7, 0, 0, notifier); */
+/* 		$width (posedge CP &&& adacond8, 0, 0, notifier); */
+/* 		$width (negedge CP &&& adacond8, 0, 0, notifier); */
+/* 	endspecify */
+/* endmodule */
+/* `endcelldefine */
 
 
 // type:  
