@@ -3,7 +3,7 @@ pendigits.csvsummary
 Har.csvsummary
 
  0.7424
-winequality-red.csvsummary
+winequality_red.csvsummary
 
  0.6083
 
@@ -12,7 +12,7 @@ arrhythmia.csvsummary
 cardio.csvsummary
 
  0.9248
-winequality-white.csvsummary
+winequality_white.csvsummary
 
  0.5680
 

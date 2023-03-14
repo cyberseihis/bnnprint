@@ -6,8 +6,8 @@ datasets = [
     "gasId",
     "Har",
     "pendigits",
-    "winequality-red",
-    "winequality-white"]
+    "winequality_red",
+    "winequality_white"]
 
 
 def replace_string_in_file(

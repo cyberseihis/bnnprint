@@ -7,7 +7,7 @@
 
 
 
-module tbwinequality-white_bnn_seq #(
+module tbwinequality_white_bnn_seq #(
 
 parameter N = 11,
 parameter M = 40,
@@ -39,7 +39,7 @@ assign testcases[4] = 44'h52322373735;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- winequality-white_bnn_seq #() dut (
+ winequality_white_bnn_seq #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),

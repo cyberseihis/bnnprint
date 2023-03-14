@@ -5,7 +5,7 @@
 
 
 
-module winequality-white #(
+module winequality_white #(
 
 parameter N = 11,
 parameter M = 40,
