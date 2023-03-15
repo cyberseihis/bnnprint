@@ -107,39 +107,39 @@ module DFFR_X1 (D, RN, CK, Q, QN);
 
   `endif
 
-  specify
-    (posedge CK => (Q +: D)) = (0.1, 0.1);
-    if((CK == 1'b0) && (D == 1'b0)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1);
-    if((CK == 1'b0) && (D == 1'b1)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1);
-    if((CK == 1'b1) && (D == 1'b0)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1);
-    if((CK == 1'b1) && (D == 1'b1)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1);
-    (posedge CK => (QN -: D)) = (0.1, 0.1);
-    if((CK == 1'b0) && (D == 1'b0)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1);
-    if((CK == 1'b0) && (D == 1'b1)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1);
-    if((CK == 1'b1) && (D == 1'b0)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1);
-    if((CK == 1'b1) && (D == 1'b1)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1);
-    `ifdef NTC
-      `ifdef RECREM
-        $recrem(posedge RN, posedge CK, 0.1, 0.1, NOTIFIER, , ,RN_di, CK_d);
-      `else
-        $hold(posedge CK, posedge RN, 0.1, NOTIFIER);
-        $recovery(posedge RN, posedge CK, 0.1, NOTIFIER);
-      `endif
-      $setuphold(posedge CK &&& (RN === 1'b1), negedge D, 0.1, 0.1, NOTIFIER, , ,CK_d, D_d);
-      $setuphold(posedge CK &&& (RN === 1'b1), posedge D, 0.1, 0.1, NOTIFIER, , ,CK_d, D_d);
-      $width(negedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER);
-      $width(negedge RN, 0.1, 0, NOTIFIER);
-      $width(posedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER);
-    `else
-      $hold(posedge CK, posedge RN, 0.1, NOTIFIER);
-      $recovery(posedge RN, posedge CK, 0.1, NOTIFIER);
-      $setuphold(posedge CK &&& (RN === 1'b1), negedge D, 0.1, 0.1, NOTIFIER);
-      $setuphold(posedge CK &&& (RN === 1'b1), posedge D, 0.1, 0.1, NOTIFIER);
-      $width(negedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER);
-      $width(negedge RN, 0.1, 0, NOTIFIER);
-      $width(posedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER);
-    `endif
-  endspecify
+  /* specify */
+  /*   (posedge CK => (Q +: D)) = (0.1, 0.1); */
+  /*   if((CK == 1'b0) && (D == 1'b0)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1); */
+  /*   if((CK == 1'b0) && (D == 1'b1)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1); */
+  /*   if((CK == 1'b1) && (D == 1'b0)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1); */
+  /*   if((CK == 1'b1) && (D == 1'b1)) (negedge RN => (Q +: 1'b0)) = (0.1, 0.1); */
+  /*   (posedge CK => (QN -: D)) = (0.1, 0.1); */
+  /*   if((CK == 1'b0) && (D == 1'b0)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1); */
+  /*   if((CK == 1'b0) && (D == 1'b1)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1); */
+  /*   if((CK == 1'b1) && (D == 1'b0)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1); */
+  /*   if((CK == 1'b1) && (D == 1'b1)) (negedge RN => (QN +: 1'b1)) = (0.1, 0.1); */
+  /*   `ifdef NTC */
+  /*     `ifdef RECREM */
+  /*       $recrem(posedge RN, posedge CK, 0.1, 0.1, NOTIFIER, , ,RN_di, CK_d); */
+  /*     `else */
+  /*       $hold(posedge CK, posedge RN, 0.1, NOTIFIER); */
+  /*       $recovery(posedge RN, posedge CK, 0.1, NOTIFIER); */
+  /*     `endif */
+  /*     $setuphold(posedge CK &&& (RN === 1'b1), negedge D, 0.1, 0.1, NOTIFIER, , ,CK_d, D_d); */
+  /*     $setuphold(posedge CK &&& (RN === 1'b1), posedge D, 0.1, 0.1, NOTIFIER, , ,CK_d, D_d); */
+  /*     $width(negedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER); */
+  /*     $width(negedge RN, 0.1, 0, NOTIFIER); */
+  /*     $width(posedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER); */
+  /*   `else */
+  /*     $hold(posedge CK, posedge RN, 0.1, NOTIFIER); */
+  /*     $recovery(posedge RN, posedge CK, 0.1, NOTIFIER); */
+  /*     $setuphold(posedge CK &&& (RN === 1'b1), negedge D, 0.1, 0.1, NOTIFIER); */
+  /*     $setuphold(posedge CK &&& (RN === 1'b1), posedge D, 0.1, 0.1, NOTIFIER); */
+  /*     $width(negedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER); */
+  /*     $width(negedge RN, 0.1, 0, NOTIFIER); */
+  /*     $width(posedge CK &&& (RN === 1'b1), 0.1, 0, NOTIFIER); */
+  /*   `endif */
+  /* endspecify */
 
 endmodule
 
