@@ -14,8 +14,8 @@ def paradump_weights(filename):
     hard1 = layebin(bw1)
     print(bw0)
     h5.close()
-    with open('bnnprints/'+filename+'.hrdcd', 'w') as file:
-        file.write(hard0+hard1)
+    with open('tnnprints/'+filename+'.hrdcd', 'w') as file:
+        file.write(hard0+"\n"+hard1)
 
 
 def layep(mat):
