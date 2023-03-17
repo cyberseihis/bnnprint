@@ -56,14 +56,14 @@ def neur(i, ar):
     neges = [i for i, a in valz if a != 1]
     bodp = ' '.join([cel(i) for i in poses])
     bodn = ' '.join([cel(i) for i in neges])
-    if poses:
-        alp = f"assign pmid[{i}] = {bodp};\n"
-    else:
-        alp = f"assign pmid[{i}] = 0;\n"
     if neges:
         aln = f"assign nmid[{i}] = {bodn};\n"
     else:
-        aln = f"assign nmid[{i}] = 0;\n"
+        return f"assign mid[{i}] = 1;"
+    if poses:
+        alp = f"assign pmid[{i}] = {bodp};\n"
+    else:
+        return f"assign mid[{i}] = 0;"
     ale = f"assign mid[{i}] = pmid[{i}] >= nmid[{i}];"
     return alp+aln+ale
 
