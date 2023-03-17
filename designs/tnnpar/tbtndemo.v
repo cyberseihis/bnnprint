@@ -26,15 +26,15 @@ wire [N*B-1:0] testcases [Ts-1:0];
 integer i;
 initial begin
     inp = testcases[0];
-    $write("[");
+    /* $write("["); */
     for(i=0;i<Ts;i=i+1) begin
         inp = testcases[i];
         #10
         /* $displayh(i); */
-        /* $display("%h %h %d",inp,dut.out,klass); */
-        $write("%d, ",klass);
+        $display("%b",dut.mid);
+        /* $write("%d, ",klass); */
     end
-    $display("]");
+    /* $display("]"); */
 end
 
 endmodule
