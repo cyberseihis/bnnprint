@@ -25,7 +25,9 @@ def layep(mat):
 
 
 def layebin(mat):
-    neus = [bineur(i, a) for i, a in enumerate(mat)]
+    nn = np.count_nonzero(mat, axis=1)
+    adds = np.max(nn)-nn
+    neus = [bineur(i, a, adds[i]) for i, a in enumerate(mat)]
     bod = '\n'.join(neus)
     return bod
 
@@ -41,12 +43,13 @@ def bicel(i, w):
     return f
 
 
-def bineur(i, ar):
+def bineur(i, ar, add):
     valz = [(i, a) for i, a in enumerate(ar) if a != 0]
     bod = ' '.join([bicel(i, w) for i, w in valz])
     if not valz:
-        return f"assign out[{i}*SumL+:SumL] = 0;"
-    al = f"assign out[{i}*SumL+:SumL] = {bod};"
+        return f"assign out[{i}] = {add};"
+    al = f"assign pop[{i}] = {bod};" \
+         f"assign out[{i}] = 2*pop[{i}] + {add};"
     return al
 
 

@@ -19,19 +19,26 @@ parameter Ts = 5
     output [$clog2(C)-1:0] klass
 );
 localparam SumL = $clog2(M+1);
+localparam ZumL = SumL+1;
 localparam IumL = $clog2(N+1)+B;
 wire unsigned [B-1:0] inm [N-1:0];
 wire [M-1:0] mid;
 wire unsigned [IumL-1:0] pmid [M-1:0];
 wire unsigned [IumL-1:0] nmid [M-1:0];
 wire [M-1:0] mid_n;
-wire [C*SumL-1:0] out; 
+wire [SumL-1:0] pop [C-1:0]; 
+wire [(SumL+1)-1:0] out [C-1:0]; 
+wire [C*(SumL+1)-1:0] sums; 
 assign mid_n = ~mid;
 
 genvar i;
 generate
     for(i=0;i<N;i=i+1)
         assign inm[N-1-i] = inp[i*B+:B];
+endgenerate
+generate
+    for(i=0;i<C;i=i+1)
+        assign sums[i*ZumL+:ZumL] = out[i];
 endgenerate
 
 
@@ -151,16 +158,16 @@ assign mid[38] = pmid[38] >= nmid[38];
 assign pmid[39] = + inm[0] + inm[3] + inm[7] + inm[10];
 assign nmid[39] = + inm[4] + inm[8] + inm[9] + inm[11];
 assign mid[39] = pmid[39] >= nmid[39];
-assign out[0*SumL+:SumL] = + mid[6] + mid[10] + mid[13] + mid_n[14] + mid_n[16] + mid[17] + mid[20] + mid_n[22] + mid[24] + mid[25] + mid_n[26] + mid_n[28] + mid_n[30] + mid_n[32] + mid[34] + mid_n[36];
-assign out[1*SumL+:SumL] = + mid_n[5] + mid[6] + mid[10] + mid_n[11] + mid[12] + mid[14] + mid_n[16] + mid[18] + mid[20] + mid_n[22] + mid[24] + mid_n[29] + mid_n[31] + mid_n[33] + mid[34] + mid_n[35] + mid_n[36];
-assign out[2*SumL+:SumL] = + mid_n[0] + mid[1] + mid[6] + mid[10] + mid_n[13] + mid[17] + mid[18] + mid_n[21] + mid_n[22] + mid[24] + mid[25] + mid_n[26] + mid[27] + mid[32] + mid_n[33];
-assign out[3*SumL+:SumL] = + mid[0] + mid_n[1] + mid[4] + mid_n[11] + mid[16] + mid[17] + mid_n[18] + mid[21] + mid[24] + mid_n[29] + mid[31] + mid[32] + mid[34] + mid_n[38];
-assign out[4*SumL+:SumL] = + mid_n[4] + mid[5] + mid[8] + mid[11] + mid[12] + mid[14] + mid_n[18] + mid_n[25] + mid_n[29] + mid_n[31] + mid[32] + mid_n[35] + mid_n[38];
-assign out[5*SumL+:SumL] = + mid[0] + mid[3] + mid[11] + mid[13] + mid[17] + mid_n[18] + mid_n[23] + mid[26] + mid[27] + mid_n[29] + mid[32] + mid_n[35] + mid_n[38] + mid[39];
+assign pop[0] = + mid[6] + mid[10] + mid[13] + mid_n[14] + mid_n[16] + mid[17] + mid[20] + mid_n[22] + mid[24] + mid[25] + mid_n[26] + mid_n[28] + mid_n[30] + mid_n[32] + mid[34] + mid_n[36];assign out[0] = 2*pop[0] + 1;
+assign pop[1] = + mid_n[5] + mid[6] + mid[10] + mid_n[11] + mid[12] + mid[14] + mid_n[16] + mid[18] + mid[20] + mid_n[22] + mid[24] + mid_n[29] + mid_n[31] + mid_n[33] + mid[34] + mid_n[35] + mid_n[36];assign out[1] = 2*pop[1] + 0;
+assign pop[2] = + mid_n[0] + mid[1] + mid[6] + mid[10] + mid_n[13] + mid[17] + mid[18] + mid_n[21] + mid_n[22] + mid[24] + mid[25] + mid_n[26] + mid[27] + mid[32] + mid_n[33];assign out[2] = 2*pop[2] + 2;
+assign pop[3] = + mid[0] + mid_n[1] + mid[4] + mid_n[11] + mid[16] + mid[17] + mid_n[18] + mid[21] + mid[24] + mid_n[29] + mid[31] + mid[32] + mid[34] + mid_n[38];assign out[3] = 2*pop[3] + 3;
+assign pop[4] = + mid_n[4] + mid[5] + mid[8] + mid[11] + mid[12] + mid[14] + mid_n[18] + mid_n[25] + mid_n[29] + mid_n[31] + mid[32] + mid_n[35] + mid_n[38];assign out[4] = 2*pop[4] + 4;
+assign pop[5] = + mid[0] + mid[3] + mid[11] + mid[13] + mid[17] + mid_n[18] + mid_n[23] + mid[26] + mid[27] + mid_n[29] + mid[32] + mid_n[35] + mid_n[38] + mid[39];assign out[5] = 2*pop[5] + 3;
 
 
-argmax #(.N(C),.I($clog2(C)),.K(SumL)) result (
-    .inx(out),
+argmax #(.N(C),.I($clog2(C)),.K(SumL+1)) result (
+    .inx(sums),
     .outimax(klass)
 );
 endmodule

@@ -17,6 +17,7 @@ parameter Ts = 5
 
 
 )();
+localparam SumL = $clog2(M+1);
 reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
@@ -33,18 +34,21 @@ assign testcases[4] = 44'h52322373735;
 
 winequality_whitetnn dut (.inp(inp),.klass(klass));
 
-integer i;
+integer i,j;
 initial begin
     inp = testcases[0];
-    /* $write("["); */
+    $write("[");
     for(i=0;i<Ts;i=i+1) begin
         inp = testcases[i];
         #10
         /* $displayh(i); */
-        $display("%b",dut.mid);
-        /* $write("%d, ",klass); */
+        /* $display("%b",dut.mid); */
+        /* for(j=0;j<C;j=j+1) */
+        /*     $write("%d, ",dut.out[j]); */
+        /* $display(""); */
+        $write("%d, ",klass);
     end
-    /* $display("]"); */
+    $display("]");
 end
 
 endmodule
