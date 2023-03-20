@@ -7,9 +7,9 @@
 
 
 
-module tbwinequality_red_bnn_seq #(
+module tbgasId_bs #(
 
-parameter N = 11,
+parameter N = 128,
 parameter M = 40,
 parameter B = 4,
 parameter C = 6,
@@ -27,11 +27,11 @@ parameter Ts = 5
   localparam halfT=period/2;
 
 
-assign testcases[0] = 44'h46012229a22;
-assign testcases[1] = 44'h58022538633;
-assign testcases[2] = 44'h57122338733;
-assign testcases[3] = 44'h92912439523;
-assign testcases[4] = 44'h46012229a22;
+assign testcases[0] = 512'h10000fef10000fff41000fff50000fff20000fff30000fff30000fef30000fef10000fff10000fff21000fff21000fff21000fff21100fff21000fef21000fef;
+assign testcases[1] = 512'h10100fef10100fff41000fff50000fff20000fff30000fff30000fef40000fef10100fff10110fff21100fef21000fef22100fff22100fff21000fef21000fef;
+assign testcases[2] = 512'h10110fef20100fff51000fff50000fff30000fff40000eff40100fef40100fef10110fff10111fef31110fef32100fef32100eff32100eff22100fef22100fef;
+assign testcases[3] = 512'h10111fef20110fff51100fff50000fff30000fff40000eff40100fef40100fef10111fff10111fef31110fef32110fef32200eff32200eff22110fef22100fef;
+assign testcases[4] = 512'h20110fef20110eff52100fff51000fff30000fff40000eff40100fef40100fef20111eef20111eef32110fef32110fef33200eff43200dff22110fef32100fef;
 
 
   
@@ -39,7 +39,7 @@ assign testcases[4] = 44'h46012229a22;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- winequality_red_bnn_seq #() dut (
+ gasId_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -72,7 +72,7 @@ assign testcases[4] = 44'h46012229a22;
   task thesums(); begin
     $write("[");
     for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+        $write("%d, ",dut.sums[i*SumL+:SumL]);
     $display("]");
   end
   endtask

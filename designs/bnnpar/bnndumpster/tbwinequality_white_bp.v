@@ -7,7 +7,7 @@
 
 
 
-module tbwinequality_white #(
+module tbwinequality_white_bp #(
 
 parameter N = 11,
 parameter M = 40,
@@ -21,6 +21,7 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
+parameter period = 10;
 
 
 assign testcases[0] = 44'h53352264442;
@@ -31,18 +32,20 @@ assign testcases[4] = 44'h52322373735;
 
 
 
-winequality_white dut (.inp(inp),.klass(klass));
+winequality_white_bp dut (.inp(inp),.klass(klass));
 
 integer i;
 initial begin
     inp = testcases[0];
+    $write("[");
     for(i=0;i<Ts;i=i+1) begin
         inp = testcases[i];
-        #10
+        #period
         /* $displayh(i); */
         /* $display("%h %h %d",inp,dut.out,klass); */
-        $display("%d",klass);
+        $write("%d, ",klass);
     end
+    $display("]");
 end
 
 endmodule

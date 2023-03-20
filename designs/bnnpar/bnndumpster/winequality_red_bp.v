@@ -5,7 +5,7 @@
 
 
 
-module winequality_red #(
+module winequality_red_bp #(
 
 parameter N = 11,
 parameter M = 40,

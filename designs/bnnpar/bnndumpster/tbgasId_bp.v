@@ -7,7 +7,7 @@
 
 
 
-module tbgasId_bnn_seq #(
+module tbgasId_bp #(
 
 parameter N = 128,
 parameter M = 40,
@@ -17,14 +17,11 @@ parameter Ts = 5
 
 
 )();
-
-  
-  reg [B*N-1:0] data;
-  wire [B*N-1:0] testcases [Ts-1:0];
-  reg rst;
-  reg clk;
-  localparam period=10;
-  localparam halfT=period/2;
+reg clk;
+reg [N*B-1:0] inp;
+wire [$clog2(C)-1:0] klass;
+wire [N*B-1:0] testcases [Ts-1:0];
+parameter period = 10;
 
 
 assign testcases[0] = 512'h10000fef10000fff41000fff50000fff20000fff30000fff30000fef30000fef10000fff10000fff21000fff21000fff21000fff21100fff21000fef21000fef;
@@ -34,47 +31,21 @@ assign testcases[3] = 512'h10111fef20110fff51100fff50000fff30000fff40000eff40100
 assign testcases[4] = 512'h20110fef20110eff52100fff51000fff30000fff40000eff40100fef40100fef20111eef20111eef32110fef32110fef33200eff43200dff22110fef32100fef;
 
 
-  
-  localparam SumL = $clog2(M+1);
-  wire [$clog2(C)-1:0] klass;
 
-  // Instantiate module under test
- gasId_bnn_seq #() dut (
-    .data(data),
-    .clk(clk),
-    .rst(rst),
-    .klass(klass)
-  );
-  
-  always #halfT clk <= ~clk;
+gasId_bp dut (.inp(inp),.klass(klass));
 
-  integer i;
-  initial begin
-    /* $monitor("sums %h %0t",dut.sums,$time); */
-    /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
-    for(i=0;i<Ts;i=i+1)
-        runtestcase(i);
-    $finish;
-  end
-
-  task runtestcase(input integer i); begin
-    data <= testcases[i];
-    rst <= 1;
-    clk <= 0;
-    #2
-    rst <= 0;
-    #(period-2)
-    #((N+M-1)*period)
-    $display("%h %d",data,(C-1-klass));
-  end
-  endtask
-
-  task thesums(); begin
+integer i;
+initial begin
+    inp = testcases[0];
     $write("[");
-    for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+    for(i=0;i<Ts;i=i+1) begin
+        inp = testcases[i];
+        #period
+        /* $displayh(i); */
+        /* $display("%h %h %d",inp,dut.out,klass); */
+        $write("%d, ",klass);
+    end
     $display("]");
-  end
-  endtask
+end
 
 endmodule

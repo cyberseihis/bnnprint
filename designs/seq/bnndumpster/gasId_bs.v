@@ -11,7 +11,7 @@
 
 
 
-module gasId_bnn_seq #(
+module gasId_bs #(
 
 parameter N = 128,
 parameter M = 40,

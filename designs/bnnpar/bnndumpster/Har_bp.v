@@ -5,7 +5,7 @@
 
 
 
-module Har #(
+module Har_bp #(
 
 parameter N = 12,
 parameter M = 40,

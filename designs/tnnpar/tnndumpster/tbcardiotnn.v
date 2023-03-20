@@ -22,6 +22,7 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
+localparam period=10;
 
 
 assign testcases[0] = 76'h4000d18100621208964;
@@ -40,7 +41,7 @@ initial begin
     $write("[");
     for(i=0;i<Ts;i=i+1) begin
         inp = testcases[i];
-        #10
+        #period
         /* $displayh(i); */
         /* $display("%b",dut.mid); */
         /* for(j=0;j<C;j=j+1) */

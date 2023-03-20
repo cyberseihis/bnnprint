@@ -7,12 +7,12 @@
 
 
 
-module tbwinequality_white_bnn_seq #(
+module tbHar_bs #(
 
-parameter N = 11,
+parameter N = 12,
 parameter M = 40,
 parameter B = 4,
-parameter C = 7,
+parameter C = 6,
 parameter Ts = 5
 
 
@@ -27,11 +27,11 @@ parameter Ts = 5
   localparam halfT=period/2;
 
 
-assign testcases[0] = 44'h53352264442;
-assign testcases[1] = 44'h43302152854;
-assign testcases[2] = 44'h73422232845;
-assign testcases[3] = 44'h52322373735;
-assign testcases[4] = 44'h52322373735;
+assign testcases[0] = 48'hb9811498a121;
+assign testcases[1] = 48'hb9700187a110;
+assign testcases[2] = 48'hb9700088a000;
+assign testcases[3] = 48'hb9700088a000;
+assign testcases[4] = 48'hb97000889000;
 
 
   
@@ -39,7 +39,7 @@ assign testcases[4] = 44'h52322373735;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- winequality_white_bnn_seq #() dut (
+ Har_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -72,7 +72,7 @@ assign testcases[4] = 44'h52322373735;
   task thesums(); begin
     $write("[");
     for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+        $write("%d, ",dut.sums[i*SumL+:SumL]);
     $display("]");
   end
   endtask

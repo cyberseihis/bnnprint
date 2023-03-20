@@ -11,7 +11,7 @@
 
 
 
-module Har_bnn_seq #(
+module Har_bs #(
 
 parameter N = 12,
 parameter M = 40,

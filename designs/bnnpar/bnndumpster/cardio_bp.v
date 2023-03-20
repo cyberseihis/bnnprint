@@ -5,7 +5,7 @@
 
 
 
-module cardio #(
+module cardio_bp #(
 
 parameter N = 19,
 parameter M = 40,

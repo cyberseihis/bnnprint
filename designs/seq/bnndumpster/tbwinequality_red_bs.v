@@ -7,12 +7,12 @@
 
 
 
-module tbcardio_bnn_seq #(
+module tbwinequality_red_bs #(
 
-parameter N = 19,
+parameter N = 11,
 parameter M = 40,
 parameter B = 4,
-parameter C = 3,
+parameter C = 6,
 parameter Ts = 5
 
 
@@ -27,11 +27,11 @@ parameter Ts = 5
   localparam halfT=period/2;
 
 
-assign testcases[0] = 76'h4000d18100621208964;
-assign testcases[1] = 76'h8203140320b3a52a991;
-assign testcases[2] = 76'h8103140420b3a42a991;
-assign testcases[3] = 76'h8104150720a07a0a991;
-assign testcases[4] = 76'h8203150600a0780a991;
+assign testcases[0] = 44'h46012229a22;
+assign testcases[1] = 44'h58022538633;
+assign testcases[2] = 44'h57122338733;
+assign testcases[3] = 44'h92912439523;
+assign testcases[4] = 44'h46012229a22;
 
 
   
@@ -39,7 +39,7 @@ assign testcases[4] = 76'h8203150600a0780a991;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- cardio_bnn_seq #() dut (
+ winequality_red_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -72,7 +72,7 @@ assign testcases[4] = 76'h8203150600a0780a991;
   task thesums(); begin
     $write("[");
     for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+        $write("%d, ",dut.sums[i*SumL+:SumL]);
     $display("]");
   end
   endtask

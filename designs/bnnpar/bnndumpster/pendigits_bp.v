@@ -5,7 +5,7 @@
 
 
 
-module pendigits #(
+module pendigits_bp #(
 
 parameter N = 16,
 parameter M = 40,

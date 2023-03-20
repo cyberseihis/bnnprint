@@ -7,12 +7,12 @@
 
 
 
-module tbHar_bnn_seq #(
+module tbcardio_bs #(
 
-parameter N = 12,
+parameter N = 19,
 parameter M = 40,
 parameter B = 4,
-parameter C = 6,
+parameter C = 3,
 parameter Ts = 5
 
 
@@ -27,11 +27,11 @@ parameter Ts = 5
   localparam halfT=period/2;
 
 
-assign testcases[0] = 48'hb9811498a121;
-assign testcases[1] = 48'hb9700187a110;
-assign testcases[2] = 48'hb9700088a000;
-assign testcases[3] = 48'hb9700088a000;
-assign testcases[4] = 48'hb97000889000;
+assign testcases[0] = 76'h4000d18100621208964;
+assign testcases[1] = 76'h8203140320b3a52a991;
+assign testcases[2] = 76'h8103140420b3a42a991;
+assign testcases[3] = 76'h8104150720a07a0a991;
+assign testcases[4] = 76'h8203150600a0780a991;
 
 
   
@@ -39,7 +39,7 @@ assign testcases[4] = 48'hb97000889000;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- Har_bnn_seq #() dut (
+ cardio_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -72,7 +72,7 @@ assign testcases[4] = 48'hb97000889000;
   task thesums(); begin
     $write("[");
     for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+        $write("%d, ",dut.sums[i*SumL+:SumL]);
     $display("]");
   end
   endtask

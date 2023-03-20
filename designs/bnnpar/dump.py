@@ -28,14 +28,14 @@ def write_cmdfile(datasetname):
 
 def mk_dut(name):
     cmd = f"iverilog -c cmdfile.cmd -y ../argmax/ " \
-        f"bndemo.v -o bnndumpster/{name}.v -E"
+        f"bndemo.v -o bnndumpster/{name}_bp.v -E"
     res = subprocess.check_output(cmd, shell=True)
     print(res)
 
 
 def mk_tb(name):
     cmd = f"iverilog -c cmdfile.cmd " \
-        f"tbbndemo.v -o bnndumpster/tb{name}.v -E"
+        f"tbbndemo.v -o bnndumpster/tb{name}_bp.v -E"
     res = subprocess.check_output(cmd, shell=True)
     print(res)
 

@@ -1,5 +1,5 @@
-+define+DUTNAME=DATASETNAME
-+define+TBNAME=tbDATASETNAME
++define+DUTNAME=DATASETNAME_bp
++define+TBNAME=tbDATASETNAME_bp
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
 +define+HRDCD="weightsDATASETNAME.csv.h5.hrdcd"

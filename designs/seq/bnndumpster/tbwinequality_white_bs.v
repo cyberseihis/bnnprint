@@ -1,16 +1,21 @@
-`ifndef DUTNAME
-`define DUTNAME bnnseq
-`define TBNAME tbbnnseq
-parameter N = 4;
-parameter B = 4;
-parameter M = 4;
-parameter C = 4;
-parameter Ts = 5;
-`endif
-module `TBNAME #(
-`ifdef PARAMS
-`include `PARAMS
-`endif
+
+
+
+
+
+
+
+
+
+module tbwinequality_white_bs #(
+
+parameter N = 11,
+parameter M = 40,
+parameter B = 4,
+parameter C = 7,
+parameter Ts = 5
+
+
 )();
 
   
@@ -21,15 +26,20 @@ module `TBNAME #(
   localparam period=10;
   localparam halfT=period/2;
 
-`ifdef TESTCASES
-`include `TESTCASES
-`endif
+
+assign testcases[0] = 44'h53352264442;
+assign testcases[1] = 44'h43302152854;
+assign testcases[2] = 44'h73422232845;
+assign testcases[3] = 44'h52322373735;
+assign testcases[4] = 44'h52322373735;
+
+
   
   localparam SumL = $clog2(M+1);
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- `DUTNAME #() dut (
+ winequality_white_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),

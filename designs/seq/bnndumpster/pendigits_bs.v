@@ -11,7 +11,7 @@
 
 
 
-module pendigits_bnn_seq #(
+module pendigits_bs #(
 
 parameter N = 16,
 parameter M = 40,

@@ -11,7 +11,7 @@
 
 
 
-module cardio_bnn_seq #(
+module cardio_bs #(
 
 parameter N = 19,
 parameter M = 40,

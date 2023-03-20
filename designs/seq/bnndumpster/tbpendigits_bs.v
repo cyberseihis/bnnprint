@@ -7,7 +7,7 @@
 
 
 
-module tbpendigits_bnn_seq #(
+module tbpendigits_bs #(
 
 parameter N = 16,
 parameter M = 40,
@@ -39,7 +39,7 @@ assign testcases[4] = 64'h0b8dffddaa665380;
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- pendigits_bnn_seq #() dut (
+ pendigits_bs #() dut (
     .data(data),
     .clk(clk),
     .rst(rst),
@@ -72,7 +72,7 @@ assign testcases[4] = 64'h0b8dffddaa665380;
   task thesums(); begin
     $write("[");
     for(i=0;i<C;i=i+1)
-        $write(" %d,",dut.sums[i*SumL+:SumL]);
+        $write("%d, ",dut.sums[i*SumL+:SumL]);
     $display("]");
   end
   endtask

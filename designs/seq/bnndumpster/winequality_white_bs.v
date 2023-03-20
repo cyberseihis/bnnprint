@@ -11,7 +11,7 @@
 
 
 
-module winequality_white_bnn_seq #(
+module winequality_white_bs #(
 
 parameter N = 11,
 parameter M = 40,
