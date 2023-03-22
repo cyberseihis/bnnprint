@@ -16,7 +16,8 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
-parameter period = 10;
+parameter Nsperiod=10;
+parameter period = Nsperiod;
 
 `ifdef TESTCASES
 `include `TESTCASES

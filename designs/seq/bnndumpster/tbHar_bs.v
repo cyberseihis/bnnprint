@@ -23,7 +23,8 @@ parameter Ts = 5
   wire [B*N-1:0] testcases [Ts-1:0];
   reg rst;
   reg clk;
-  localparam period=10;
+  parameter Nsperiod=50000;
+  localparam period=Nsperiod/500;
   localparam halfT=period/2;
 
 

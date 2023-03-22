@@ -22,7 +22,8 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
-localparam period=10;
+parameter Nsperiod=10;
+localparam period=Nsperiod;
 
 
 assign testcases[0] = 512'h10000fef10000fff41000fff50000fff20000fff30000fff30000fef30000fef10000fff10000fff21000fff21000fff21000fff21100fff21000fef21000fef;
