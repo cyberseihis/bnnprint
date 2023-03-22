@@ -1,3 +1,4 @@
+`timescale 1us/1ns
 `ifndef DUTNAME
 `define DUTNAME bndemo
 `define TBNAME tbbndemo
@@ -17,8 +18,8 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
-parameter Nsperiod=10;
-localparam period=Nsperiod;
+parameter Nsperiod=5000;
+localparam period=Nsperiod/500;
 
 `ifdef TESTCASES
 `include `TESTCASES

@@ -1,3 +1,4 @@
+`timescale 1us/1ns
 
 
 
@@ -21,8 +22,8 @@ reg clk;
 reg [N*B-1:0] inp;
 wire [$clog2(C)-1:0] klass;
 wire [N*B-1:0] testcases [Ts-1:0];
-parameter Nsperiod=10;
-parameter period = Nsperiod;
+parameter Nsperiod=5000;
+parameter period = Nsperiod/500;
 
 
 assign testcases[0] = 76'h4000d18100621208964;

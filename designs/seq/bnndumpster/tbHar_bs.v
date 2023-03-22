@@ -1,3 +1,4 @@
+`timescale 1us/1ns
 
 
 
@@ -62,9 +63,9 @@ assign testcases[4] = 48'hb97000889000;
     data <= testcases[i];
     rst <= 1;
     clk <= 0;
-    #2
+    #period
     rst <= 0;
-    #(period-2)
+    #period
     #((N+M-1)*period)
     $display("%h %d",data,(C-1-klass));
   end

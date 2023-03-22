@@ -1,3 +1,4 @@
+`timescale 1us/1ns
 `ifndef DUTNAME
 `define DUTNAME bnnseq
 `define TBNAME tbbnnseq
@@ -52,9 +53,9 @@ module `TBNAME #(
     data <= testcases[i];
     rst <= 1;
     clk <= 0;
-    #2
+    #period
     rst <= 0;
-    #(period-2)
+    #period
     #((N+M-1)*period)
     $display("%h %d",data,(C-1-klass));
   end
