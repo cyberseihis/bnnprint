@@ -5,7 +5,7 @@ module teraccum #(
     input clk,             // Clock input
     input rst,             // Reset input
     input ena,
-    input [$clog2(Total)-1:0] cnt,
+    input [$clog2(Total+1)-1:0] cnt,
     input unsigned data_in,  // Input data
     output reg unsigned [$clog2(N+1)-1:0] acc
 );
