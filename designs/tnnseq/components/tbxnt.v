@@ -14,6 +14,9 @@ parameter M = 4;
 
   // Instantiate module under test
  xnortseqq #(
+  .Wvals(4'b1111),  // Bits of not-zeroes
+  .Wcol(32'h03020100), // Column of non-zeros
+  .Wrow(32'h03030100) // Column of non-zeros // Start indices per row
  ) dut (
     .data(data),
     .clk(clk),

@@ -3,9 +3,9 @@ module xnortseqq #(
   parameter M = 4,
   // CSR of weight martix
   parameter [7:0] Wnnz = 4, // Number of not-zeroes of weight matrix
-  parameter [Wnnz-1:0] Wvals = 4'b1111,  // Bits of not-zeroes
-  parameter [(8*Wnnz)-1:0] Wcol = 32'h03020100, // Column of non-zeros
-  parameter [(M*8)-1:0] Wrow = 32'h03030100 // Column of non-zeros // Start indices per row
+  parameter [Wnnz-1:0] Wvals = 0,  // Bits of not-zeroes
+  parameter [(8*Wnnz)-1:0] Wcol = 0, // Column of non-zeros
+  parameter [(M*8)-1:0] Wrow = 0 // Column of non-zeros // Start indices per row
   ) (
   input clk,
   input rst,
