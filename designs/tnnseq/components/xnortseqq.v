@@ -16,7 +16,7 @@ module xnortseqq #(
   );
   
   /* localparam SumL = $clog2(N+1); */
-  localparam SumL = 4;
+  localparam SumL = 8;
   wire [N-1:0] data_n;
   reg [$clog2(N)-1:0] cnt;
 
