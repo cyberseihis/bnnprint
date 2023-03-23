@@ -9,7 +9,7 @@ parameter M = 4;
   reg rst;
   reg clk;
 
-  assign data = 4'b1011;
+  assign data = 4'b1111;
   
 
   // Instantiate module under test

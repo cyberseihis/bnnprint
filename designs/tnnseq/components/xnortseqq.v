@@ -5,7 +5,7 @@ module xnortseqq #(
   parameter [7:0] Wnnz = 4, // Number of not-zeroes of weight matrix
   parameter [Wnnz-1:0] Wvals = 4'b1111,  // Bits of not-zeroes
   parameter [(8*Wnnz)-1:0] Wcol = 32'h03020100, // Column of non-zeros
-  parameter [(M*8)-1:0] Wrow = 32'h03020100 // Column of non-zeros // Start indices per row
+  parameter [(M*8)-1:0] Wrow = 32'h03030100 // Column of non-zeros // Start indices per row
   ) (
   input clk,
   input rst,
@@ -22,8 +22,8 @@ module xnortseqq #(
 
   assign data_n = ~data;
   
-  /* parameter [(M*8)-1:0] Delta = {Wnnz-8'd1,Wrow[M*8-1:8]} - Wrow; */
-  parameter [(M*8)-1:0] Delta = 32'h01010101;
+  parameter [(M*8)-1:0] Delta = {Wnnz,Wrow[M*8-1:8]} - Wrow;
+  /* parameter [(M*8)-1:0] Delta = 32'h01010101; */
   initial
       $display("Delta %h",Delta);
 
@@ -45,7 +45,7 @@ module xnortseqq #(
             # 10
             $display("Vec %d %d %b",j,Len,Vec);
         end
-        teraccum #(.N(Len)) popc (
+        teraccum #(.N(Len), .Total(N)) popc (
             .data_in(Vec),
             .clk(clk),
             .ena(enable),

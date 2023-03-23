@@ -1,10 +1,11 @@
 module teraccum #(
-    parameter N = 4 // Number of elements to add
+    parameter N = 4, // Number of elements to add
+    parameter Total = 4 // Total inputs of layer
 )(
     input clk,             // Clock input
     input rst,             // Reset input
     input ena,
-    input [$clog2(N)-1:0] cnt,
+    input [$clog2(Total)-1:0] cnt,
     input unsigned data_in,  // Input data
     output reg unsigned [$clog2(N+1)-1:0] acc
 );
