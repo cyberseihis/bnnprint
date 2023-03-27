@@ -19,6 +19,7 @@ module xnortseqq #(
   localparam SumL = 8;
   wire [N-1:0] data_n;
   reg [$clog2(N)-1:0] cnt;
+  wire [M*SumL-1:0] soums;
 
   assign data_n = ~data;
   
@@ -26,8 +27,14 @@ module xnortseqq #(
   /* parameter [(M*8)-1:0] Delta = 32'h01010101; */
   initial
       $display("Delta %h",Delta);
-
   genvar i,j;
+  wire [7:0] xd [M-1:0];
+  wire [7:0] maxlen;
+  assign xd[0]=Delta[0+:4];
+  for (i=1; i<M;i=i+1) begin
+      assign xd[i]=xd[i-1]>Delta[i*8+:8]?xd[i-1]:Delta[i*8+:8];
+  end
+  assign maxlen = xd[M-1];
   generate
       for(j=0;j<M;j=j+1)begin
         localparam Len = Delta[j*8+:8];
@@ -53,6 +60,7 @@ module xnortseqq #(
             .rst(rst),
             .acc(sums[j*SumL+:SumL])
         );
+      assign soums[j*SumL+:SumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
       end
   endgenerate
 

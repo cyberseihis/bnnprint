@@ -27,7 +27,7 @@ parameter M = 7;
     .data(data),
     .clk(clk),
     .rst(rst),
-    .enable(1),
+    .enable(1'b1),
     .sums(sums)
   );
   
@@ -49,6 +49,7 @@ parameter M = 7;
     #10
     #((N)*10)
     $display("Sum %h",sums);
+    $display("Soum %h",dut.soums);
   end
   endtask
 
