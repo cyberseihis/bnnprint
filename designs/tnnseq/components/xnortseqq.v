@@ -46,7 +46,7 @@ module xnortseqq #(
             $display("Vec %d %d %b",j,Len,Vec);
         end
         teraccum #(.N(Len), .Total(N)) popc (
-            .data_in(Vec),
+            .data_in(Vec[cnt]),
             .clk(clk),
             .ena(enable),
             .cnt(cnt),
