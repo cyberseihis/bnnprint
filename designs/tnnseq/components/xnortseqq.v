@@ -5,7 +5,7 @@ module xnortseqq #(
   parameter [7:0] Wnnz = 4, // Number of not-zeroes of weight matrix
   parameter [Wnnz-1:0] Wvals = 0,  // Bits of not-zeroes
   parameter [(8*Wnnz)-1:0] Wcol = 0, // Column of non-zeros
-  parameter [(M*8)-1:0] Wrow = 0 // Column of non-zeros // Start indices per row
+  parameter [(M*8)-1:0] Wrow = 32'h03020100 // Column of non-zeros // Start indices per row
   ) (
   input clk,
   input rst,
@@ -38,6 +38,7 @@ module xnortseqq #(
   generate
       for(j=0;j<M;j=j+1)begin
         localparam Len = Delta[j*8+:8];
+        if (Len!=0) begin
         localparam First = Wrow[j*8+:8];
         localparam Valz = Wvals[First+Len:First];
         // if has
@@ -60,7 +61,10 @@ module xnortseqq #(
             .rst(rst),
             .acc(sums[j*SumL+:SumL])
         );
-      assign soums[j*SumL+:SumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
+        assign soums[j*SumL+:SumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
+    end else begin
+        assign soums[j*SumL+:SumL] = maxlen;
+      end
       end
   endgenerate
 
