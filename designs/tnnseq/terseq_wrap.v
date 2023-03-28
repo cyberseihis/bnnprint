@@ -1,6 +1,6 @@
 `ifndef DUTNAME
 `define DUTNAME terseq_wrap
-    `include "killer.wei"
+    `include "backup.bstr"
 `else
     `include `BSTRINGS
 `endif
@@ -8,7 +8,7 @@ module `DUTNAME #(
 `ifdef PARAMS
 `include `PARAMS
 `else
-`include "piller.par"
+`include "packup.par"
 `endif
   ) (
   input clk,

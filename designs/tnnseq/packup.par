@@ -1,0 +1,5 @@
+parameter N = 4,
+parameter M = 4,
+parameter B = 4,
+parameter C = 4,
+parameter Ts = 1

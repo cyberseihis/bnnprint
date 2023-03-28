@@ -1,13 +1,14 @@
 `timescale 1us/1ns
+
 `ifndef DUTNAME
-`define DUTNAME tersewine
+`define DUTNAME terseq_wrap
 `define TBNAME tblook
 `endif
 module `TBNAME #(
 `ifdef PARAMS
 `include `PARAMS
 `else
-`include "piller.par"
+`include "packup.par"
 `endif
 )();
   reg [B*N-1:0] data;
