@@ -12,14 +12,17 @@ module xnortseqq #(
   input [N-1:0] data,
   input enable,
   /* output [M-1:0] out */
-  output [M*SumL-1:0] sums
+  output [M*SoumL-1:0] soums
   );
   
   /* localparam SumL = $clog2(N+1); */
   localparam SumL = 8;
+  // Find length of soums(sums with correction term)
+  localparam SoumL = 8;
   wire [N-1:0] data_n;
   reg [$clog2(N)-1:0] cnt;
-  wire [M*SumL-1:0] soums;
+  // (sums with correction term)
+  wire [M*SumL-1:0] sums;
 
   assign data_n = ~data;
   

@@ -23,8 +23,8 @@ always @(posedge clk or posedge rst) begin
     end else if (!put) begin
         acc <= next_acc;
     end //else $display(next_acc);
-    if (put)
-        $display("S %d %d",Id,next_acc);
+    /* if (put) */
+        /* $display("S %d %d",Id,next_acc); */
 end
 
 endmodule
