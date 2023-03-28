@@ -3,6 +3,7 @@ import numpy as np
 import binascii
 import re
 import os
+from scipy.sparse import csr_matrix
 
 
 def bitstr_weights(filename):
@@ -13,7 +14,7 @@ def bitstr_weights(filename):
     sw1 = h5['q_dense_1/q_dense_1/kernel:0'][:, :]
     h5.close()
     with open(f"bitstrings/{dset}.bstr", 'w') as file:
-        file.write(firstStr(sw0))
+        file.write(firstStr(sw0)+'\n'+secondStr(sw1))
 
 
 def dump_bitstrings():
@@ -41,16 +42,20 @@ def firstStr(mat):
     return '\n'.join([v, s, n])
 
 
+def secondStr(mat):
+    spa = csr_matrix(mat.T)
+    svals = binst(np.maximum(spa.data, 0))
+    scols = dbytes(spa.indices[::-1])
+    srows = dbytes(spa.indptr[::-1])
+    v = f"`define WVALSX {len(svals)}'b{svals}"
+    c = f"`define WCOLX {len(svals)*8}'h{scols}"
+    r = f"`define WROWX {(len(mat.T)+1)*8}'h{srows}"
+    return '\n'.join([v, c, r])
+
+
 def dbytes(mat):
-  kay=mat.flatten().astype(np.uint8).tobytes()
-  return binascii.hexlify(kay).decode()
-
-
-def matrix_bin_string(mat):
-    flatw = mysign(mat).flatten()
-    bflat = np.maximum(flatw, 0)
-    flbin = bflat.astype(np.uint8).tobytes()
-    return binascii.hexlify(flbin).decode()[1::2]
+    kay = mat.flatten().astype(np.uint8).tobytes()
+    return binascii.hexlify(kay).decode()
 
 
 def binst(yy):
