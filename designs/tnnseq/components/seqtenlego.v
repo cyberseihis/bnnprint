@@ -19,12 +19,26 @@ module seqtenlego #(
   );
 
   localparam [7:0] WnnzX = WrowX[C*8+:8];
-  initial
-      $display("ROW2 %h",WrowX);
   
-  /* localparam SumL = $clog2(M+1); */
-  localparam SumL = 8;
-  //
+  localparam SumL = $clog2(maxlen+1)+2;
+  initial $display("SumLhere %d",SumL);
+  localparam [(C*8)-1:0] Delta = WrowX[8+:C*8] - WrowX[0+:C*8];
+  localparam [7:0] maxlen = maxz(Delta);
+
+function [7:0] maxz(input [C*8-1:0] vec);
+   reg [7:0] max_val;
+   reg [7:0] pval;
+   integer i;
+   begin
+      max_val = vec[7:0];
+      for(i = 1; i < C; i = i + 1) begin
+        pval = vec[i*8+:8];
+        max_val = pval>max_val?pval:max_val;
+      end
+      maxz=max_val;
+   end
+endfunction
+
   wire [M-1:0] midd;
   wire [M-1:0] revmidd;
   wire nxt;
@@ -49,7 +63,10 @@ module seqtenlego #(
  xnortseqq #(.N(M),.M(C),
     .Wvals(WvalsX),
     .Wcol(WcolX),
-    .Wrow(WrowX)
+    .Wrow(WrowX),
+    .Delta(Delta),
+    .maxlen(maxlen),
+    .SumL(SumL-2)
  ) layer2 (
     .clk(clk),
     .rst(rst),

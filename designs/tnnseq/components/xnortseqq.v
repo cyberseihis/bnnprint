@@ -4,7 +4,10 @@ module xnortseqq #(
   // CSR of weight martix
   parameter [Wnnz-1:0] Wvals = 0,  // Bits of not-zeroes
   parameter [(8*Wnnz)-1:0] Wcol = 0, // Column of non-zeros
-  parameter [((M+1)*8)-1:0] Wrow = 40'h0403020100 // Column of non-zeros // Start indices per row
+  parameter [((M+1)*8)-1:0] Wrow = 40'h0403020100, // Column of non-zeros // Start indices per row
+  parameter [M*8-1:0] Delta = 32'h01010101,
+  parameter [7:0] maxlen = 8'h01,
+  parameter SumL = 2
   ) (
   input clk,
   input rst,
@@ -15,10 +18,8 @@ module xnortseqq #(
   );
   
   localparam [7:0] Wnnz = Wrow[M*8+:8];
-  /* localparam SumL = $clog2(N+1); */
-  localparam SumL = 8;
-  // Find length of soums(sums with correction term)
-  localparam SoumL = 8;
+  localparam SoumL = SumL + 2;
+  initial $display("SoumL %h, %h, %d",Delta,maxlen,SoumL);
   wire [N-1:0] data_n;
   reg [$clog2(N)-1:0] cnt;
   // (sums with correction term)
@@ -26,29 +27,7 @@ module xnortseqq #(
 
   assign data_n = ~data;
   
-  /* parameter [(M*8)-1:0] Delta = {Wnnz,Wrow[M*8-1:8]} - Wrow; */
-  parameter [(M*8)-1:0] Delta = Wrow[8+:M*8] - Wrow[0+:M*8];
-  initial begin
-      $display("Delta %h",Delta);
-      $display("maxd %h",maxlen);
-  end
-  genvar i,j;
-  parameter [7:0] maxlen = maxl(Delta);
-
-function [7:0] maxl(input [M*8-1:0] vec);
-   reg [7:0] max_val;
-   reg [7:0] pval;
-   integer i;
-   begin
-      max_val = vec[7:0];
-      for(i = 1; i < M; i = i + 1) begin
-        pval = vec[i*8+:8];
-        max_val = pval>max_val?pval:max_val;
-      end
-      maxl=max_val;
-   end
-endfunction
-
+genvar i,j;
 
   generate
       for(j=0;j<M;j=j+1)begin
@@ -76,9 +55,9 @@ endfunction
             .rst(rst),
             .acc(sums[j*SumL+:SumL])
         );
-        assign soums[j*SumL+:SumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
+        assign soums[j*SoumL+:SoumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
     end else begin
-        assign soums[j*SumL+:SumL] = maxlen;
+        assign soums[j*SoumL+:SoumL] = maxlen;
       end
       end
   endgenerate
