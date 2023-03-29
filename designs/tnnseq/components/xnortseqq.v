@@ -30,22 +30,32 @@ module xnortseqq #(
   parameter [(M*8)-1:0] Delta = Wrow[8+:M*8] - Wrow[0+:M*8];
   initial begin
       $display("Delta %h",Delta);
-      $display("ROW %h",Wrow);
+      $display("maxd %h",maxlen);
   end
   genvar i,j;
-  wire [7:0] xd [M-1:0];
-  wire [7:0] maxlen;
-  assign xd[0]=Delta[0+:8];
-  for (i=1; i<M;i=i+1) begin
-      assign xd[i]=xd[i-1]>Delta[i*8+:8]?xd[i-1]:Delta[i*8+:8];
-  end
-  assign maxlen = xd[M-1];
+  parameter [7:0] maxlen = maxl(Delta);
+
+function [7:0] maxl(input [M*8-1:0] vec);
+   reg [7:0] max_val;
+   reg [7:0] pval;
+   integer i;
+   begin
+      max_val = vec[7:0];
+      for(i = 1; i < M; i = i + 1) begin
+        pval = vec[i*8+:8];
+        max_val = pval>max_val?pval:max_val;
+      end
+      maxl=max_val;
+   end
+endfunction
+
+
   generate
       for(j=0;j<M;j=j+1)begin
-        localparam Len = $unsigned(Delta[j*8+:8]);
+        localparam Len = Delta[j*8+:8];
         if (Len!=0) begin
-        localparam First = $unsigned(Wrow[j*8+:8]);
-        localparam Valz = Wvals[First+:Len];
+        localparam First = Wrow[j*8+:8];
+        localparam [Len-1:0] Valz = Wvals[First+:Len];
         // if has
         wire [Len-1:0] Vec;
         for(i=0;i<Len;i=i+1)begin
