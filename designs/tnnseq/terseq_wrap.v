@@ -22,7 +22,6 @@ module `DUTNAME #(
   .Wvals(`WVALS),
   .Wzero(`WZERO),
   .Wnnz(`WNNZ),
-  .WnnzX(`WNNZX), // Number of not-zeroes of weight matrix
   .WvalsX(`WVALSX),  // Bits of not-zeroes
   .WcolX(`WCOLX), // Column of non-zeros
   .WrowX(`WROWX) // Column of non-zeros // Start indices per row

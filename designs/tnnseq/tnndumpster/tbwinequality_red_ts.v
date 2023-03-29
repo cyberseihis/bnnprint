@@ -1,15 +1,20 @@
 `timescale 1us/1ns
 
-`ifndef DUTNAME
-`define DUTNAME terseq_wrap
-`define TBNAME tblook
-`endif
-module `TBNAME #(
-`ifdef PARAMS
-`include `PARAMS
-`else
-`include "packup.par"
-`endif
+
+
+
+
+module tbwinequality_red_ts #(
+
+parameter N = 11,
+parameter M = 40,
+parameter B = 4,
+parameter C = 6,
+parameter Ts = 5
+
+
+
+
 )();
   reg [B*N-1:0] data;
   wire [B*N-1:0] testcases [Ts-1:0];
@@ -19,15 +24,20 @@ module `TBNAME #(
   localparam period=Nsperiod/500;
   localparam halfT=period/2;
 
-`ifdef TESTCASES
-`include `TESTCASES
-`endif
+
+assign testcases[0] = 44'h46012229a22;
+assign testcases[1] = 44'h58022538633;
+assign testcases[2] = 44'h57122338733;
+assign testcases[3] = 44'h92912439523;
+assign testcases[4] = 44'h46012229a22;
+
+
   
   localparam SumL = $clog2(M+1);
   wire [$clog2(C)-1:0] klass;
 
   // Instantiate module under test
- `DUTNAME #(
+ winequality_red_ts #(
  ) dut (
     .data(data),
     .clk(clk),

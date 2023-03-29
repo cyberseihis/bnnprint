@@ -8,16 +8,19 @@ module seqtenlego #(
   parameter [M*N-1:0] Wzero = 0,
   parameter [8*M-1:0] Wnnz = 0,
   // CSR of weight martix
-  parameter [7:0] WnnzX = 4, // Number of not-zeroes of weight matrix
+  parameter [((C+1)*8)-1:0] WrowX = 40'h0403020100, // Column of non-zeros // Start indices per row
   parameter [WnnzX-1:0] WvalsX = 0,  // Bits of not-zeroes
-  parameter [(8*WnnzX)-1:0] WcolX = 0, // Column of non-zeros
-  parameter [(C*8)-1:0] WrowX = 32'h03020100 // Column of non-zeros // Start indices per row
+  parameter [(8*WnnzX)-1:0] WcolX = 0 // Column of non-zeros
   ) (
   input clk,
   input rst,
   input [N*B-1:0] data,
   output [$clog2(C)-1:0] klass
   );
+
+  localparam [7:0] WnnzX = WrowX[C*8+:8];
+  initial
+      $display("ROW2 %h",WrowX);
   
   /* localparam SumL = $clog2(M+1); */
   localparam SumL = 8;
@@ -44,7 +47,6 @@ module seqtenlego #(
   );
 
  xnortseqq #(.N(M),.M(C),
-    .Wnnz(WnnzX),
     .Wvals(WvalsX),
     .Wcol(WcolX),
     .Wrow(WrowX)
