@@ -9,6 +9,7 @@ module seqtenlego #(
   parameter [8*M-1:0] Wnnz = 0,
   // CSR of weight martix
   parameter [((C+1)*8)-1:0] WrowX = 40'h0403020100, // Column of non-zeros // Start indices per row
+  parameter [7:0] WnnzX = WrowX[C*8+:8],
   parameter [WnnzX-1:0] WvalsX = 0,  // Bits of not-zeroes
   parameter [(8*WnnzX)-1:0] WcolX = 0 // Column of non-zeros
   ) (
@@ -18,11 +19,10 @@ module seqtenlego #(
   output [$clog2(C)-1:0] klass
   );
 
-  localparam [7:0] WnnzX = WrowX[C*8+:8];
   
-  localparam SumL = $clog2(maxlen+1)+2;
   localparam [(C*8)-1:0] Delta = WrowX[8+:C*8] - WrowX[0+:C*8];
   localparam [7:0] maxlen = maxz(Delta);
+  localparam SumL = $clog2(maxlen+1)+2;
 
 function [7:0] maxz(input [C*8-1:0] vec);
    reg [7:0] max_val;

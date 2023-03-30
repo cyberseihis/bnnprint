@@ -2,9 +2,10 @@ module xnortseqq #(
   parameter N = 4,
   parameter M = 4,
   // CSR of weight martix
+  parameter [((M+1)*8)-1:0] Wrow = 40'h0403020100, // Column of non-zeros // Start indices per row
+  parameter [7:0] Wnnz = Wrow[M*8+:8],
   parameter [Wnnz-1:0] Wvals = 0,  // Bits of not-zeroes
   parameter [(8*Wnnz)-1:0] Wcol = 0, // Column of non-zeros
-  parameter [((M+1)*8)-1:0] Wrow = 40'h0403020100, // Column of non-zeros // Start indices per row
   parameter [M*8-1:0] Delta = 32'h01010101,
   parameter [7:0] maxlen = 8'h01,
   parameter SumL = 2
@@ -14,10 +15,9 @@ module xnortseqq #(
   input [N-1:0] data,
   input enable,
   /* output [M-1:0] out */
-  output [M*SoumL-1:0] soums
+  output [M*(SumL+2)-1:0] soums
   );
   
-  localparam [7:0] Wnnz = Wrow[M*8+:8];
   localparam SoumL = SumL + 2;
   /* initial $display("SoumL %h, %h, %d",Delta,maxlen,SoumL); */
   wire [N-1:0] data_n;

@@ -74,12 +74,4 @@ assign testcases[4] = 48'hb97000889000;
   end
   endtask
 
-  task thesums(); begin
-    $write("[");
-    for(i=0;i<C;i=i+1)
-        $write("%d, ",dut.tnn.out[i*SumL+:SumL]);
-    $display("]");
-  end
-  endtask
-
 endmodule

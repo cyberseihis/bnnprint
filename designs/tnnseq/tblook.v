@@ -64,12 +64,4 @@ module `TBNAME #(
   end
   endtask
 
-  task thesums(); begin
-    $write("[");
-    for(i=0;i<C;i=i+1)
-        $write("%d, ",dut.tnn.out[i*SumL+:SumL]);
-    $display("]");
-  end
-  endtask
-
 endmodule
