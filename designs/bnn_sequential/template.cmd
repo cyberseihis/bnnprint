@@ -4,6 +4,6 @@
 +define+PARAMS="DATASETNAME.csv.par"
 +define+HRDCD="weightsDATASETNAME.csv.h5.hrdcd"
 +define+BSTRINGS="DATASETNAME.bstr"
-+incdir+../../datasets/bnn1_40_nobnorm_models/bnnprints/
++incdir+../../models/bnn1_40_nobnorm_models/bnnprints/
 +incdir+../../trainingdata/retbparams/
-+incdir+../../datasets/bnn1_40_nobnorm_models/bitstrings/
++incdir+../../models/bnn1_40_nobnorm_models/bitstrings/

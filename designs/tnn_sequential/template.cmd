@@ -4,4 +4,4 @@
 +define+PARAMS="DATASETNAME.csv.par"
 +define+BSTRINGS="DATASETNAME.bstr"
 +incdir+../../trainingdata/tbparams/
-+incdir+../../datasets/tnn_40_nbn/bitstrings
++incdir+../../models/tnn_40_nbn/bitstrings

@@ -28,14 +28,14 @@ def write_cmdfile(datasetname):
 
 def mk_dut(name):
     cmd = f"iverilog -c cmdfile.cmd -y ../argmax/ " \
-        f"tndemo.v -o tnndumpster/{name}tnn.v -E"
+        f"wrap_seq_bnn.v -o products/{name}_bs.v -E"
     res = subprocess.check_output(cmd, shell=True)
     print(res)
 
 
 def mk_tb(name):
     cmd = f"iverilog -c cmdfile.cmd " \
-        f"tbtndemo.v -o tnndumpster/tb{name}tnn.v -E"
+        f"tbwrap_seq_bnn.v -o products/tb{name}_bs.v -E"
     res = subprocess.check_output(cmd, shell=True)
     print(res)
 
@@ -49,7 +49,3 @@ def mk_dump(name):
 def dump_all():
     for dset in datasets:
         mk_dump(dset)
-
-
-def showdir():
-    print(os.listdir())
