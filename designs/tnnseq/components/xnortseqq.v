@@ -47,14 +47,17 @@ genvar i,j;
         /*     # 10 */
         /*     $display("Vec %d %d %b",j,Len,Vec); */
         /* end */
+        localparam acclen = $clog2(Len+1);
         teraccum #(.N(Len), .Total(N)) popc (
             .data_in(Vec[cnt]),
             .clk(clk),
             .ena(enable),
             .cnt(cnt),
             .rst(rst),
-            .acc(sums[j*SumL+:SumL])
+            .acc(sums[j*SumL+:acclen])
         );
+        if(SumL>acclen)
+            assign sums[j*SumL+SumL-1:j*SumL+acclen] = 0;
         assign soums[j*SoumL+:SoumL] = 2*sums[j*SumL+:SumL]+maxlen-Len;
     end else begin
         assign soums[j*SoumL+:SoumL] = maxlen;
