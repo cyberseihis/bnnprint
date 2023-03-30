@@ -1,0 +1,5 @@
+assign testcases[0] = 48'hb9811498a121;
+assign testcases[1] = 48'hb9700187a110;
+assign testcases[2] = 48'hb9700088a000;
+assign testcases[3] = 48'hb9700088a000;
+assign testcases[4] = 48'hb97000889000;

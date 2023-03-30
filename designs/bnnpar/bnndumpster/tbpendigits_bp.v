@@ -10,18 +10,18 @@
 
 module tbpendigits_bp #(
 
-parameter N = 16,
-parameter M = 40,
-parameter B = 4,
-parameter C = 10,
-parameter Ts = 5
+parameter FEAT_CNT = 16,
+parameter HIDDEN_CNT = 40,
+parameter FEAT_BITS = 4,
+parameter CLASS_CNT = 10,
+parameter TEST_CNT = 5
 
 
 )();
 reg clk;
-reg [N*B-1:0] inp;
-wire [$clog2(C)-1:0] klass;
-wire [N*B-1:0] testcases [Ts-1:0];
+reg [FEAT_CNT*FEAT_BITS-1:0] features;
+wire [$clog2(CLASS_CNT)-1:0] prediction;
+wire [FEAT_CNT*FEAT_BITS-1:0] testcases [TEST_CNT-1:0];
 parameter Nsperiod=5000;
 parameter period = Nsperiod/500;
 
@@ -34,18 +34,16 @@ assign testcases[4] = 64'h0b8dffddaa665380;
 
 
 
-pendigits_bp dut (.inp(inp),.klass(klass));
+pendigits_bp dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin
-    inp = testcases[0];
-    $write("[");
-    for(i=0;i<Ts;i=i+1) begin
-        inp = testcases[i];
+    features = testcases[0];
+    $write("[");//"
+    for(i=0;i<TEST_CNT;i=i+1) begin
+        features = testcases[i];
         #period
-        /* $displayh(i); */
-        /* $display("%h %h %d",inp,dut.out,klass); */
-        $write("%d, ",klass);
+        $write("%d, ",prediction);
     end
     $display("]");
 end

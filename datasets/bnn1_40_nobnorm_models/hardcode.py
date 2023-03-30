@@ -31,19 +31,19 @@ def layebin(mat):
 
 
 def cel(i):
-    f = f"+ inm[{i}]"
+    f = f"+ feature_array[{i}]"
     return f
 
 
 def bicel(i, w):
     x = "" if w == 1 else "_n"
-    f = f"+ mid{x}[{i}]"
+    f = f"+ hidden{x}[{i}]"
     return f
 
 
 def bineur(i, ar):
     bod = ' '.join([bicel(i, w) for i, w in enumerate(ar)])
-    al = f"assign out[{i}*SumL+:SumL] = {bod};"
+    al = f"assign out[{i}*SUM_BITS+:SUM_BITS] = {bod};"
     return al
 
 
@@ -52,7 +52,10 @@ def neur(i, ar):
     neges = [i for i, a in enumerate(ar) if a != 1]
     bodp = ' '.join([cel(i) for i in poses])
     bodn = ' '.join([cel(i) for i in neges])
-    al = f"assign pmid[{i}] = {bodp};\nassign nmid[{i}] = {bodn};\nassign mid[{i}] = pmid[{i}] >= nmid[{i}];"
+    al = f"""
+    assign positives[{i}] = {bodp};
+    assign negatives[{i}] = {bodn};
+    assign hidden[{i}] = positives[{i}] >= negatives[{i}];"""
     return al
 
 

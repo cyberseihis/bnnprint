@@ -1,0 +1,5 @@
+assign testcases[0] = 44'h46012229a22;
+assign testcases[1] = 44'h58022538633;
+assign testcases[2] = 44'h57122338733;
+assign testcases[3] = 44'h92912439523;
+assign testcases[4] = 44'h46012229a22;
