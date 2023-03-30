@@ -22,7 +22,7 @@ module first_layer #(
   genvar i;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
-      accumulator #(.FEAT_CNT(FEAT_CNT), .FEAT_BITS(FEAT_BITS)) acc1 (
+      accumulator #(.SIZE(FEAT_CNT), .BITS(FEAT_BITS)) acc1 (
         .data_in(sample),
         .clk(clk),
         .halt(reached_end),
