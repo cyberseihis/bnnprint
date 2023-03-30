@@ -20,7 +20,7 @@ wire [HIDDEN_CNT-1:0] hidden;
 wire unsigned [INDEX_BITS-1:0] positives [HIDDEN_CNT-1:0];
 wire unsigned [INDEX_BITS-1:0] negatives [HIDDEN_CNT-1:0];
 wire [HIDDEN_CNT-1:0] hidden_n;
-wire [CLASS_CNT*SUM_BITS-1:0] out; 
+wire [CLASS_CNT*SUM_BITS-1:0] scores; 
 assign hidden_n = ~hidden;
 
 genvar i;
@@ -34,7 +34,7 @@ endgenerate
 `endif
 
 argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS)) result (
-    .inx(out),
+    .inx(scores),
     .outimax(prediction)
 );
 endmodule

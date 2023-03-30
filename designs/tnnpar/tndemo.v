@@ -1,47 +1,47 @@
 `ifndef DUTNAME
 `define DUTNAME tndemo
-parameter N = 4;
-parameter B = 4;
-parameter M = 4;
-parameter C = 4;
+parameter FEAT_CNT = 4;
+parameter FEAT_BITS = 4;
+parameter HIDDEN_CNT = 4;
+parameter CLASS_CNT = 4;
 `endif
 module `DUTNAME #(
 `ifdef PARAMS
 `include `PARAMS
 `endif
 )(
-    input [N*B-1:0] inp,
-    output [$clog2(C)-1:0] klass
+    input [FEAT_CNT*FEAT_BITS-1:0] features,
+    output [$clog2(CLASS_CNT)-1:0] prediction
 );
-localparam SumL = $clog2(M+1);
-localparam ZumL = SumL+1;
-localparam IumL = $clog2(N+1)+B;
-wire unsigned [B-1:0] inm [N-1:0];
-wire [M-1:0] mid;
-wire unsigned [IumL-1:0] pmid [M-1:0];
-wire unsigned [IumL-1:0] nmid [M-1:0];
-wire [M-1:0] mid_n;
-wire [SumL-1:0] pop [C-1:0]; 
-wire [(SumL+1)-1:0] out [C-1:0]; 
-wire [C*(SumL+1)-1:0] sums; 
-assign mid_n = ~mid;
+localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+localparam SCORE_BITS = SUM_BITS+1;
+localparam INDEX_BITS = $clog2(FEAT_CNT+1)+FEAT_BITS;
+wire unsigned [FEAT_BITS-1:0] feature_array [FEAT_CNT-1:0];
+wire [HIDDEN_CNT-1:0] hidden;
+wire unsigned [INDEX_BITS-1:0] positives [HIDDEN_CNT-1:0];
+wire unsigned [INDEX_BITS-1:0] negatives [HIDDEN_CNT-1:0];
+wire [HIDDEN_CNT-1:0] hidden_n;
+wire [SUM_BITS-1:0] popcount [CLASS_CNT-1:0]; 
+wire [(SUM_BITS+1)-1:0] scores [CLASS_CNT-1:0]; 
+wire [CLASS_CNT*(SUM_BITS+1)-1:0] score_vec; 
+assign hidden_n = ~hidden;
 
 genvar i;
 generate
-    for(i=0;i<N;i=i+1)
-        assign inm[N-1-i] = inp[i*B+:B];
+    for(i=0;i<FEAT_CNT;i=i+1)
+        assign feature_array[FEAT_CNT-1-i] = features[i*FEAT_BITS+:FEAT_BITS];
 endgenerate
 generate
-    for(i=0;i<C;i=i+1)
-        assign sums[i*ZumL+:ZumL] = out[i];
+    for(i=0;i<CLASS_CNT;i=i+1)
+        assign score_vec[i*SCORE_BITS+:SCORE_BITS] = scores[i];
 endgenerate
 
 `ifdef HRDCD
 `include `HRDCD
 `endif
 
-argmax #(.N(C),.I($clog2(C)),.K(SumL+1)) result (
-    .inx(sums),
-    .outimax(klass)
+argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS+1)) result (
+    .inx(score_vec),
+    .outimax(prediction)
 );
 endmodule

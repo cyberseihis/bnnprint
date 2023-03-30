@@ -10,19 +10,19 @@
 
 module tbwinequality_whitetnn #(
 
-parameter N = 11,
-parameter M = 40,
-parameter B = 4,
-parameter C = 7,
-parameter Ts = 5
+parameter FEAT_CNT = 11,
+parameter HIDDEN_CNT = 40,
+parameter FEAT_BITS = 4,
+parameter CLASS_CNT = 7,
+parameter TEST_CNT = 5
 
 
 )();
-localparam SumL = $clog2(M+1);
+localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
 reg clk;
-reg [N*B-1:0] inp;
-wire [$clog2(C)-1:0] klass;
-wire [N*B-1:0] testcases [Ts-1:0];
+reg [FEAT_CNT*FEAT_BITS-1:0] features;
+wire [$clog2(CLASS_CNT)-1:0] prediction;
+wire [FEAT_CNT*FEAT_BITS-1:0] testcases [TEST_CNT-1:0];
 parameter Nsperiod=5000;
 localparam period=Nsperiod/500;
 
@@ -35,21 +35,16 @@ assign testcases[4] = 44'h52322373735;
 
 
 
-winequality_whitetnn dut (.inp(inp),.klass(klass));
+winequality_whitetnn dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin
-    inp = testcases[0];
-    $write("[");
-    for(i=0;i<Ts;i=i+1) begin
-        inp = testcases[i];
+    features = testcases[0];
+    $write("[");//"
+    for(i=0;i<TEST_CNT;i=i+1) begin
+        features = testcases[i];
         #period
-        /* $displayh(i); */
-        /* $display("%b",dut.mid); */
-        /* for(j=0;j<C;j=j+1) */
-        /*     $write("%d, ",dut.out[j]); */
-        /* $display(""); */
-        $write("%d, ",klass);
+        $write("%d, ",prediction);
     end
     $display("]");
 end

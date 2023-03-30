@@ -43,7 +43,7 @@ def bicel(i, w):
 
 def bineur(i, ar):
     bod = ' '.join([bicel(i, w) for i, w in enumerate(ar)])
-    al = f"assign out[{i}*SUM_BITS+:SUM_BITS] = {bod};"
+    al = f"assign scores[{i}*SUM_BITS+:SUM_BITS] = {bod};"
     return al
 
 

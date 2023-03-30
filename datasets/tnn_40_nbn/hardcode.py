@@ -33,13 +33,13 @@ def layebin(mat):
 
 
 def cel(i):
-    f = f"+ inm[{i}]"
+    f = f"+ feature_array[{i}]"
     return f
 
 
 def bicel(i, w):
     x = "" if w == 1 else "_n"
-    f = f"+ mid{x}[{i}]"
+    f = f"+ hidden{x}[{i}]"
     return f
 
 
@@ -47,9 +47,9 @@ def bineur(i, ar, add):
     valz = [(i, a) for i, a in enumerate(ar) if a != 0]
     bod = ' '.join([bicel(i, w) for i, w in valz])
     if not valz:
-        return f"assign out[{i}] = {add};"
-    al = f"assign pop[{i}] = {bod};" \
-         f"assign out[{i}] = 2*pop[{i}] + {add};"
+        return f"assign scores[{i}] = {add};"
+    al = f"assign popcount[{i}] = {bod};" \
+         f"assign scores[{i}] = 2*popcount[{i}] + {add};"
     return al
 
 
@@ -60,14 +60,14 @@ def neur(i, ar):
     bodp = ' '.join([cel(i) for i in poses])
     bodn = ' '.join([cel(i) for i in neges])
     if neges:
-        aln = f"assign nmid[{i}] = {bodn};\n"
+        aln = f"assign negatives[{i}] = {bodn};\n"
     else:
-        return f"assign mid[{i}] = 1;"
+        return f"assign hidden[{i}] = 1;"
     if poses:
-        alp = f"assign pmid[{i}] = {bodp};\n"
+        alp = f"assign positives[{i}] = {bodp};\n"
     else:
-        return f"assign mid[{i}] = 0;"
-    ale = f"assign mid[{i}] = pmid[{i}] >= nmid[{i}];"
+        return f"assign hidden[{i}] = 0;"
+    ale = f"assign hidden[{i}] = positives[{i}] >= negatives[{i}];"
     return alp+aln+ale
 
 
