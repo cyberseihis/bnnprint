@@ -1,4 +1,4 @@
-module seqlego #(
+module seq_bnn #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
@@ -17,7 +17,7 @@ module seqlego #(
   wire next_layer;
   wire [SUM_BITS*CLASS_CNT-1:0] scores;
 
-  seqq #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0)) layer1 (
+  first_layer #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0)) layer1 (
     .clk(clk),
     .rst(rst),
     .features(features),
@@ -25,7 +25,7 @@ module seqlego #(
     .done(next_layer)
   );
 
- xnorseqq #(.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights(Weights1)) layer2 (
+ xnor_layer #(.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights(Weights1)) layer2 (
     .clk(clk),
     .rst(rst),
     .enable(next_layer),

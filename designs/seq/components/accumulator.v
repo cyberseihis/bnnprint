@@ -1,4 +1,4 @@
-module accum #(parameter FEAT_CNT = 4, parameter FEAT_BITS = 8)(
+module accumulator #(parameter FEAT_CNT = 4, parameter FEAT_BITS = 8)(
     input clk,             // Clock input
     input rst,             // Reset input
     input halt,

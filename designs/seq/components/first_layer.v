@@ -1,4 +1,4 @@
-module seqq #(
+module first_layer #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
@@ -22,7 +22,7 @@ module seqq #(
   genvar i;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
-      accum #(.FEAT_CNT(FEAT_CNT), .FEAT_BITS(FEAT_BITS)) acc1 (
+      accumulator #(.FEAT_CNT(FEAT_CNT), .FEAT_BITS(FEAT_BITS)) acc1 (
         .data_in(sample),
         .clk(clk),
         .halt(reached_end),

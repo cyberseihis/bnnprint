@@ -1,4 +1,4 @@
-module binaccum #(
+module popcount #(
     parameter SIZE = 4 // Number of elements to add
 )(
     input clk,             // Clock input

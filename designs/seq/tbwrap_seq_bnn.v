@@ -1,7 +1,7 @@
 `timescale 1us/1ns
 `ifndef DUTNAME
-`define DUTNAME bnnseq
-`define TBNAME tbbnnseq
+`define DUTNAME wrap_seq_bnn
+`define TBNAME tbwrap_seq_bnn
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;

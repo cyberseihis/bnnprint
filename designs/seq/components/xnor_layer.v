@@ -1,4 +1,4 @@
-module xnorseqq #(
+module xnor_layer #(
   parameter HIDDEN_CNT = 4,
   parameter CLASS_CNT = 4,
   parameter Weights = 0
@@ -29,7 +29,7 @@ module xnorseqq #(
             else
                 assign hybrid[i] = features_n[i];
         end
-        binaccum #(.SIZE(HIDDEN_CNT)) popc (
+        popcount #(.SIZE(HIDDEN_CNT)) popc (
             .data_in(hybrid[cnt]),
             .clk(clk),
             .halt(halt | (~enable)),
