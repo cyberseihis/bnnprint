@@ -6,18 +6,18 @@
 
 module tbwinequality_white_ts #(
 
-parameter N = 11,
-parameter M = 40,
-parameter B = 4,
-parameter C = 7,
-parameter Ts = 5
+parameter FEAT_CNT = 11,
+parameter HIDDEN_CNT = 40,
+parameter FEAT_BITS = 4,
+parameter CLASS_CNT = 7,
+parameter TEST_CNT = 5
 
 
 
 
 )();
-  reg [B*N-1:0] data;
-  wire [B*N-1:0] testcases [Ts-1:0];
+  reg [FEAT_BITS*FEAT_CNT-1:0] data;
+  wire [FEAT_BITS*FEAT_CNT-1:0] testcases [TEST_CNT-1:0];
   reg rst;
   reg clk;
   parameter Nsperiod=50000;
@@ -33,8 +33,8 @@ assign testcases[4] = 44'h52322373735;
 
 
   
-  localparam SumL = $clog2(M+1);
-  wire [$clog2(C)-1:0] klass;
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+  wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
  winequality_white_ts #(
@@ -42,17 +42,15 @@ assign testcases[4] = 44'h52322373735;
     .data(data),
     .clk(clk),
     .rst(rst),
-    .klass(klass)
+    .prediction(prediction)
   );
   
   always #halfT clk <= ~clk;
 
   integer i;
   initial begin
-    /* $monitor("sums %h %0t",dut.sums,$time); */
-    /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
     $write("["); //" 
-    for(i=0;i<Ts;i=i+1)
+    for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
     $display("]");
     $finish;
@@ -65,12 +63,8 @@ assign testcases[4] = 44'h52322373735;
     #period
     rst <= 0;
     #period
-    #((N+M-1)*period)
-    /* thesums(); */
-    /* $display("mid %b",dut.tnn.revmidd); */
-    /* $display("sums %h",dut.tnn.out); */
-    $write("%d,",klass);
-    /* $display("%h %d",data,(C-1-klass)); */
+    #((FEAT_CNT+HIDDEN_CNT-1)*period)
+    $write("%d,",prediction);
   end
   endtask
 

@@ -3,5 +3,5 @@
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
 +define+BSTRINGS="DATASETNAME.bstr"
-+incdir+../../trainingdata/tbparams/
++incdir+../../trainingdata/retbparams/
 +incdir+../../models/tnn_40_nbn/bitstrings
