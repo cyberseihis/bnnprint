@@ -44,10 +44,14 @@ module `TBNAME #(
   initial begin
     /* $monitor("sums %h %0t",dut.sums,$time); */
     /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
+    $write("["); //"
     for(i=0;i<Ts;i=i+1)
         runtestcase(i);
+    $display("]");
     $finish;
   end
+
+  localparam [$clog2(C)-1:0] maxklass = C-1;
 
   task runtestcase(input integer i); begin
     data <= testcases[i];
@@ -57,7 +61,7 @@ module `TBNAME #(
     rst <= 0;
     #period
     #((N+M-1)*period)
-    $display("%h %d",data,(C-1-klass));
+    $write("%d, ",(maxklass-klass));
   end
   endtask
 
