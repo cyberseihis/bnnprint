@@ -1,62 +1,58 @@
 module xnorseqq #(
-  parameter N = 4,
-  parameter M = 4,
+  parameter HIDDEN_CNT = 4,
+  parameter CLASS_CNT = 4,
   parameter Weights = 0
   ) (
   input clk,
   input rst,
-  input [N-1:0] data,
+  input [HIDDEN_CNT-1:0] features,
   input enable,
-  /* output [M-1:0] out */
-  output [M*$clog2(N+1)-1:0] sums
+  output [CLASS_CNT*$clog2(HIDDEN_CNT+1)-1:0] sums
   );
   
-  localparam SumL = $clog2(N+1);
-  reg [$clog2(N)-1:0] cnt;
-  reg put;
-  wire [N-1:0] data_n;
+  localparam SumL = $clog2(HIDDEN_CNT+1);
+  reg [$clog2(HIDDEN_CNT)-1:0] cnt;
+  localparam [$clog2(HIDDEN_CNT)-1:0] last = HIDDEN_CNT-1;
+  reg halt;
+  wire [HIDDEN_CNT-1:0] features_n;
 
-  assign data_n = ~data;
+  assign features_n = ~features;
   
-  /* initial */
-  /*     $displayb(Weights); */
-
-  genvar j;
-  genvar i;
+  genvar i,j;
   generate
-      for(j=0;j<M;j=j+1)begin
-        localparam weit = Weights[j*N+:N];
-        wire [N-1:0] sels;
-        /* initial */
-        /*     $display("glitter %d %b",j,weit); */
-        for(i=0;i<N;i=i+1)begin
-            if(weit[i])
-                assign sels[i] = data[i];
+      for(j=0;j<CLASS_CNT;j=j+1)begin
+        localparam weight = Weights[j*HIDDEN_CNT+:HIDDEN_CNT];
+        wire [HIDDEN_CNT-1:0] hybrid;
+        for(i=0;i<HIDDEN_CNT;i=i+1)begin
+            if(weight[i])
+                assign hybrid[i] = features[i];
             else
-                assign sels[i] = data_n[i];
+                assign hybrid[i] = features_n[i];
         end
-        binaccum #(.N(N)) popc (
-            .data_in(sels[cnt]),
+        binaccum #(.SIZE(HIDDEN_CNT)) popc (
+            .data_in(hybrid[cnt]),
             .clk(clk),
-            .put(put | (~enable)),
+            .halt(halt | (~enable)),
             .rst(rst),
             .acc(sums[j*SumL+:SumL])
         );
       end
   endgenerate
 
-  assign off = cnt==N-1;
+  wire reached_last;
+  assign reached_last = cnt==last;
+  
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin
           cnt <= 0;
-          put <= 0;
+          halt <= 0;
       end
       else if (enable) begin
-          if(!off) begin
+          if(!reached_last) begin
               cnt <= cnt + 1;
           end else begin
-              put <= 1;
+              halt <= 1;
           end
       end
   end

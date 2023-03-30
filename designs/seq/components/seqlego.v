@@ -24,11 +24,11 @@ module seqlego #(
     .done(nxt)
   );
 
- xnorseqq #(.N(M),.M(C),.Weights(Weights1)) layer2 (
+ xnorseqq #(.HIDDEN_CNT(M),.CLASS_CNT(C),.Weights(Weights1)) layer2 (
     .clk(clk),
     .rst(rst),
     .enable(nxt),
-    .data(midd),
+    .features(midd),
     .sums(out)
  );
   

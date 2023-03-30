@@ -12,12 +12,12 @@ module seqq #(
   );
   
   reg [$clog2(N)-1:0] cnt;
-  /* wire [M*N-1:0] weis; */
-  wire [M-1:0] weit;
+  localparam [$clog2(N)-1:0] last = N-1;
+  wire [M-1:0] weight;
   wire [B-1:0] in;
-  wire put;
+  wire reached_end;
 
-  assign done = put;
+  assign done = reached_end;
   
   genvar i;
   generate
@@ -25,26 +25,25 @@ module seqq #(
       accum #(.N(N), .B(B)) acc1 (
         .data_in(in),
         .clk(clk),
-        .put(put),
+        .halt(reached_end),
         .rst(rst),
-        .add_sub(weit[i]),
+        .add_sub(weight[i]),
         .out(out[i])
       );
     end
   endgenerate
 
-  assign put = cnt==N-1;
+  assign reached_end = cnt==last;
   assign in = data[cnt*B+:B];
-  assign weit = Weights[cnt*M+:M];
+  assign weight = Weights[cnt*M+:M];
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin
           cnt <= 0;
       end
-      else if(!put) begin
+      else if(!reached_end) begin
           cnt <= cnt + 1;
       end
-      /* else $display("Time = %t, mid = %b", $time, out); */
   end
   
 endmodule

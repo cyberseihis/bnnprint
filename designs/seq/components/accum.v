@@ -1,7 +1,7 @@
 module accum #(parameter N = 4, parameter B = 8)(
     input clk,             // Clock input
     input rst,             // Reset input
-    input put,
+    input halt,
     input unsigned [B-1:0] data_in,  // Input data
     input add_sub,         // Add/subtract control input
     output out
@@ -13,7 +13,7 @@ assign out = next_acc >= 0;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         acc <= 0;
-    end else if (!put) begin
+    end else if (!halt) begin
         acc <= next_acc;
     end //else $display(next_acc);
 end
