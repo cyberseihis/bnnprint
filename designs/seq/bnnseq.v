@@ -1,9 +1,9 @@
 `ifndef DUTNAME
 `define DUTNAME bnnseq
-parameter N = 4;
-parameter B = 4;
-parameter M = 4;
-parameter C = 4;
+parameter FEAT_CNT = 4;
+parameter FEAT_BITS = 4;
+parameter HIDDEN_CNT = 4;
+parameter CLASS_CNT = 4;
 `define WEIGHTS0 0
 `define WEIGHTS1 0
 `else
@@ -16,26 +16,26 @@ module `DUTNAME #(
   ) (
   input clk,
   input rst,
-  input [N*B-1:0] data,
-  output [$clog2(C)-1:0] klass
+  input [FEAT_CNT*FEAT_BITS-1:0] data,
+  output [$clog2(CLASS_CNT)-1:0] prediction
   );
 
   localparam Weights0 = `WEIGHTS0 ;
   localparam Weights1 = `WEIGHTS1 ;
 
-  localparam SumL = $clog2(M+1);
-  wire [SumL*C-1:0] sums;
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+  wire [SUM_BITS*CLASS_CNT-1:0] sums;
 
-  seqlego #(.N(N),.B(B),.M(M),.C(C),.Weights0(Weights0),.Weights1(Weights1)) layers (
+  seqlego #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights0(Weights0),.Weights1(Weights1)) layers (
     .clk(clk),
     .rst(rst),
     .data(data),
     .out(sums)
   );
 
-  argmax #(.N(C),.I($clog2(C)),.K(SumL)) result (
+  argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS)) result (
      .inx(sums),
-     .outimax(klass)
+     .outimax(prediction)
   );
 
 endmodule

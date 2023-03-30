@@ -10,23 +10,23 @@
 
 module tbcardio_bs #(
 
-parameter N = 19,
-parameter M = 40,
-parameter B = 4,
-parameter C = 3,
-parameter Ts = 5
+parameter FEAT_CNT = 19,
+parameter HIDDEN_CNT = 40,
+parameter FEAT_BITS = 4,
+parameter CLASS_CNT = 3,
+parameter TEST_CNT = 5
 
 
 )();
 
   
-  reg [B*N-1:0] data;
-  wire [B*N-1:0] testcases [Ts-1:0];
+  reg [FEAT_BITS*FEAT_CNT-1:0] sample;
+  wire [FEAT_BITS*FEAT_CNT-1:0] testcases [TEST_CNT-1:0];
   reg rst;
   reg clk;
   parameter Nsperiod=50000;
   localparam period=Nsperiod/500;
-  localparam halfT=period/2;
+  localparam halfPeriod=period/2;
 
 
 assign testcases[0] = 76'h4000d18100621208964;
@@ -37,48 +37,46 @@ assign testcases[4] = 76'h8203150600a0780a991;
 
 
   
-  localparam SumL = $clog2(M+1);
-  wire [$clog2(C)-1:0] klass;
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+  wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
  cardio_bs #() dut (
-    .data(data),
+    .data(sample),
     .clk(clk),
     .rst(rst),
-    .klass(klass)
+    .prediction(prediction)
   );
   
-  always #halfT clk <= ~clk;
+  always #halfPeriod clk <= ~clk;
 
   integer i;
   initial begin
-    /* $monitor("sums %h %0t",dut.sums,$time); */
-    /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
     $write("["); //"
-    for(i=0;i<Ts;i=i+1)
+    for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
     $display("]");
     $finish;
   end
 
-  localparam [$clog2(C)-1:0] maxklass = C-1;
+  localparam [$clog2(CLASS_CNT)-1:0] maxclass = CLASS_CNT-1;
 
   task runtestcase(input integer i); begin
-    data <= testcases[i];
+    sample <= testcases[i];
     rst <= 1;
     clk <= 0;
     #period
     rst <= 0;
     #period
-    #((N+M-1)*period)
-    $write("%d, ",(maxklass-klass));
+    #((FEAT_CNT+HIDDEN_CNT-1)*period)
+    $write("%d, ",(maxclass-prediction));
   end
   endtask
 
   task thesums(); begin
     $write("[");
-    for(i=0;i<C;i=i+1)
-        $write("%d, ",dut.sums[i*SumL+:SumL]);
+    for(i=0;i<CLASS_CNT;i=i+1)
+        $write("%d, ",dut.sums[i*SUM_BITS+:SUM_BITS]);
     $display("]");
   end
   endtask

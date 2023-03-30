@@ -1,5 +1,5 @@
 module binthresh #(
-    parameter N = 4, // Number of elements to add
+    parameter FEAT_CNT = 4, // Number of elements to add
     parameter T = 3  // Threshold
 )(
     input clk,             // Clock input

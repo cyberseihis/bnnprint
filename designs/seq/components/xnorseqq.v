@@ -7,10 +7,10 @@ module xnorseqq #(
   input rst,
   input [HIDDEN_CNT-1:0] features,
   input enable,
-  output [CLASS_CNT*$clog2(HIDDEN_CNT+1)-1:0] sums
+  output [CLASS_CNT*$clog2(HIDDEN_CNT+1)-1:0] scores
   );
   
-  localparam SumL = $clog2(HIDDEN_CNT+1);
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   reg [$clog2(HIDDEN_CNT)-1:0] cnt;
   localparam [$clog2(HIDDEN_CNT)-1:0] last = HIDDEN_CNT-1;
   reg halt;
@@ -34,7 +34,7 @@ module xnorseqq #(
             .clk(clk),
             .halt(halt | (~enable)),
             .rst(rst),
-            .acc(sums[j*SumL+:SumL])
+            .acc(scores[j*SUM_BITS+:SUM_BITS])
         );
       end
   endgenerate

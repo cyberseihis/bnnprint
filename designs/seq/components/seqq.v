@@ -1,41 +1,41 @@
 module seqq #(
-  parameter N = 4,
-  parameter B = 4,
-  parameter M = 4,
-  parameter [M*N-1:0] Weights = 0
+  parameter FEAT_CNT = 4,
+  parameter FEAT_BITS = 4,
+  parameter HIDDEN_CNT = 4,
+  parameter [HIDDEN_CNT*FEAT_CNT-1:0] Weights = 0
   ) (
   input clk,
   input rst,
-  input [N*B-1:0] data,
-  output [M-1:0] out,
+  input [FEAT_CNT*FEAT_BITS-1:0] features,
+  output [HIDDEN_CNT-1:0] hidden,
   output done
   );
   
-  reg [$clog2(N)-1:0] cnt;
-  localparam [$clog2(N)-1:0] last = N-1;
-  wire [M-1:0] weight;
-  wire [B-1:0] in;
+  reg [$clog2(FEAT_CNT)-1:0] cnt;
+  localparam [$clog2(FEAT_CNT)-1:0] last = FEAT_CNT-1;
+  wire [HIDDEN_CNT-1:0] weight;
+  wire [FEAT_BITS-1:0] sample;
   wire reached_end;
 
   assign done = reached_end;
   
   genvar i;
   generate
-    for (i=0;i<M;i=i+1) begin
-      accum #(.N(N), .B(B)) acc1 (
-        .data_in(in),
+    for (i=0;i<HIDDEN_CNT;i=i+1) begin
+      accum #(.FEAT_CNT(FEAT_CNT), .FEAT_BITS(FEAT_BITS)) acc1 (
+        .data_in(sample),
         .clk(clk),
         .halt(reached_end),
         .rst(rst),
         .add_sub(weight[i]),
-        .out(out[i])
+        .acc_out(hidden[i])
       );
     end
   endgenerate
 
   assign reached_end = cnt==last;
-  assign in = data[cnt*B+:B];
-  assign weight = Weights[cnt*M+:M];
+  assign sample = features[cnt*FEAT_BITS+:FEAT_BITS];
+  assign weight = Weights[cnt*HIDDEN_CNT+:HIDDEN_CNT];
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin

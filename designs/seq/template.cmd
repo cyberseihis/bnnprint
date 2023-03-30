@@ -5,5 +5,5 @@
 +define+HRDCD="weightsDATASETNAME.csv.h5.hrdcd"
 +define+BSTRINGS="DATASETNAME.bstr"
 +incdir+../../datasets/bnn1_40_nobnorm_models/bnnprints/
-+incdir+../../trainingdata/tbparams/
++incdir+../../trainingdata/retbparams/
 +incdir+../../datasets/bnn1_40_nobnorm_models/bitstrings/
