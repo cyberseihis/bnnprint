@@ -51,8 +51,10 @@ assign testcases[4] = 44'h46012229a22;
   initial begin
     /* $monitor("sums %h %0t",dut.sums,$time); */
     /* $monitor("1done %h %0t",dut.layers.layer1.done,$time); */
+    $write("["); //" 
     for(i=0;i<Ts;i=i+1)
         runtestcase(i);
+    $display("]");
     $finish;
   end
 
@@ -65,9 +67,9 @@ assign testcases[4] = 44'h46012229a22;
     #period
     #((N+M-1)*period)
     /* thesums(); */
-    $display("mid %b",dut.tnn.revmidd);
-    $display("sums %h",dut.tnn.out);
-    $display("klass %d %d",data,klass);
+    /* $display("mid %b",dut.tnn.revmidd); */
+    /* $display("sums %h",dut.tnn.out); */
+    $write("%d,",klass);
     /* $display("%h %d",data,(C-1-klass)); */
   end
   endtask

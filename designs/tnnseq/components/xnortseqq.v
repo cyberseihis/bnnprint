@@ -19,7 +19,7 @@ module xnortseqq #(
   
   localparam [7:0] Wnnz = Wrow[M*8+:8];
   localparam SoumL = SumL + 2;
-  initial $display("SoumL %h, %h, %d",Delta,maxlen,SoumL);
+  /* initial $display("SoumL %h, %h, %d",Delta,maxlen,SoumL); */
   wire [N-1:0] data_n;
   reg [$clog2(N)-1:0] cnt;
   // (sums with correction term)
@@ -43,10 +43,10 @@ genvar i,j;
             else
                 assign Vec[i] = data_n[Wcol[(First+i)*8+:8]];
         end
-        initial begin
-            # 10
-            $display("Vec %d %d %b",j,Len,Vec);
-        end
+        /* initial begin */
+        /*     # 10 */
+        /*     $display("Vec %d %d %b",j,Len,Vec); */
+        /* end */
         teraccum #(.N(Len), .Total(N)) popc (
             .data_in(Vec[cnt]),
             .clk(clk),

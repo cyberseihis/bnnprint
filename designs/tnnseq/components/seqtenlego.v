@@ -21,7 +21,6 @@ module seqtenlego #(
   localparam [7:0] WnnzX = WrowX[C*8+:8];
   
   localparam SumL = $clog2(maxlen+1)+2;
-  initial $display("SumLhere %d",SumL);
   localparam [(C*8)-1:0] Delta = WrowX[8+:C*8] - WrowX[0+:C*8];
   localparam [7:0] maxlen = maxz(Delta);
 
