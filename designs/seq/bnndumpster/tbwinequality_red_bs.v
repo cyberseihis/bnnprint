@@ -42,7 +42,7 @@ assign testcases[4] = 44'h46012229a22;
 
   // Instantiate module under test
  winequality_red_bs #() dut (
-    .data(sample),
+    .features(sample),
     .clk(clk),
     .rst(rst),
     .prediction(prediction)
@@ -70,14 +70,6 @@ assign testcases[4] = 44'h46012229a22;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
     $write("%d, ",(maxclass-prediction));
-  end
-  endtask
-
-  task thesums(); begin
-    $write("[");
-    for(i=0;i<CLASS_CNT;i=i+1)
-        $write("%d, ",dut.sums[i*SUM_BITS+:SUM_BITS]);
-    $display("]");
   end
   endtask
 

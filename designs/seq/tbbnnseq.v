@@ -32,7 +32,7 @@ module `TBNAME #(
 
   // Instantiate module under test
  `DUTNAME #() dut (
-    .data(sample),
+    .features(sample),
     .clk(clk),
     .rst(rst),
     .prediction(prediction)
@@ -60,14 +60,6 @@ module `TBNAME #(
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
     $write("%d, ",(maxclass-prediction));
-  end
-  endtask
-
-  task thesums(); begin
-    $write("[");
-    for(i=0;i<CLASS_CNT;i=i+1)
-        $write("%d, ",dut.sums[i*SUM_BITS+:SUM_BITS]);
-    $display("]");
   end
   endtask
 

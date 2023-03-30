@@ -8,18 +8,19 @@ module seqlego #(
   ) (
   input clk,
   input rst,
-  input [FEAT_CNT*FEAT_BITS-1:0] data,
-  output [$clog2(HIDDEN_CNT+1)*CLASS_CNT-1:0] out
+  input [FEAT_CNT*FEAT_BITS-1:0] features,
+  output [$clog2(CLASS_CNT)-1:0] prediction
   );
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   wire [HIDDEN_CNT-1:0] hidden;
   wire next_layer;
+  wire [SUM_BITS*CLASS_CNT-1:0] scores;
 
   seqq #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0)) layer1 (
     .clk(clk),
     .rst(rst),
-    .features(data),
+    .features(features),
     .hidden(hidden),
     .done(next_layer)
   );
@@ -29,7 +30,12 @@ module seqlego #(
     .rst(rst),
     .enable(next_layer),
     .features(hidden),
-    .scores(out)
+    .scores(scores)
  );
   
+  argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS)) result (
+     .inx(scores),
+     .outimax(prediction)
+  );
+
 endmodule

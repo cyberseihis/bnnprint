@@ -42,7 +42,7 @@ assign testcases[4] = 512'h20110fef20110eff52100fff51000fff30000fff40000eff40100
 
   // Instantiate module under test
  gasId_bs #() dut (
-    .data(sample),
+    .features(sample),
     .clk(clk),
     .rst(rst),
     .prediction(prediction)
@@ -70,14 +70,6 @@ assign testcases[4] = 512'h20110fef20110eff52100fff51000fff30000fff40000eff40100
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
     $write("%d, ",(maxclass-prediction));
-  end
-  endtask
-
-  task thesums(); begin
-    $write("[");
-    for(i=0;i<CLASS_CNT;i=i+1)
-        $write("%d, ",dut.sums[i*SUM_BITS+:SUM_BITS]);
-    $display("]");
   end
   endtask
 
