@@ -1,0 +1,7 @@
+less_pendigits 0.8395
+less_cardio 0.8824
+less_Har 0.5333
+less_winequality_red 0.5708
+less_gasId 0.8212
+less_winequality_white 0.5048
+
