@@ -1,5 +1,5 @@
 `ifndef DUTNAME
-`define DUTNAME wrap_seq_tnn
+`define DUTNAME modular_ts
     `include "backup.bstr"
 `else
     `include `BSTRINGS

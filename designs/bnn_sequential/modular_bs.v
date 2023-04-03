@@ -1,5 +1,5 @@
 `ifndef DUTNAME
-`define DUTNAME wrap_seq_bnn
+`define DUTNAME modular_bs
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;

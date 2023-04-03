@@ -1,8 +1,8 @@
 `timescale 1us/1ns
 
 `ifndef DUTNAME
-`define DUTNAME wrap_seq_tnn
-`define TBNAME tbwrap_seq_tnn
+`define DUTNAME modular_ts
+`define TBNAME tbmodular_ts
 `endif
 module `TBNAME #(
 `ifdef PARAMS
