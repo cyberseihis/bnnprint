@@ -1,7 +1,7 @@
 `timescale 1us/1ns
 `ifndef DUTNAME
-`define DUTNAME bndemo
-`define TBNAME tbbndemo
+`define DUTNAME modular_bp
+`define TBNAME tbmodular_bp
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;

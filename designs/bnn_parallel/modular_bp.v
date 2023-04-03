@@ -1,5 +1,5 @@
 `ifndef DUTNAME
-`define DUTNAME bndemo
+`define DUTNAME modular_bp
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;
