@@ -64,7 +64,7 @@ assign testcases[4] = 76'h8203150600a0780a991;
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d,",prediction);
+    $write("%d, ",prediction);
   end
   endtask
 
