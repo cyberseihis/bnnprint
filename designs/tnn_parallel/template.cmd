@@ -5,3 +5,4 @@
 +define+HRDCD="weightnnDATASETNAME.h5.hrdcd"
 +incdir+../../models/tnn_40_nbn/tnnprints/
 +incdir+../../trainingdata/retbparams/
+-y ../argmax/ 

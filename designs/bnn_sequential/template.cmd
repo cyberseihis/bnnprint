@@ -7,3 +7,5 @@
 +incdir+../../models/bnn1_40_nobnorm_models/bnnprints/
 +incdir+../../trainingdata/retbparams/
 +incdir+../../models/bnn1_40_nobnorm_models/bitstrings/
+-y ../argmax/
+-y components/ 

@@ -5,3 +5,5 @@
 +define+BSTRINGS="DATASETNAME.bstr"
 +incdir+../../trainingdata/retbparams/
 +incdir+../../models/tnn_40_nbn/bitstrings
+-y ../argmax/
+-y components/ 
