@@ -54,7 +54,7 @@ module `TBNAME #(
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d,",prediction);
+    $write("%d, ",prediction);
   end
   endtask
 
