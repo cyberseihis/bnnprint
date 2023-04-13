@@ -5,7 +5,7 @@
 
 
 
-module pendigitstnn #(
+module pendigits_tp #(
 
 parameter FEAT_CNT = 16,
 parameter HIDDEN_CNT = 40,

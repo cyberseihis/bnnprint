@@ -8,7 +8,7 @@
 
 
 
-module tbpendigitstnn #(
+module tbpendigits_tp #(
 
 parameter FEAT_CNT = 16,
 parameter HIDDEN_CNT = 40,
@@ -35,7 +35,7 @@ assign testcases[4] = 64'h0b8dffddaa665380;
 
 
 
-pendigitstnn dut (.features(features),.prediction(prediction));
+pendigits_tp dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

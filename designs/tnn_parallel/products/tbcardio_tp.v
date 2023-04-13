@@ -8,7 +8,7 @@
 
 
 
-module tbcardiotnn #(
+module tbcardio_tp #(
 
 parameter FEAT_CNT = 19,
 parameter HIDDEN_CNT = 40,
@@ -35,7 +35,7 @@ assign testcases[4] = 76'h8203150600a0780a991;
 
 
 
-cardiotnn dut (.features(features),.prediction(prediction));
+cardio_tp dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

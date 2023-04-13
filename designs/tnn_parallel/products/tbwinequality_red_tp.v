@@ -8,7 +8,7 @@
 
 
 
-module tbwinequality_redtnn #(
+module tbwinequality_red_tp #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
@@ -35,7 +35,7 @@ assign testcases[4] = 44'h46012229a22;
 
 
 
-winequality_redtnn dut (.features(features),.prediction(prediction));
+winequality_red_tp dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

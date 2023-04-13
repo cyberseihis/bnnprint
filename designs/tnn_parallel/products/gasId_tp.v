@@ -5,7 +5,7 @@
 
 
 
-module gasIdtnn #(
+module gasId_tp #(
 
 parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,

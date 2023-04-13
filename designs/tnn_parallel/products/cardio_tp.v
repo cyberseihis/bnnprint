@@ -5,7 +5,7 @@
 
 
 
-module cardiotnn #(
+module cardio_tp #(
 
 parameter FEAT_CNT = 19,
 parameter HIDDEN_CNT = 40,

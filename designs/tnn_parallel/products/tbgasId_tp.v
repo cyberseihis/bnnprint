@@ -8,7 +8,7 @@
 
 
 
-module tbgasIdtnn #(
+module tbgasId_tp #(
 
 parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,
@@ -35,7 +35,7 @@ assign testcases[4] = 512'h20110fef20110eff52100fff51000fff30000fff40000eff40100
 
 
 
-gasIdtnn dut (.features(features),.prediction(prediction));
+gasId_tp dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

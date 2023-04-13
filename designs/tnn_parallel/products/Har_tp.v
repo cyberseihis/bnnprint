@@ -5,7 +5,7 @@
 
 
 
-module Hartnn #(
+module Har_tp #(
 
 parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,

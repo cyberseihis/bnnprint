@@ -8,7 +8,7 @@
 
 
 
-module tbHartnn #(
+module tbHar_tp #(
 
 parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,
@@ -35,7 +35,7 @@ assign testcases[4] = 48'hb97000889000;
 
 
 
-Hartnn dut (.features(features),.prediction(prediction));
+Har_tp dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin
