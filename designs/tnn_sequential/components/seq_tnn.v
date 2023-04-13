@@ -74,7 +74,7 @@ endfunction
     .scores(scores)
  );
   
-  argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SCORE_BITS)) result (
+  argmax #(.SIZE(CLASS_CNT),.INDEX_BITS($clog2(CLASS_CNT)),.BITS(SCORE_BITS)) result (
      .inx(scores),
      .outimax(prediction)
   );

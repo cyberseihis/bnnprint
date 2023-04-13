@@ -7,10 +7,10 @@ module tbmred;
   wire [N*K-1:0] in;
   wire [I-1:0] outimax;
   
-  assign in =  32'h12e9f3d3;
+  assign in =  32'h12e9d3d3;
 
   // Instantiate module under test
-  argmax #(.N(N), .K(K), .I(I)) dut (
+  argmax #(.SIZE(N), .BITS(K), .INDEX_BITS(I)) dut (
     .inx(in),
     .outimax(outimax)
   );

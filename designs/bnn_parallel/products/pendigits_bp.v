@@ -206,7 +206,7 @@ assign scores[8*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden_n[1] + hidden_n[2] 
 assign scores[9*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden_n[1] + hidden_n[2] + hidden_n[3] + hidden[4] + hidden[5] + hidden_n[6] + hidden_n[7] + hidden_n[8] + hidden[9] + hidden[10] + hidden_n[11] + hidden[12] + hidden_n[13] + hidden_n[14] + hidden_n[15] + hidden_n[16] + hidden[17] + hidden[18] + hidden_n[19] + hidden[20] + hidden[21] + hidden_n[22] + hidden[23] + hidden[24] + hidden[25] + hidden[26] + hidden[27] + hidden_n[28] + hidden[29] + hidden_n[30] + hidden_n[31] + hidden_n[32] + hidden_n[33] + hidden_n[34] + hidden[35] + hidden_n[36] + hidden_n[37] + hidden_n[38] + hidden_n[39];
 
 
-argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS)) result (
+argmax #(.SIZE(CLASS_CNT),.INDEX_BITS($clog2(CLASS_CNT)),.BITS(SUM_BITS)) result (
     .inx(scores),
     .outimax(prediction)
 );

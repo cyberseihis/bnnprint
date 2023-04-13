@@ -33,7 +33,7 @@ endgenerate
 `include `HRDCD
 `endif
 
-argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS)) result (
+argmax #(.SIZE(CLASS_CNT),.INDEX_BITS($clog2(CLASS_CNT)),.BITS(SUM_BITS)) result (
     .inx(scores),
     .outimax(prediction)
 );

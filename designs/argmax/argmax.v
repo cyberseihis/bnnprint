@@ -1,25 +1,28 @@
 module argmax #(
     parameter SIZE = 9,
-    parameter K = 4,
-    parameter I = 4
+    parameter BITS = 4,
+    parameter INDEX_BITS = 4
 ) (
-    input [SIZE*K-1:0] inx,
-    output [I-1:0] outimax
+    input [SIZE*BITS-1:0] inx,
+    output [INDEX_BITS-1:0] outimax
 );
 
-wire [SIZE*I-1:0] startindz;
+wire [INDEX_BITS-1:0] interm_argmax [SIZE-1:0];
+wire [BITS-1:0] interm_max [SIZE-1:0];
+
+assign interm_max[0] = inx[0+:BITS];
+assign interm_argmax[0] = 0;
 
 genvar j;
 generate
-for (j = 0; j < SIZE; j = j + 1) begin : whatss
-    assign startindz[j*I+:I] = j;
+for (j = 1; j < SIZE; j = j + 1) begin : whatss
+	wire huge; //Flag that tracks if current sample is largest so far
+	assign huge = inx[j*BITS+:BITS] > interm_max[j-1];
+	assign interm_max[j] = huge ? inx[j*BITS+:BITS]:interm_max[j-1]; 
+	assign interm_argmax[j] = huge ? j:interm_argmax[j-1];
 end
 endgenerate
 
-maxwrap #(.N(SIZE),.K(K),.I(I)) mxw (
-    .in(inx),
-    .iin(startindz),
-    .outimax(outimax)
-);
+assign outimax = interm_argmax[SIZE-1];
 
 endmodule

@@ -157,7 +157,7 @@ assign popcount[5] = + hidden_n[11] + hidden_n[13] + hidden_n[16] + hidden_n[23]
 assign popcount[6] = + hidden_n[1] + hidden_n[2] + hidden[4] + hidden[5] + hidden_n[6] + hidden_n[12] + hidden[13] + hidden_n[16] + hidden_n[17] + hidden[18] + hidden[20] + hidden_n[23] + hidden[24] + hidden_n[27] + hidden_n[30] + hidden_n[32] + hidden_n[33] + hidden_n[34] + hidden_n[35] + hidden[37] + hidden_n[38];assign scores[6] = 2*popcount[6] + 0;
 
 
-argmax #(.SIZE(CLASS_CNT),.I($clog2(CLASS_CNT)),.K(SUM_BITS+1)) result (
+argmax #(.SIZE(CLASS_CNT),.INDEX_BITS($clog2(CLASS_CNT)),.BITS(SUM_BITS+1)) result (
     .inx(score_vec),
     .outimax(prediction)
 );
