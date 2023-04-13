@@ -4,5 +4,5 @@
 +define+PARAMS="DATASETNAME.csv.par"
 +define+HRDCD="weightsDATASETNAME.csv.h5.hrdcd"
 +incdir+../../models/bnn1_40_nobnorm_models/bnnprints/
-+incdir+../../trainingdata/retbparams/
++incdir+../../trainingdata/tbparams/
 -y ../argmax/ 

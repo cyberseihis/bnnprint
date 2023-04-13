@@ -1,5 +1,0 @@
-parameter FEAT_CNT = 19,
-parameter HIDDEN_CNT = 40,
-parameter FEAT_BITS = 4,
-parameter CLASS_CNT = 3,
-parameter TEST_CNT = 5
