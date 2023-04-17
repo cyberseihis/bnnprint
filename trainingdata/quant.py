@@ -44,19 +44,19 @@ def csv_to_tbparams(fnm):
     dy = df.iloc[:, -1]
     df = df.iloc[:, :-1]
     C = dy.nunique()
-    _, N = df.shape
+    Ts, N = df.shape
+    Ts = min(Ts,1000)
     M = 40
     B = 4
-    Ts = 5
-    paramN = f"parameter N = {N},"
-    paramM = f"parameter M = {M},"
-    paramC = f"parameter C = {C},"
-    paramB = f"parameter B = {B},"
-    paramTs = f"parameter Ts = {Ts}"
+    paramN = f"parameter FEAT_CNT = {N},"
+    paramM = f"parameter HIDDEN_CNT = {M},"
+    paramC = f"parameter CLASS_CNT = {C},"
+    paramB = f"parameter FEAT_BITS = {B},"
+    paramTs = f"parameter TEST_CNT = {Ts}"
     params = [paramN, paramM, paramB, paramC, paramTs]
     hd4 = hexiby(df)
     hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
-           for i, a in enumerate(hd4[0:5])]
+           for i, a in enumerate(hd4[0:Ts])]
     write_strings_to_file(hd5, "tbparams/"+fnm+".tbp")
     write_strings_to_file(params, "tbparams/"+fnm+".par")
     # print(tbpr, "tbparams/"+fnm+".tbp")

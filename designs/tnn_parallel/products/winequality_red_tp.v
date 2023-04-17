@@ -11,7 +11,7 @@ parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
 parameter CLASS_CNT = 6,
-parameter TEST_CNT = 5
+parameter TEST_CNT = 1000
 
 
 )(
