@@ -1,6 +1,7 @@
 import h5py
 import numpy as np
 import os
+import re
 
 
 def paradump_weights(filename):
@@ -14,7 +15,9 @@ def paradump_weights(filename):
     hard1 = layebin(bw1)
     print(bw0)
     h5.close()
-    with open('tnnprints/'+filename+'.hrdcd', 'w') as file:
+    pattern = "(.*?).weights.h5"
+    dset = re.search(pattern, filename).group(1)
+    with open('tnnprints/'+dset+'.hrdcd', 'w') as file:
         file.write(hard0+"\n"+hard1)
 
 
@@ -78,5 +81,11 @@ def biny(a):
 
 def get_weight_filenames():
     filenames = os.listdir()
-    csv_filenames = [filename for filename in filenames if filename.startswith("weight")]
+    csv_filenames = [
+        filename for filename in filenames if ".weights.h5" in filename]
     return csv_filenames
+
+
+def dump_hard():
+    for f in get_weight_filenames():
+        paradump_weights(f)

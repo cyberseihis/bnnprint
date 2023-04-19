@@ -7,7 +7,7 @@ import os
 
 def bitstr_weights(filename):
     h5 = h5py.File(filename, 'r')
-    pattern = "weights(.*?).csv.h5"
+    pattern = "(.*?).weights.h5"
     dset = re.search(pattern, filename).group(1)
     sw0 = h5['q_dense/q_dense/kernel:0'][:, :]
     sw1 = h5['q_dense_1/q_dense_1/kernel:0'][:, :]
@@ -22,7 +22,7 @@ def bitstr_weights(filename):
 
 def dump_bitstrings():
     for fnm in os.listdir():
-        if (fnm.startswith("weights")):
+        if (".weights.h5" in fnm):
             bitstr_weights(fnm)
 
 
