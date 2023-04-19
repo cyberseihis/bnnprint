@@ -2,7 +2,8 @@
 +define+TBNAME=tbDATASETNAME_bp
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
-+define+HRDCD="weightsDATASETNAME.csv.h5.hrdcd"
-+incdir+../../models/bnn1_40_nobnorm_models/bnnprints/
++define+HRDCD="DATASETNAME_bnn1.hrdcd"
++incdir+../../models/bnn1/hardcodes/
 +incdir+../../trainingdata/tbparams/
 -y ../argmax/ 
+-y components/

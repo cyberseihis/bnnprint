@@ -17,7 +17,7 @@ def paradump_weights(filename):
     h5.close()
     pattern = "(.*?).weights.h5"
     dset = re.search(pattern, filename).group(1)
-    with open('bnnprints/'+dset+'.hrdcd', 'w') as file:
+    with open('hardcodes/'+dset+'.hrdcd', 'w') as file:
         file.write(hard0+hard1)
 
 
