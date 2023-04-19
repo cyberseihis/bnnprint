@@ -1,0 +1,1 @@
+4bit inputs, 40 4bit to bin hidden neurons, ternary/not fully connected
