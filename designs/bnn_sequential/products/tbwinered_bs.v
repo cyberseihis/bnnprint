@@ -8,7 +8,7 @@
 
 
 
-module tbwinequality_red_bp #(
+module tbwinered_bs #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
@@ -18,12 +18,15 @@ parameter TEST_CNT = 1000
 
 
 )();
-reg clk;
-reg [FEAT_CNT*FEAT_BITS-1:0] features;
-wire [$clog2(CLASS_CNT)-1:0] prediction;
-wire [FEAT_CNT*FEAT_BITS-1:0] testcases [TEST_CNT-1:0];
-parameter Nsperiod=5000;
-parameter period = Nsperiod/500;
+
+  
+  reg [FEAT_BITS*FEAT_CNT-1:0] sample;
+  wire [FEAT_BITS*FEAT_CNT-1:0] testcases [TEST_CNT-1:0];
+  reg rst;
+  reg clk;
+  parameter Nsperiod=50000;
+  localparam period=Nsperiod/500;
+  localparam halfPeriod=period/2;
 
 
 assign testcases[0] = 44'h46012229a22;
@@ -1028,19 +1031,41 @@ assign testcases[998] = 44'h68511106512;
 assign testcases[999] = 44'h3601110292b;
 
 
+  
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+  wire [$clog2(CLASS_CNT)-1:0] prediction;
 
-winequality_red_bp dut (.features(features),.prediction(prediction));
+  // Instantiate module under test
+ winered_bs #() dut (
+    .features(sample),
+    .clk(clk),
+    .rst(rst),
+    .prediction(prediction)
+  );
+  
+  always #halfPeriod clk <= ~clk;
 
-integer i;
-initial begin
-    features = testcases[0];
-    $write("[");//"
-    for(i=0;i<TEST_CNT;i=i+1) begin
-        features = testcases[i];
-        #period
-        $write("%d, ",prediction);
-    end
+  integer i;
+  initial begin
+    $write("["); //"
+    for(i=0;i<TEST_CNT;i=i+1)
+        runtestcase(i);
     $display("]");
-end
+    $finish;
+  end
+
+  localparam [$clog2(CLASS_CNT)-1:0] maxclass = CLASS_CNT-1;
+
+  task runtestcase(input integer i); begin
+    sample <= testcases[i];
+    rst <= 1;
+    clk <= 0;
+    #period
+    rst <= 0;
+    #period
+    #((FEAT_CNT+HIDDEN_CNT-1)*period)
+    $write("%d, ",(maxclass-prediction));
+  end
+  endtask
 
 endmodule

@@ -5,7 +5,7 @@
 
 
 
-module winequality_white_bp #(
+module winewhite_bp #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,

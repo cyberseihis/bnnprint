@@ -1,7 +1,7 @@
 Har 0.5096
-winequality_red 0.5396
+winered 0.5396
 arrhythmia 0.5926
 cardio 0.8840
-winequality_white 0.5116
+winewhite 0.5116
 gasId 0.8076
 pendigits 0.8657

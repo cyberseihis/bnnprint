@@ -11,7 +11,7 @@
 
 
 
-module winequality_white_bs #(
+module winewhite_bs #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,

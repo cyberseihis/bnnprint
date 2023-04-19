@@ -3,8 +3,8 @@ datasets=(
     "gasId"
     "Har"
     "pendigits"
-    "winequality_red"
-    "winequality_white")
+    "winered"
+    "winewhite")
 suffix=tp
 for fruit in "${datasets[@]}"
 do

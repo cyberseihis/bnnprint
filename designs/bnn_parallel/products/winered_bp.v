@@ -5,7 +5,7 @@
 
 
 
-module winequality_red_bp #(
+module winered_bp #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,

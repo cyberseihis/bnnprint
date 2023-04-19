@@ -10,7 +10,7 @@
 
 
 
-module winequality_red_ts #(
+module winered_ts #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,

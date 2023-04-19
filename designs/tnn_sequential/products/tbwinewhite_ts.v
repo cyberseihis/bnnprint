@@ -4,11 +4,7 @@
 
 
 
-
-
-
-
-module tbwinequality_white_tp #(
+module tbwinewhite_ts #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
@@ -17,14 +13,16 @@ parameter CLASS_CNT = 7,
 parameter TEST_CNT = 1000
 
 
+
+
 )();
-localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
-reg clk;
-reg [FEAT_CNT*FEAT_BITS-1:0] features;
-wire [$clog2(CLASS_CNT)-1:0] prediction;
-wire [FEAT_CNT*FEAT_BITS-1:0] testcases [TEST_CNT-1:0];
-parameter Nsperiod=5000;
-localparam period=Nsperiod/500;
+  reg [FEAT_BITS*FEAT_CNT-1:0] data;
+  wire [FEAT_BITS*FEAT_CNT-1:0] testcases [TEST_CNT-1:0];
+  reg rst;
+  reg clk;
+  parameter Nsperiod=50000;
+  localparam period=Nsperiod/500;
+  localparam halfT=period/2;
 
 
 assign testcases[0] = 44'h53352264442;
@@ -1029,19 +1027,40 @@ assign testcases[998] = 44'h63342264553;
 assign testcases[999] = 44'h62602362565;
 
 
+  
+  localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
+  wire [$clog2(CLASS_CNT)-1:0] prediction;
 
-winequality_white_tp dut (.features(features),.prediction(prediction));
+  // Instantiate module under test
+ winewhite_ts #(
+ ) dut (
+    .data(data),
+    .clk(clk),
+    .rst(rst),
+    .prediction(prediction)
+  );
+  
+  always #halfT clk <= ~clk;
 
-integer i,j;
-initial begin
-    features = testcases[0];
-    $write("[");//"
-    for(i=0;i<TEST_CNT;i=i+1) begin
-        features = testcases[i];
-        #period
-        $write("%d, ",prediction);
-    end
+  integer i;
+  initial begin
+    $write("["); //" 
+    for(i=0;i<TEST_CNT;i=i+1)
+        runtestcase(i);
     $display("]");
-end
+    $finish;
+  end
+
+  task runtestcase(input integer i); begin
+    data <= testcases[i];
+    rst <= 1;
+    clk <= 0;
+    #period
+    rst <= 0;
+    #period
+    #((FEAT_CNT+HIDDEN_CNT-1)*period)
+    $write("%d, ",prediction);
+  end
+  endtask
 
 endmodule
