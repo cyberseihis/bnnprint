@@ -8,7 +8,7 @@
 
 
 
-module tbpendigits_bp #(
+module tbpendigits_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 16,
 parameter HIDDEN_CNT = 40,
@@ -1029,7 +1029,7 @@ assign testcases[999] = 64'h8d9fffd8730072f0;
 
 
 
-pendigits_bp dut (.features(features),.prediction(prediction));
+pendigits_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin

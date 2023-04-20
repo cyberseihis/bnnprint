@@ -8,7 +8,7 @@
 
 
 
-module tbwinewhite_bp #(
+module tbwinewhite_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
@@ -1029,7 +1029,7 @@ assign testcases[999] = 44'h62602362565;
 
 
 
-winewhite_bp dut (.features(features),.prediction(prediction));
+winewhite_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin

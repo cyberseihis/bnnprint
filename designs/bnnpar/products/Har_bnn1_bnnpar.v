@@ -5,7 +5,7 @@
 
 
 
-module Har_bp #(
+module Har_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,

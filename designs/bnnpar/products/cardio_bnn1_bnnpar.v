@@ -5,7 +5,7 @@
 
 
 
-module cardio_bp #(
+module cardio_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 19,
 parameter HIDDEN_CNT = 40,

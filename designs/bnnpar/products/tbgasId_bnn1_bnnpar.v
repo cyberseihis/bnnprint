@@ -8,7 +8,7 @@
 
 
 
-module tbgasId_bp #(
+module tbgasId_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,
@@ -1029,7 +1029,7 @@ assign testcases[999] = 512'h10000fef10100fff71200eff80100fff70210fff80100bff603
 
 
 
-gasId_bp dut (.features(features),.prediction(prediction));
+gasId_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin

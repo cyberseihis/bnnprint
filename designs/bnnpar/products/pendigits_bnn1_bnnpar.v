@@ -5,7 +5,7 @@
 
 
 
-module pendigits_bp #(
+module pendigits_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 16,
 parameter HIDDEN_CNT = 40,

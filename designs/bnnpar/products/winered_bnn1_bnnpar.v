@@ -5,7 +5,7 @@
 
 
 
-module winered_bp #(
+module winered_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,

@@ -8,7 +8,7 @@
 
 
 
-module tbHar_bp #(
+module tbHar_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,
@@ -1029,7 +1029,7 @@ assign testcases[999] = 48'ha98786a7a779;
 
 
 
-Har_bp dut (.features(features),.prediction(prediction));
+Har_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin

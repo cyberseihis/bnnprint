@@ -5,7 +5,7 @@
 
 
 
-module gasId_bp #(
+module gasId_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,

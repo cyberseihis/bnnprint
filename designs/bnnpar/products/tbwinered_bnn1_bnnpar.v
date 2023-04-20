@@ -8,7 +8,7 @@
 
 
 
-module tbwinered_bp #(
+module tbwinered_bnn1_bnnpar #(
 
 parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
@@ -1029,7 +1029,7 @@ assign testcases[999] = 44'h3601110292b;
 
 
 
-winered_bp dut (.features(features),.prediction(prediction));
+winered_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 
 integer i;
 initial begin
