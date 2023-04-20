@@ -1,10 +1,9 @@
-+define+DUTNAME=DATASETNAME_bs
-+define+TBNAME=tbDATASETNAME_bs
++define+DUTNAME=DATASETNAME_TYPE_SUFFIX
++define+TBNAME=tbDATASETNAME_TYPE_SUFFIX
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
-+define+BSTRINGS="DATASETNAME_bnn1.bstr"
-+incdir+../../models/bnn1/hardcodes/
++define+BSTRINGS="DATASETNAME_TYPE.bstr"
++incdir+../../models/TYPE/bitstrings/
 +incdir+../../trainingdata/tbparams/
-+incdir+../../models/bnn1/bitstrings/
--y ../argmax/
--y components/ 
+-y ../argmax/ 
+-y components/

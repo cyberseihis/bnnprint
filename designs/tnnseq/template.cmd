@@ -1,9 +1,9 @@
-+define+DUTNAME=DATASETNAME_ts
-+define+TBNAME=tbDATASETNAME_ts
++define+DUTNAME=DATASETNAME_TYPE_SUFFIX
++define+TBNAME=tbDATASETNAME_TYPE_SUFFIX
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
-+define+BSTRINGS="DATASETNAME_tnn1.bstr"
++define+BSTRINGS="DATASETNAME_TYPE.bstr"
++incdir+../../models/TYPE/bitstrings/
 +incdir+../../trainingdata/tbparams/
-+incdir+../../models/tnn1/bitstrings
--y ../argmax/
--y components/ 
+-y ../argmax/ 
+-y components/

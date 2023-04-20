@@ -1,9 +1,9 @@
-+define+DUTNAME=DATASETNAME_tp
-+define+TBNAME=tbDATASETNAME_tp
++define+DUTNAME=DATASETNAME_TYPE_SUFFIX
++define+TBNAME=tbDATASETNAME_TYPE_SUFFIX
 +define+TESTCASES="DATASETNAME.csv.tbp"
 +define+PARAMS="DATASETNAME.csv.par"
-+define+HRDCD="DATASETNAME_tnn1.hrdcd"
-+incdir+../../models/tnn1/hardcodes/
++define+HRDCD="DATASETNAME_TYPE.hrdcd"
++incdir+../../models/TYPE/hardcodes/
 +incdir+../../trainingdata/tbparams/
 -y ../argmax/ 
 -y components/
