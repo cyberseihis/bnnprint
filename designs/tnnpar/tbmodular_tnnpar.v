@@ -33,7 +33,10 @@ initial begin
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
-        $display("%b",dut.hidden);
+        for(j=0;j<CLASS_CNT;j=j+1) begin
+            $write("%d ,",dut.scores[j]);
+        end
+        $display("");
     end
 end
 

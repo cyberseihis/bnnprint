@@ -24,6 +24,8 @@ module seq_tnn #(
   localparam [7:0] MAXLEN = maximum(ROW_DELTA);
   localparam SCORE_BITS = $clog2(MAXLEN+1)+2;
 
+/* initial $display("score %d",SCORE_BITS); */
+
 function [7:0] maximum(input [CLASS_CNT*8-1:0] vec);
    reg [7:0] max_val;
    reg [7:0] pval;

@@ -37,7 +37,7 @@ module `TBNAME #(
   
   always #halfT clk <= ~clk;
 
-  integer i;
+  integer i,j;
   initial begin
     for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
@@ -52,7 +52,11 @@ module `TBNAME #(
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $display("%b",dut.tnn.hidden);
+    for (j = 0; j < CLASS_CNT; j=j+1) begin
+        $write("%d ,",dut.tnn.scores[j*7+:7]);
+    end
+    $display("");
+    /* $display("%h",dut.tnn.scores); */
   end
   endtask
 
