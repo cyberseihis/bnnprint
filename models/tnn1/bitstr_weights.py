@@ -33,8 +33,8 @@ def firstlayernums(mat):
 
 def firstStr(mat):
     abz, sinz, cnz = firstlayernums(mat)
-    stabz = binst(abz.flatten())[::-1]
-    stinz = binst(sinz.flatten())[::-1]
+    stabz = binst(abz.flatten())
+    stinz = binst(sinz.flatten())
     cntnnz = dbytes(cnz)
     v = f"`define WVALS {len(stinz)}'b{stinz}"
     s = f"`define WZERO {len(stabz)}'b{stabz}"

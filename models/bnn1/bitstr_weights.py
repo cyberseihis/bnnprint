@@ -30,7 +30,7 @@ def matrix_bin_string(mat):
     flatw = mysign(mat).flatten()
     bflat = np.maximum(flatw, 0)
     flbin = bflat.astype(np.uint8).tobytes()
-    return binascii.hexlify(flbin).decode()[1::2]
+    return binascii.hexlify(flbin).decode()[1::2][::-1]
 
 
 def mysign(a):

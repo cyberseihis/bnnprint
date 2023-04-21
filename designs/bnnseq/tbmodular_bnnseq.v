@@ -59,7 +59,7 @@ module `TBNAME #(
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d, ",(maxclass-prediction));
+    $write("%d, ",(prediction));
   end
   endtask
 

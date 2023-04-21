@@ -22,7 +22,7 @@ def hexdump4(X):
 
 
 def hexiby(X):
-    Y = [row.to_numpy() for _, row in qfour(X).iterrows()]
+    Y = [row.to_numpy()[::-1] for _, row in qfour(X).iterrows()]
     return [hexdump4(x) for x in Y]
 
 

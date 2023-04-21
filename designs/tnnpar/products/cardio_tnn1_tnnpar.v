@@ -34,7 +34,7 @@ assign hidden_n = ~hidden;
 genvar i;
 generate
     for(i=0;i<FEAT_CNT;i=i+1)
-        assign feature_array[FEAT_CNT-1-i] = features[i*FEAT_BITS+:FEAT_BITS];
+        assign feature_array[i] = features[i*FEAT_BITS+:FEAT_BITS];
 endgenerate
 generate
     for(i=0;i<CLASS_CNT;i=i+1)

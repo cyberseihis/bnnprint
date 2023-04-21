@@ -1,5 +1,5 @@
 `ifndef DUTNAME
-`define DUTNAME modular_bp
+`define DUTNAME modular_bnnpar
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;
@@ -26,7 +26,7 @@ assign hidden_n = ~hidden;
 genvar i;
 generate
     for(i=0;i<FEAT_CNT;i=i+1)
-        assign feature_array[FEAT_CNT-1-i] = features[i*FEAT_BITS+:FEAT_BITS];
+        assign feature_array[i] = features[i*FEAT_BITS+:FEAT_BITS];
 endgenerate
 
 `ifdef HRDCD

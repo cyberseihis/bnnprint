@@ -39,13 +39,10 @@ function [7:0] maximum(input [CLASS_CNT*8-1:0] vec);
 endfunction
 
   wire [HIDDEN_CNT-1:0] hidden;
-  wire [HIDDEN_CNT-1:0] reverse_hidden;
   wire next_layer;
   wire [SCORE_BITS*CLASS_CNT-1:0] scores;
 
   genvar i;
-  for(i=0;i<HIDDEN_CNT;i=i+1)
-      assign reverse_hidden[i] = hidden[HIDDEN_CNT-1-i];
 
   first_layer_tnn #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),
     .SPARSE_VALS(SPARSE_VALS),
@@ -70,7 +67,7 @@ endfunction
     .clk(clk),
     .rst(rst),
     .enable(next_layer),
-    .features(reverse_hidden),
+    .features(hidden),
     .scores(scores)
  );
   
