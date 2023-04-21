@@ -22,7 +22,7 @@ def hexdump4(X):
 
 
 def hexiby(X):
-    Y = [row.to_numpy() for index, row in qfour(X).iterrows()]
+    Y = [row.to_numpy()[::-1] for _, row in qfour(X).iterrows()]
     return [hexdump4(x) for x in Y]
 
 
@@ -45,7 +45,7 @@ def csv_to_tbparams(fnm):
     df = df.iloc[:, :-1]
     C = dy.nunique()
     Ts, N = df.shape
-    Ts = min(Ts,1000)
+    Ts = min(Ts, 1000)
     M = 40
     B = 4
     paramN = f"parameter FEAT_CNT = {N},"

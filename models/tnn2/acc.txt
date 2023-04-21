@@ -1,0 +1,5 @@
+cardio: accuracy=0.8605015873908997
+Har: accuracy=0.40903955698013306
+pendigits: accuracy=0.9106269478797913
+winered: accuracy=0.5041666626930237
+winewhite: accuracy=0.5122448801994324

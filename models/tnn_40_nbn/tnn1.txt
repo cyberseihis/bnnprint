@@ -1,7 +1,0 @@
-Harsummary  0.5243
-winequality_red 0.5792
-arrhythmiasummary  0.5926
-cardiosummary  0.8966
-winequality_white 0.4966
-gasIdsummary  0.8756
-pendigitssummary  0.9146
