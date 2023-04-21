@@ -24,6 +24,7 @@ module first_layer_tnn #(
   genvar i;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
+        /* initial $display("huh %d %d", i, NONZERO_CNT[8*i+:8]); */
       accumulator_tnn #(.SIZE(NONZERO_CNT[8*i+:8]), .BITS(FEAT_BITS)) tacc1 (
         .sample(in),
         .clk(clk),
