@@ -1,8 +1,8 @@
 `timescale 1us/1ns
 
 `ifndef DUTNAME
-`define DUTNAME modular_ts
-`define TBNAME tbmodular_ts
+`define DUTNAME modular_tnnseq
+`define TBNAME tbmodular_tnnseq
 `endif
 module `TBNAME #(
 `ifdef PARAMS
@@ -39,10 +39,8 @@ module `TBNAME #(
 
   integer i;
   initial begin
-    $write("["); //" 
     for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
-    $display("]");
     $finish;
   end
 
@@ -54,7 +52,7 @@ module `TBNAME #(
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d, ",prediction);
+    $display("%b",dut.tnn.hidden);
   end
   endtask
 

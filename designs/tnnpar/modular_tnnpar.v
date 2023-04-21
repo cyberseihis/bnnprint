@@ -1,5 +1,5 @@
 `ifndef DUTNAME
-`define DUTNAME modular_tp
+`define DUTNAME modular_tnnpar
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;

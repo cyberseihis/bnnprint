@@ -1,7 +1,7 @@
 `timescale 1us/1ns
 `ifndef DUTNAME
-`define DUTNAME modular_tp
-`define TBNAME tbmodular_tp
+`define DUTNAME modular_tnnpar
+`define TBNAME tbmodular_tnnpar
 parameter FEAT_CNT = 4;
 parameter FEAT_BITS = 4;
 parameter HIDDEN_CNT = 4;
@@ -30,13 +30,11 @@ localparam period=Nsperiod/500;
 integer i,j;
 initial begin
     features = testcases[0];
-    $write("[");//"
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
-        $write("%d, ",prediction);
+        $display("%b",dut.hidden);
     end
-    $display("]");
 end
 
 endmodule

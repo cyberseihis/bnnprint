@@ -1044,10 +1044,8 @@ assign testcases[999] = 44'h56526320626;
 
   integer i;
   initial begin
-    $write("["); //" 
     for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
-    $display("]");
     $finish;
   end
 
@@ -1059,7 +1057,7 @@ assign testcases[999] = 44'h56526320626;
     rst <= 0;
     #period
     #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d, ",prediction);
+    $display("%b",dut.tnn.hidden);
   end
   endtask
 

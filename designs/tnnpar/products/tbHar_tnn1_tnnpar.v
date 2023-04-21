@@ -1035,13 +1035,11 @@ Har_tnn1_tnnpar dut (.features(features),.prediction(prediction));
 integer i,j;
 initial begin
     features = testcases[0];
-    $write("[");//"
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
-        $write("%d, ",prediction);
+        $display("%b",dut.hidden);
     end
-    $display("]");
 end
 
 endmodule
