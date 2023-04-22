@@ -17,12 +17,12 @@ localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
 reg clk;
 reg [FEAT_CNT*FEAT_BITS-1:0] features;
 wire [$clog2(CLASS_CNT)-1:0] prediction;
-wire [FEAT_CNT*FEAT_BITS-1:0] testcases [TEST_CNT-1:0];
+reg [FEAT_CNT*FEAT_BITS-1:0] testcases [0:TEST_CNT-1];
 parameter Nsperiod=5000;
 localparam period=Nsperiod/500;
 
 `ifdef TESTCASES
-`include `TESTCASES
+initial $readmemh(`TESTCASES,testcases);
 `endif
 
 `DUTNAME dut (.features(features),.prediction(prediction));

@@ -16,7 +16,7 @@ module `TBNAME #(
 
   
   reg [FEAT_BITS*FEAT_CNT-1:0] sample;
-  wire [FEAT_BITS*FEAT_CNT-1:0] testcases [TEST_CNT-1:0];
+  reg [FEAT_BITS*FEAT_CNT-1:0] testcases [0:TEST_CNT-1];
   reg rst;
   reg clk;
   parameter Nsperiod=50000;
@@ -24,7 +24,7 @@ module `TBNAME #(
   localparam halfPeriod=period/2;
 
 `ifdef TESTCASES
-`include `TESTCASES
+initial $readmemh(`TESTCASES,testcases);
 `endif
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
