@@ -35,8 +35,10 @@ def write_strings_to_file(strings, file_path):
 
 def csv_to_activations(fnm):
     df = pd.read_csv(fnm, header=None)
+    Ts, _ = df.shape
+    Ts = min(Ts, 1000)
     df = df.iloc[:, :-1]
-    hd4 = hexiby(df)
+    hd4 = hexiby(df)[:1000]
     write_strings_to_file(hd4, "samples/"+dname(fnm)+".memh")
 
 
