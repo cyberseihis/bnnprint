@@ -1,6 +1,7 @@
 import binascii
 import pandas as pd
 import numpy as np
+import re
 from dsedit import get_csv_filenames
 
 
@@ -36,7 +37,7 @@ def csv_to_activations(fnm):
     df = pd.read_csv(fnm, header=None)
     df = df.iloc[:, :-1]
     hd4 = hexiby(df)
-    write_strings_to_file(hd4, fnm+".activations")
+    write_strings_to_file(hd4, "samples/"+dname(fnm)+".memh")
 
 
 def csv_to_tbparams(fnm):
@@ -57,12 +58,23 @@ def csv_to_tbparams(fnm):
     hd4 = hexiby(df)
     hd5 = [f"assign testcases[{i}] = {len(a)*4}'h{a};"
            for i, a in enumerate(hd4[0:Ts])]
-    write_strings_to_file(hd5, "tbparams/"+fnm+".tbp")
-    write_strings_to_file(params, "tbparams/"+fnm+".par")
+    write_strings_to_file(hd5, "tbparams/"+dname(fnm)+".tbp")
+    write_strings_to_file(params, "tbparams/"+dname(fnm)+".par")
     # print(tbpr, "tbparams/"+fnm+".tbp")
 
 
 def mnn():
+    for fnm in get_csv_filenames():
+        csv_to_activations(fnm)
+
+
+def dname(fname):
+    pattern = "(.*?).csv"
+    dset = re.search(pattern, fname).group(1)
+    return dset
+
+
+def save_samples():
     for fnm in get_csv_filenames():
         csv_to_activations(fnm)
 
