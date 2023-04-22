@@ -1038,10 +1038,13 @@ initial begin
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
+        $display("%h",features);
+        $display("%b",dut.hidden);
         for(j=0;j<CLASS_CNT;j=j+1) begin
             $write("%d ,",dut.scores[j]);
         end
         $display("");
+        $display("%d",prediction);
     end
 end
 
