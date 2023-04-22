@@ -17,6 +17,12 @@ def bitstr_weights(filename):
         file.write(firstStr(sw0)+'\n'+secondStr(sw1))
 
 
+def duck(filename):
+    h5 = h5py.File(filename, 'r')
+    sw0 = h5['q_dense/q_dense/kernel:0'][:, :]
+    return sw0
+
+
 def dump_bitstrings():
     for fnm in os.listdir():
         if (".weights.h5" in fnm):
