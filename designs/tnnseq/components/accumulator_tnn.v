@@ -10,8 +10,8 @@ module accumulator_tnn #(
     input valid,         // Is weight non-zero control input
     output out
 );
-reg signed [BITS+$clog2(SIZE+1)-1:0] acc;
-wire signed [BITS+$clog2(SIZE+1)-1:0] next_acc;
+reg signed [BITS+$clog2(SIZE+1):0] acc;
+wire signed [BITS+$clog2(SIZE+1):0] next_acc;
 wire unsigned [BITS-1:0] operant;  // Input data
 assign operant = valid ? sample : 0;
 assign next_acc = add_sub ? acc + operant:acc - operant;
