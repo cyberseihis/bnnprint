@@ -21,9 +21,9 @@ module first_layer #(
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
         localparam weight = Weights[i*FEAT_CNT+:FEAT_CNT];
-        wire signed [FEAT_BITS:0] hybrid [HIDDEN_CNT-1:0];
+        wire signed [FEAT_BITS:0] hybrid [FEAT_CNT-1:0];
         wire [FEAT_BITS:0] sample;
-        for(j=0;j<HIDDEN_CNT;j=j+1)begin
+        for(j=0;j<FEAT_CNT;j=j+1)begin
             if(weight[j])
                 assign hybrid[j] = features[j*FEAT_BITS+:FEAT_BITS];
             else
