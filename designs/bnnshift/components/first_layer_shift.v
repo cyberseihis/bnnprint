@@ -1,4 +1,4 @@
-module first_layer #(
+module first_layer_shift #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,

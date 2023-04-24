@@ -1,4 +1,4 @@
-module accumulator #(parameter SIZE = 4, parameter BITS = 8)(
+module accumulator_direct #(parameter SIZE = 4, parameter BITS = 8)(
     input clk,             // Clock input
     input rst,             // Reset input
     input halt,

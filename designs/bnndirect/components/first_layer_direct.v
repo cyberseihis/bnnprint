@@ -1,4 +1,4 @@
-module first_layer #(
+module first_layer_direct #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
@@ -30,7 +30,7 @@ module first_layer #(
                 assign hybrid[j] = -(features[j*FEAT_BITS+:FEAT_BITS]);
         end
       assign sample = hybrid[cnt];
-      accumulator #(.SIZE(FEAT_CNT), .BITS(FEAT_BITS)) acc1 (
+      accumulator_direct #(.SIZE(FEAT_CNT), .BITS(FEAT_BITS)) acc1 (
         .data_in(sample),
         .clk(clk),
         .halt(reached_end),
