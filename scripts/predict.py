@@ -122,12 +122,43 @@ def max_legit(mat):
     return np.max(x, axis=0)
 
 
+def max_sum1(model, X):
+    ws = model.get_weights()
+    sw0 = ws[0]
+    l0 = quant(X)
+    l1 = l0 @ np.sign(sw0)
+    mx = np.max(l1, axis=0)
+    mn = np.min(l1, axis=0)
+    mx = np.where(mx > 0, mx, 0)
+    mn = np.where(mn < 0, 1-mn, 0)
+    mx = np.maximum(mx, mn)
+    wx = np.ceil(np.log2(mx*16))
+    return wx
+
+
 def max_posneg(model, X):
     ws = model.get_weights()
     sw0 = ws[0]
     l0 = quant(X)
     p0, n0 = split_posneg(np.sign(sw0))
     lp1 = l0 @ p0
-    ln1 = l0 @ n0
+    ln1 = - l0 @ n0
     # np.ceil(np.log2(pp*16))
-    return np.max(lp1, axis=0), np.max(-ln1, axis=0)
+    return np.max(lp1, axis=0), np.max(ln1, axis=0)
+
+
+def loser_posneg(model, X):
+    ws = model.get_weights()
+    sw0 = ws[0]
+    l0 = quant(X)
+    p0, n0 = split_posneg(np.sign(sw0))
+    lp1 = l0 @ p0
+    ln1 = - l0 @ n0
+    sp = np.where(lp1 < ln1, lp1, 0)
+    sn = np.where(ln1 < lp1, ln1, 0)
+    # np.ceil(np.log2(pp*16))
+    return np.max(sp, axis=0), np.max(sn, axis=0)
+
+
+def min_bits_signed(num):
+    return num.bit_length() + 1
