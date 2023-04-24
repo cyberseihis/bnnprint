@@ -98,8 +98,36 @@ def oponents(X):
     return lol
 
 
+def quickt():
+    mod = "../models/tnn1/pendigits_tnn1.h5"
+    mod = get_model(mod)
+    X, y = preped_dset("../trainingdata/pendigits.csv")
+    return mod, X, y
+
+
 def quick():
     mod = "../models/bnn1/pendigits_bnn1.h5"
     mod = get_model(mod)
     X, y = preped_dset("../trainingdata/pendigits.csv")
     return mod, X, y
+
+
+def max_row_elements(matrix):
+    max_vals = np.max(matrix, axis=1)
+    return (matrix == max_vals[:, None]) * matrix
+
+
+def max_legit(mat):
+    x = max_row_elements(mat)
+    return np.max(x, axis=0)
+
+
+def max_posneg(model, X):
+    ws = model.get_weights()
+    sw0 = ws[0]
+    l0 = quant(X)
+    p0, n0 = split_posneg(np.sign(sw0))
+    lp1 = l0 @ p0
+    ln1 = l0 @ n0
+    # np.ceil(np.log2(pp*16))
+    return np.max(lp1, axis=0), np.max(-ln1, axis=0)
