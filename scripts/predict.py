@@ -105,10 +105,10 @@ def quickt():
     return mod, X, y
 
 
-def quick():
-    mod = "../models/bnn1/pendigits_bnn1.h5"
+def quick_bnn(dset):
+    mod = f"../models/bnn1/{dset}_bnn1.h5"
     mod = get_model(mod)
-    X, y = preped_dset("../trainingdata/pendigits.csv")
+    X, y = preped_dset(f"../trainingdata/{dset}.csv")
     return mod, X, y
 
 
