@@ -30,13 +30,13 @@ initial $readmemh(`TESTCASES,testcases);
 integer i;
 initial begin
     features = testcases[0];
-    $write("[");//"
+    /* $write("[");//" */
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
-        $write("%d, ",prediction);
+        $display("%d",prediction);
     end
-    $display("]");
+    /* $display("]"); */
 end
 
 endmodule

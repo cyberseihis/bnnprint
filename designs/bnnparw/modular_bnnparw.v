@@ -15,7 +15,7 @@ module `DUTNAME #(
 );
 localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
 localparam INDEX_BITS = $clog2(FEAT_CNT+1)+FEAT_BITS;
-wire signed [FEAT_BITS:0] feature_array [FEAT_CNT-1:0];
+wire unsigned [FEAT_BITS-1:0] feature_array [FEAT_CNT-1:0];
 wire [HIDDEN_CNT-1:0] hidden;
 wire unsigned [INDEX_BITS-1:0] positives [HIDDEN_CNT-1:0];
 wire unsigned [INDEX_BITS-1:0] negatives [HIDDEN_CNT-1:0];
@@ -26,7 +26,7 @@ assign hidden_n = ~hidden;
 genvar i;
 generate
     for(i=0;i<FEAT_CNT;i=i+1)
-        assign feature_array[i] = {1'b0,features[i*FEAT_BITS+:FEAT_BITS]};
+        assign feature_array[i] = features[i*FEAT_BITS+:FEAT_BITS];
 endgenerate
 
 `ifdef HRDCD

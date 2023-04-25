@@ -35,13 +35,13 @@ Har_bnn1_bnnpar dut (.features(features),.prediction(prediction));
 integer i;
 initial begin
     features = testcases[0];
-    $write("[");//"
+    /* $write("[");//" */
     for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
-        $write("%d, ",prediction);
+        $display("%b",dut.hidden);
     end
-    $display("]");
+    /* $display("]"); */
 end
 
 endmodule
