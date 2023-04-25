@@ -53,11 +53,11 @@ def bineur(i, ar):
 
 def neur(i, ar, wid):
     bodp = ' '.join([cel(i, a) for i, a in enumerate(ar)])
-    # wire signed [{wid}-1:0] intra_{i};
+    # wire signed [INDEX_BITS+5:0] intra_{i};
     al = f"""
-    wire signed [INDEX_BITS+5:0] intra_{i};
+    wire signed [{wid-1}:0] intra_{i};
     assign intra_{i} = {bodp};
-    assign hidden[{i}] = intra_{i} > 0;"""
+    assign hidden[{i}] = intra_{i} >= 0;"""
     return al
 
 
