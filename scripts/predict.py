@@ -129,10 +129,11 @@ def max_sum1(model, X):
     l1 = l0 @ np.sign(sw0)
     mx = np.max(l1, axis=0)
     mn = np.min(l1, axis=0)
-    mx = np.where(mx > 0, mx, 0)
-    mn = np.where(mn < 0, 1-mn, 0)
-    mx = np.maximum(mx, mn)
-    wx = np.ceil(np.log2(mx*16))
+    mx = np.maximum(mx*16, 0).astype(int)
+    mn = np.minimum(mn*16, 0).astype(int)
+    wn = [min_bits_signed(x) for x in mn]
+    wx = [min_bits_signed(x) for x in mx]
+    wx = np.maximum(wx, wn)
     return wx
 
 
