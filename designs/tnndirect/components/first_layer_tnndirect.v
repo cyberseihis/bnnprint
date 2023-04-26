@@ -1,4 +1,4 @@
-module first_layer_tnn #(
+module first_layer_tnndirect #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
@@ -21,6 +21,27 @@ module first_layer_tnn #(
 
   assign done = reached_last;
   
+    // position of 1 in mr to # of 1s before it
+    // aka index in sparce array
+    function integer nth(
+        input [FEAT_CNT-1:0] mask,
+        input integer a
+    );
+    integer i,j;
+    begin
+    i = -1;
+    for(j=0;j<=a;j=j+1)begin
+       if(mask[j]) i = i+1;  
+    end
+    nth = i; 
+    end
+    endfunction
+
+
+    function integer onez(input [FEAT_CNT-1:0] mask);
+        onez = nth(mask,FEAT_CNT-1) + 1;
+    endfunction
+
   genvar i;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin

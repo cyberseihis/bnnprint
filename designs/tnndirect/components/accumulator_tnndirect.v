@@ -1,4 +1,4 @@
-module accumulator_tnn #(
+module accumulator_tnndirect #(
     parameter SIZE = 4,      // Number of non-zero weights
     parameter BITS = 8       // Bits per sample
 )(
