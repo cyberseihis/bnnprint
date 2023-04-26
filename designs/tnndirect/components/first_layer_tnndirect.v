@@ -14,8 +14,6 @@ module first_layer_tnndirect #(
   );
   
   reg [$clog2(FEAT_CNT)-1:0] cnt;
-  wire [HIDDEN_CNT-1:0] weight;
-  wire [HIDDEN_CNT-1:0] iszero;
   wire [FEAT_BITS-1:0] in;
   wire reached_last;
 
@@ -42,19 +40,36 @@ module first_layer_tnndirect #(
         onez = nth(mask,FEAT_CNT-1) + 1;
     endfunction
 
+    function [7:0] nnz_cnt(input integer y);
+        nnz_cnt = onez(MASK[y*FEAT_CNT+:FEAT_CNT]);
+    endfunction
+
     integer y;
-    initial begin
-        $display("g %h", NONZERO_CNT);
-        for(y=0;y<HIDDEN_CNT;y=y+1)
-            $display("d %h", onez(MASK[y*FEAT_CNT+:FEAT_CNT]));
+    /* initial begin */
+    /*     $display("g %h", NONZERO_CNT); */
+    /*     for(y=0;y<HIDDEN_CNT;y=y+1) */
+    /*         $display("d %h", nnz_cnt(y)); */
+    /**/
+    /* end */
 
-    end
-
-  genvar i;
+  genvar i,j;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
+    wire signed [(FEAT_BITS+1)-1:0] olaf [nnz_cnt(i)-1:0];
+    localparam [FEAT_CNT-1:0] veil = MASK[i*FEAT_CNT+:FEAT_CNT];
+        for(j=0;j<FEAT_CNT;j=j+1) begin
+            if(veil[j])
+                assign olaf[nth(veil,j)] = features[j*FEAT_BITS+:FEAT_BITS];
+        end
+        if(i==0) initial begin
+            #10
+            $display("veil %b",veil);
+            $display("feat %h",features);
+            for(y=0;y<nnz_cnt(i);y=y+1)
+                $write("olaf %h ", olaf[y]);
+        end
       accumulator_tnndirect #(.SIZE(NONZERO_CNT[8*i+:8]), .BITS(FEAT_BITS)) tacc1 (
-        .sample(in),
+        .sample(olaf[cnt]),
         .clk(clk),
         .halt(reached_last),
         .rst(rst),

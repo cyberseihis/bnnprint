@@ -40,27 +40,27 @@ initial $readmemh("winewhite.memh",testcases);
     .prediction(prediction)
   );
   
-  /* always #halfT clk <= ~clk; */
+  always #halfT clk <= ~clk;
 
-  /* integer i; */
-  /* initial begin */
-  /*   $write("["); //"  */
-  /*   for(i=0;i<TEST_CNT;i=i+1) */
-  /*       runtestcase(i); */
-  /*   $display("]"); */
-  /*   $finish; */
-  /* end */
-  /**/
-  /* task runtestcase(input integer i); begin */
-  /*   data <= testcases[i]; */
-  /*   rst <= 1; */
-  /*   clk <= 0; */
-  /*   #period */
-  /*   rst <= 0; */
-  /*   #period */
-  /*   #((FEAT_CNT+HIDDEN_CNT-1)*period) */
-  /*   $write("%d, ",prediction); */
-  /* end */
-  /* endtask */
-  /**/
+  integer i;
+  initial begin
+    $write("["); //" 
+    for(i=0;i<1;i=i+1)
+        runtestcase(i);
+    $display("]");
+    $finish;
+  end
+
+  task runtestcase(input integer i); begin
+    data <= testcases[i];
+    rst <= 1;
+    clk <= 0;
+    #period
+    rst <= 0;
+    #period
+    #((FEAT_CNT+HIDDEN_CNT-1)*period)
+    $write("%d, ",prediction);
+  end
+  endtask
+
 endmodule
