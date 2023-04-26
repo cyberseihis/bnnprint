@@ -13,7 +13,7 @@ module first_layer_tnndirect #(
   output done
   );
   
-  reg [$clog2(FEAT_CNT)-1:0] cnt;
+  reg [$clog2(MAXLEN+1)-1:0] cnt;
   wire reached_last;
 
   assign done = reached_last;
@@ -42,6 +42,20 @@ module first_layer_tnndirect #(
     function [7:0] nnz_cnt(input integer y);
         nnz_cnt = onez(MASK[y*FEAT_CNT+:FEAT_CNT]);
     endfunction
+
+    function [7:0] maxlen(input integer y);
+        integer i;
+        reg [7:0] mx;
+        begin
+        mx = 0;
+        for(i=0;i<HIDDEN_CNT;i=i+1) begin
+           if(nnz_cnt(i)>mx) mx = nnz_cnt(i);
+        end
+        maxlen = mx;
+        end
+    endfunction
+
+    localparam MAXLEN = maxlen(0);
 
     integer y;
 
