@@ -17,7 +17,7 @@ module `DUTNAME #(
   output [$clog2(CLASS_CNT)-1:0] prediction
   );
 
-  seq_tnn #(
+  seq_tnndirect #(
       .FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),
   .SPARSE_VALS(`WVALS),
   .MASK(`WZERO),

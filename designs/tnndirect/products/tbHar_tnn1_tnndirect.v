@@ -4,7 +4,7 @@
 
 
 
-module tbHar_tnn1_tnnseq #(
+module tbHar_tnn1_tnndirect #(
 
 parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,
@@ -32,7 +32,7 @@ initial $readmemh("Har.memh",testcases);
   wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
- Har_tnn1_tnnseq #(
+ Har_tnn1_tnndirect #(
  ) dut (
     .data(data),
     .clk(clk),
@@ -40,27 +40,27 @@ initial $readmemh("Har.memh",testcases);
     .prediction(prediction)
   );
   
-  always #halfT clk <= ~clk;
+  /* always #halfT clk <= ~clk; */
 
-  integer i;
-  initial begin
-    $write("["); //" 
-    for(i=0;i<TEST_CNT;i=i+1)
-        runtestcase(i);
-    $display("]");
-    $finish;
-  end
-
-  task runtestcase(input integer i); begin
-    data <= testcases[i];
-    rst <= 1;
-    clk <= 0;
-    #period
-    rst <= 0;
-    #period
-    #((FEAT_CNT+HIDDEN_CNT-1)*period)
-    $write("%d, ",prediction);
-  end
-  endtask
-
+  /* integer i; */
+  /* initial begin */
+  /*   $write("["); //"  */
+  /*   for(i=0;i<TEST_CNT;i=i+1) */
+  /*       runtestcase(i); */
+  /*   $display("]"); */
+  /*   $finish; */
+  /* end */
+  /**/
+  /* task runtestcase(input integer i); begin */
+  /*   data <= testcases[i]; */
+  /*   rst <= 1; */
+  /*   clk <= 0; */
+  /*   #period */
+  /*   rst <= 0; */
+  /*   #period */
+  /*   #((FEAT_CNT+HIDDEN_CNT-1)*period) */
+  /*   $write("%d, ",prediction); */
+  /* end */
+  /* endtask */
+  /**/
 endmodule

@@ -14,7 +14,7 @@ def ortho_weights(filename):
     sw1 = h5['q_dense_1/q_dense_1/kernel:0'][:, :]
     h5.close()
     with open(f"ortho/{dset}.bstr", 'w') as file:
-        file.write(firstStr(sw0)+'\n'+secondStr(sw1))
+        file.write(firstStrortho(sw0)+'\n'+secondStr(sw1))
 
 
 def bitstr_weights(filename):

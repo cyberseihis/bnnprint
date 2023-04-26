@@ -1,4 +1,4 @@
-module seq_tnn #(
+module seq_tnndirect #(
   parameter FEAT_CNT = 4,
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
@@ -44,7 +44,7 @@ endfunction
 
   genvar i;
 
-  first_layer_tnn #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),
+  first_layer_tnndirect #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),
     .SPARSE_VALS(SPARSE_VALS),
     .MASK(MASK),
     .NONZERO_CNT(NONZERO_CNT)

@@ -42,6 +42,14 @@ module first_layer_tnndirect #(
         onez = nth(mask,FEAT_CNT-1) + 1;
     endfunction
 
+    integer y;
+    initial begin
+        $display("g %h", NONZERO_CNT);
+        for(y=0;y<HIDDEN_CNT;y=y+1)
+            $display("d %h", onez(MASK[y*FEAT_CNT+:FEAT_CNT]));
+
+    end
+
   genvar i;
   generate
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
