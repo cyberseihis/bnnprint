@@ -35,7 +35,6 @@ module first_layer_direct #(
         .clk(clk),
         .halt(reached_end),
         .rst(rst),
-        .add_sub(weight[i]),
         .acc_out(hidden[i])
       );
     end

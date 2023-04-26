@@ -3,7 +3,6 @@ module accumulator_direct #(parameter SIZE = 4, parameter BITS = 8)(
     input rst,             // Reset input
     input halt,
     input signed [BITS:0] data_in,  // Input data
-    input add_sub,         // Add/subtract control input
     output acc_out
 );
 reg signed [BITS+$clog2(SIZE+1)-1:0] acc; // THAT -1 IS ILLEGAL
