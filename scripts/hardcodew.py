@@ -70,6 +70,10 @@ def bineur(i, ar):
 
 
 def neur(i, ar, wid):
+    if (np.max(ar) <= 0):
+        return f"assign hidden[{i}] = 0;"
+    if (np.min(ar) >= 0):
+        return f"assign hidden[{i}] = 1;"
     bodp = ' '.join([cel(i, a) for i, a in enumerate(ar)])
     # wire signed [INDEX_BITS+5:0] intra_{i};
     al = f"""

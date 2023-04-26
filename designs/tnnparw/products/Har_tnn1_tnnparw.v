@@ -48,10 +48,7 @@ endgenerate
     wire signed [6:0] intra_1;
     assign intra_1 =  + feature_array[1] - feature_array[2] + feature_array[3]  + feature_array[5]  - feature_array[7] + feature_array[8] + feature_array[9]  ;
     assign hidden[1] = intra_1 >= 0;
-
-    wire signed [5:0] intra_2;
-    assign intra_2 =     - feature_array[4]       - feature_array[11];
-    assign hidden[2] = intra_2 >= 0;
+assign hidden[2] = 0;
 
     wire signed [6:0] intra_3;
     assign intra_3 = - feature_array[0]  + feature_array[2] + feature_array[3] - feature_array[4] - feature_array[5]    - feature_array[9]  - feature_array[11];
@@ -60,10 +57,7 @@ endgenerate
     wire signed [6:0] intra_4;
     assign intra_4 =    + feature_array[3]   + feature_array[6] + feature_array[7] + feature_array[8] - feature_array[9] - feature_array[10] - feature_array[11];
     assign hidden[4] = intra_4 >= 0;
-
-    wire signed [7:0] intra_5;
-    assign intra_5 = + feature_array[0]  + feature_array[2]   + feature_array[5] + feature_array[6] + feature_array[7] + feature_array[8] + feature_array[9]  ;
-    assign hidden[5] = intra_5 >= 0;
+assign hidden[5] = 1;
 
     wire signed [5:0] intra_6;
     assign intra_6 =  - feature_array[1] + feature_array[2] + feature_array[3]     - feature_array[8] + feature_array[9]  + feature_array[11];
