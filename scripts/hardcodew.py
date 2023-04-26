@@ -3,10 +3,11 @@ from keras.models import load_model
 import numpy as np
 import os
 import re
-from predict import quick_bnn, max_sum1
+from predict import quick_bnn, max_sum1, quick_tnn
+from hardcodetnn import l2ter
 
 
-def paradump_weights(fnm):
+def paradump_bnn(fnm):
     mod, X, y = quick_bnn(fnm)
     wids = max_sum1(mod, X)
     ws = mod.get_weights()
@@ -19,6 +20,21 @@ def paradump_weights(fnm):
     hard1 = layebin(bw1)
     print(bw0)
     with open('../models/bnn1/hardw/'+fnm+'_bnn1.hrdcd', 'w') as file:
+        file.write(hard0+"\n"+hard1)
+
+
+def paradump_tnn(fnm):
+    mod, X, y = quick_tnn(fnm)
+    wids = max_sum1(mod, X)
+    ws = mod.get_weights()
+    sw0 = ws[0]
+    sw1 = ws[1]
+    # Need to transpose to allign rows with neurons
+    bw0 = np.sign(sw0.T)
+    bw1 = np.sign(sw1.T)
+    hard0 = layep(bw0, wids)
+    hard1 = l2ter(bw1)
+    with open('../models/tnn1/hardw/'+fnm+'_tnn1.hrdcd', 'w') as file:
         file.write(hard0+"\n"+hard1)
 
 
@@ -35,8 +51,10 @@ def layebin(mat):
 
 
 def cel(i, w):
-    f = f"{'+' if w == 1 else '-'} feature_array[{i}]"
-    return f
+    if (w == 0):
+        return ""
+    oper = '+' if w == 1 else '-'
+    return f"{oper} feature_array[{i}]"
 
 
 def bicel(i, w):
@@ -66,15 +84,31 @@ def biny(a):
     return np.maximum(b, 0)
 
 
-def get_weight_filenames():
-    filenames = os.listdir("../models/bnn1/")
-    pattern = "(.*?)_bnn1.weights.h5"
-    dsets = lambda fnm: re.search(pattern, fnm).group(1)
+def get_tnn_filenames():
+    filenames = os.listdir("../models/tnn1/")
+    pattern = "(.*?)_tnn1.weights.h5"
+    def dsets(fnm): return re.search(pattern, fnm).group(1)
     csv_filenames = [
-        dsets(filename) for filename in filenames if (".weights.h5" in filename)]
+        dsets(filename) for filename in filenames
+        if (".weights.h5" in filename)]
     return csv_filenames
 
 
-def dump_hard():
-    for f in get_weight_filenames():
-        paradump_weights(f)
+def get_bnn_filenames():
+    filenames = os.listdir("../models/bnn1/")
+    pattern = "(.*?)_bnn1.weights.h5"
+    def dsets(fnm): re.search(pattern, fnm).group(1)
+    csv_filenames = [
+        dsets(filename) for filename in filenames
+        if (".weights.h5" in filename)]
+    return csv_filenames
+
+
+def dump_hard_tnn():
+    for f in get_tnn_filenames():
+        paradump_tnn(f)
+
+
+def dump_hard_bnn():
+    for f in get_bnn_filenames():
+        paradump_bnn(f)

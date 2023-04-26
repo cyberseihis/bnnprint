@@ -105,6 +105,13 @@ def quickt():
     return mod, X, y
 
 
+def quick_tnn(dset):
+    mod = f"../models/tnn1/{dset}_tnn1.h5"
+    mod = get_model(mod)
+    X, y = preped_dset(f"../trainingdata/{dset}.csv")
+    return mod, X, y
+
+
 def quick_bnn(dset):
     mod = f"../models/bnn1/{dset}_bnn1.h5"
     mod = get_model(mod)
@@ -120,6 +127,13 @@ def max_row_elements(matrix):
 def max_legit(mat):
     x = max_row_elements(mat)
     return np.max(x, axis=0)
+
+
+def max_bnnouts(mod, X):
+    lo = redo(mod, X)
+    _, n = lo[2].shape
+    sum3 = (lo[3] + n) / 2
+    return sum3
 
 
 def max_sum1(model, X):
