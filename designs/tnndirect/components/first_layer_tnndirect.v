@@ -68,7 +68,10 @@ module first_layer_tnndirect #(
     localparam [FEAT_CNT-1:0] moreless = SPARSE_VALS[i*FEAT_CNT+:FEAT_CNT];
         for(j=0;j<FEAT_CNT;j=j+1) begin
             if(veil[j])
-                assign olaf[nth(veil,j)] = moreless[j] ? features[j*FEAT_BITS+:FEAT_BITS] : -features[j*FEAT_BITS+:FEAT_BITS];
+                if(moreless[j])
+                    assign olaf[nth(veil,j)] = features[j*FEAT_BITS+:FEAT_BITS];
+                else
+                    assign olaf[nth(veil,j)] = -features[j*FEAT_BITS+:FEAT_BITS];
         end
         /* if(i==0) initial begin */
         /*     #1 */
