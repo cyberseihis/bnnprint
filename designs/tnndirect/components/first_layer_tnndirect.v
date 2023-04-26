@@ -13,9 +13,6 @@ module first_layer_tnndirect #(
   output done
   );
   
-  reg [$clog2(MAXLEN+1)-1:0] cnt;
-  wire reached_last;
-
   assign done = reached_last;
   
     // position of 1 in mr to # of 1s before it
@@ -58,6 +55,10 @@ module first_layer_tnndirect #(
     localparam MAXLEN = maxlen(0);
 
     integer y;
+
+  reg [$clog2(MAXLEN+1)-1:0] cnt;
+  wire reached_last;
+
 
   genvar i,j;
   generate
