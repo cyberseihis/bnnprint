@@ -90,7 +90,8 @@ module first_layer_tnndirect #(
 
   /* initial $monitor("mid %b",out); */
 
-  assign reached_last = cnt==FEAT_CNT-1;
+  // need it to be MAXLEN instead of -1 for halt signals
+  assign reached_last = cnt==MAXLEN;
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin
