@@ -6,6 +6,17 @@ import os
 from scipy.sparse import csr_matrix
 
 
+def ortho_weights(filename):
+    h5 = h5py.File(filename, 'r')
+    pattern = "(.*?).weights.h5"
+    dset = re.search(pattern, filename).group(1)
+    sw0 = h5['q_dense/q_dense/kernel:0'][:, :]
+    sw1 = h5['q_dense_1/q_dense_1/kernel:0'][:, :]
+    h5.close()
+    with open(f"ortho/{dset}.bstr", 'w') as file:
+        file.write(firstStr(sw0)+'\n'+secondStr(sw1))
+
+
 def bitstr_weights(filename):
     h5 = h5py.File(filename, 'r')
     pattern = "(.*?).weights.h5"
@@ -15,6 +26,12 @@ def bitstr_weights(filename):
     h5.close()
     with open(f"bitstrings/{dset}.bstr", 'w') as file:
         file.write(firstStr(sw0)+'\n'+secondStr(sw1))
+
+
+def dump_orthos():
+    for fnm in os.listdir():
+        if (".weights.h5" in fnm):
+            ortho_weights(fnm)
 
 
 def dump_bitstrings():
@@ -29,6 +46,17 @@ def firstlayernums(mat):
     sinz = np.maximum(matz, 0)
     cnz = np.count_nonzero(mat, axis=0)
     return abz, sinz, cnz
+
+
+def firstStrortho(mat):
+    abz, sinz, cnz = firstlayernums(mat)
+    stabz = binst(abz.T.flatten())
+    stinz = binst(sinz.T.flatten())
+    cntnnz = dbytes(cnz[::-1])
+    v = f"`define WVALS {len(stinz)}'b{stinz}"
+    s = f"`define WZERO {len(stabz)}'b{stabz}"
+    n = f"`define WNNZ {len(cntnnz)*8}'h{cntnnz}"
+    return '\n'.join([v, s, n])
 
 
 def firstStr(mat):
