@@ -13,7 +13,6 @@ module first_layer_tnndirect #(
   output done
   );
   
-  assign done = reached_last;
   
     // position of 1 in mr to # of 1s before it
     // aka index in sparce array
@@ -58,6 +57,7 @@ module first_layer_tnndirect #(
 
   reg [$clog2(MAXLEN+1)-1:0] cnt;
   wire reached_last;
+  assign done = reached_last;
 
 
   genvar i,j;
