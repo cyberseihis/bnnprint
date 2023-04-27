@@ -101,7 +101,7 @@ def get_tnn_filenames():
 def get_bnn_filenames():
     filenames = os.listdir("../models/bnn1/")
     pattern = "(.*?)_bnn1.weights.h5"
-    def dsets(fnm): re.search(pattern, fnm).group(1)
+    def dsets(fnm): return re.search(pattern, fnm).group(1)
     csv_filenames = [
         dsets(filename) for filename in filenames
         if (".weights.h5" in filename)]
