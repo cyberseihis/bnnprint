@@ -73,6 +73,17 @@ def redo(model, X):
     return [l0, l1, l2, l3]
 
 
+def binredo(model, X):
+    ws = model.get_weights()
+    sw0 = ws[0]
+    sw1 = ws[1]
+    l0 = quant(X)
+    l1 = l0 @ np.sign(sw0)
+    l2 = mysign(l1)
+    l3 = l2 @ sw1
+    return [l0, l1, l2, l3]
+
+
 def split_posneg(mat):
     pos = np.maximum(0, mat)
     neg = np.minimum(0, mat)
