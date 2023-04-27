@@ -8,9 +8,9 @@
 
 
 
-module tbgasId_bnn1_bnndirect #(
+module tbwinered_bnn1_bnndw #(
 
-parameter FEAT_CNT = 128,
+parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
 parameter CLASS_CNT = 6,
@@ -29,14 +29,14 @@ parameter TEST_CNT = 1000
   localparam halfPeriod=period/2;
 
 
-initial $readmemh("gasId.memh",testcases);
+initial $readmemh("winered.memh",testcases);
 
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
- gasId_bnn1_bnndirect #() dut (
+ winered_bnn1_bnndw #() dut (
     .features(sample),
     .clk(clk),
     .rst(rst),

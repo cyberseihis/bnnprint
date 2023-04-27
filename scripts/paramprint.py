@@ -19,8 +19,8 @@ def ortho_weights(fnm):
     bweight = f"""\
 `define WEIGHTS0 {len(bstr0)}'b{bstr0}
 `define WEIGHTS1 {len(bstr1)}'b{bstr1}
-`define WIDTHS {8*sw0.shape[1]}'b{bwids}"""
-    with open(f"../models/bnn1/orthow/{fnm}.bstr", 'w') as file:
+`define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
+    with open(f"../models/bnn1/orthow/{fnm}_bnn1.bstr", 'w') as file:
         file.write(bweight)
 
 

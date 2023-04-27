@@ -6,6 +6,7 @@ parameter HIDDEN_CNT = 4;
 parameter CLASS_CNT = 4;
 `define WEIGHTS0 0
 `define WEIGHTS1 0
+`define WIDTHS 0
 `else
     `include `BSTRINGS
 `endif
@@ -22,8 +23,10 @@ module `DUTNAME #(
 
   localparam Weights0 = `WEIGHTS0 ;
   localparam Weights1 = `WEIGHTS1 ;
+  localparam Widths = `WIDTHS ;
 
-  direct_bnn #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights0(Weights0),.Weights1(Weights1)) bnn (
+  dw_bnn #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights0(Weights0),.Weights1(Weights1),
+    .WIDTHS(Widths)) bnn (
     .clk(clk),
     .rst(rst),
     .features(features),

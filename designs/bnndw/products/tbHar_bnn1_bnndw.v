@@ -8,12 +8,12 @@
 
 
 
-module tbcardio_bnn1_bnndirect #(
+module tbHar_bnn1_bnndw #(
 
-parameter FEAT_CNT = 19,
+parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
-parameter CLASS_CNT = 3,
+parameter CLASS_CNT = 6,
 parameter TEST_CNT = 1000
 
 
@@ -29,14 +29,14 @@ parameter TEST_CNT = 1000
   localparam halfPeriod=period/2;
 
 
-initial $readmemh("cardio.memh",testcases);
+initial $readmemh("Har.memh",testcases);
 
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
- cardio_bnn1_bnndirect #() dut (
+ Har_bnn1_bnndw #() dut (
     .features(sample),
     .clk(clk),
     .rst(rst),
