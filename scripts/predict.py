@@ -5,6 +5,7 @@ from qkeras import QActivation, QDense
 import keras.backend as K
 from functools import reduce
 from collections import defaultdict
+from numba import njit
 
 
 def groupBy(key, seq):
@@ -60,6 +61,14 @@ def quant(x):
     kkk = (np.round(x*16)).astype(int) / 16
     kj = np.minimum(kkk, 15/16)
     return kj
+
+
+# for whatever reason f32 f32 byte is the fastest combo
+def get_results_qx(sw0, sw1, X):
+    l1 = X @ sw0
+    l2 = np.sign(2*l1+1)
+    l3 = l2 @ sw1
+    return np.argmax(l3, axis=1)
 
 
 def redo(model, X):
