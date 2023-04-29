@@ -29,3 +29,21 @@ def blusko(k, lo, sw1, y):
     hmm = med @ sw1
     pro = np.argmax(hmm,axis=1)
     return np.sum(pro==y)
+
+
+def minwin(l3, y):
+    my_y = np.argmax(l3, axis=1)
+    sum3 = (l3+40) / 2
+    sumw = sum3[my_y == y, :]
+    wy = y[my_y == y]
+    minw = [min(sumw[wy == k, k]) for k in range(0, sumw.shape[1])]
+    return minw
+
+
+def maxloss(l3, y):
+    my_y = np.argmax(l3, axis=1)
+    sum3 = (l3+40) / 2
+    sumw = sum3[my_y == y, :]
+    wy = y[my_y == y]
+    maxl = [max(sumw[wy != k, k]) for k in range(0, sumw.shape[1])]
+    return maxl

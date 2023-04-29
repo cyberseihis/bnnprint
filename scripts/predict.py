@@ -161,6 +161,20 @@ def max_sum1(model, X):
     sw0 = ws[0]
     l0 = quant(X)
     l1 = l0 @ np.sign(sw0)
+    return maxbits(l1)
+
+
+def max_cntr(model, X):
+    ws = model.get_weights()
+    sw0 = ws[0]
+    l0 = quant(X) * 16
+    l1 = l0 @ np.sign(sw0)
+    mid = (np.max(l1, axis=0) + np.min(l1, axis=0))/2
+    cntr = l1 - np.round(mid)
+    return maxbits(cntr/16)
+
+
+def maxbits(l1):
     mx = np.max(l1, axis=0)
     mn = np.min(l1, axis=0)
     mx = np.maximum(mx*16, 0).astype(int)
