@@ -47,3 +47,28 @@ def maxloss(l3, y):
     wy = y[my_y == y]
     maxl = [max(sumw[wy != k, k]) for k in range(0, sumw.shape[1])]
     return maxl
+
+
+def capbits(l0, neur, k):
+    gold = np.sign(l0 @ neur + 1e-5)
+    wall = l0 * neur
+    pcap = 2**(k-1) - 1
+    ncap = -2**(k-1)
+    j = np.zeros(wall.shape[0])
+    for col in wall.T:
+        j = j + col
+        j = np.minimum(j, pcap)
+        j = np.maximum(j, ncap)
+    dut = np.sign(j + 1e-5)
+    return gold == dut
+
+
+def upercut(l0, neur):
+    for i in range(0, 11):
+        if (np.sum(capbits(l0, neur, i)) == len(l0)):
+            return i
+    return 11
+
+
+def caps(l0, sw0):
+    return [upercut(l0, neur) for neur in sw0.T]
