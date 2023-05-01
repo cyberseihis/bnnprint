@@ -179,6 +179,13 @@ def max_cntr(model, X):
     return maxbits(cntr/16)
 
 
+def inthemiddle(sw0, X):
+    l0 = quant(X) * 16
+    l1 = l0 @ np.sign(sw0)
+    mid = (np.max(l1, axis=0) + np.min(l1, axis=0))/2
+    return np.round(mid)
+
+
 # Min bits needed to hold each column
 def maxbits(l1):
     mx = np.max(l1, axis=0)
