@@ -139,16 +139,19 @@ def quick_bnn(dset):
     return mod, X, y
 
 
+# Removes values that are not the max of their row
 def max_row_elements(matrix):
     max_vals = np.max(matrix, axis=1)
     return (matrix == max_vals[:, None]) * matrix
 
 
+# Max winner per column
 def max_legit(mat):
     x = max_row_elements(mat)
     return np.max(x, axis=0)
 
 
+# Actual sums in output
 def max_bnnouts(mod, X):
     lo = redo(mod, X)
     _, n = lo[2].shape
@@ -156,6 +159,7 @@ def max_bnnouts(mod, X):
     return sum3
 
 
+# Min bit range
 def max_sum1(model, X):
     ws = model.get_weights()
     sw0 = ws[0]
@@ -164,6 +168,7 @@ def max_sum1(model, X):
     return maxbits(l1)
 
 
+# Min bit range after removing the midle value
 def max_cntr(model, X):
     ws = model.get_weights()
     sw0 = ws[0]
@@ -174,6 +179,7 @@ def max_cntr(model, X):
     return maxbits(cntr/16)
 
 
+# Min bits needed to hold each column
 def maxbits(l1):
     mx = np.max(l1, axis=0)
     mn = np.min(l1, axis=0)
@@ -209,5 +215,6 @@ def loser_posneg(model, X):
     return np.max(sp, axis=0), np.max(sn, axis=0)
 
 
+# WRONG FOR NEGATIVE POWERS OF TWO
 def min_bits_signed(num):
     return num.bit_length() + 1
