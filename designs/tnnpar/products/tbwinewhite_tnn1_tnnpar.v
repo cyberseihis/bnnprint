@@ -24,7 +24,7 @@ reg [FEAT_CNT*FEAT_BITS-1:0] features;
 wire [$clog2(CLASS_CNT)-1:0] prediction;
 reg [FEAT_CNT*FEAT_BITS-1:0] testcases [0:TEST_CNT-1];
 parameter Nsperiod=5000;
-localparam period=Nsperiod/500;
+localparam period=Nsperiod/1000;
 
 
 initial $readmemh("winewhite.memh",testcases);

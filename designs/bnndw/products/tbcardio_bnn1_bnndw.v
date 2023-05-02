@@ -25,7 +25,7 @@ parameter TEST_CNT = 1000
   reg rst;
   reg clk;
   parameter Nsperiod=50000;
-  localparam period=Nsperiod/500;
+  localparam period=Nsperiod/1000;
   localparam halfPeriod=period/2;
 
 
