@@ -40,7 +40,7 @@ module first_layer_roll #(
     end
   endgenerate
 
-  reg signed [FEAT_BITS+$clog2(FEAT_CNT+1)-1:0] soom;
+  reg signed [FEAT_BITS+$clog2(FEAT_CNT+1):0] soom;
   integer y;
   always @* begin
       soom = 0;
@@ -56,7 +56,7 @@ module first_layer_roll #(
       end
       else if(!reached_end) begin
           cnt <= cnt + 1;
-          hiddreg[cnt] <= soom > 0;
+          hiddreg[cnt] <= soom >= 0;
       end
   end
   

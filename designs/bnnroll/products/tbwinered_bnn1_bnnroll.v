@@ -47,10 +47,10 @@ initial $readmemh("winered.memh",testcases);
 
   integer i;
   initial begin
-    $write("["); //"
+    /* $write("["); //" */
     for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
-    $display("]");
+    /* $display("]"); */
     $finish;
   end
 
@@ -64,7 +64,7 @@ initial $readmemh("winered.memh",testcases);
     rst <= 0;
     #period
     #((HIDDEN_CNT+HIDDEN_CNT)*period)
-    $write("%d, ",(prediction));
+    $display("%b",dut.bnn.hidden);
   end
   endtask
 
