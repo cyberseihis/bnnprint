@@ -37,11 +37,6 @@ module roclk_seq #(
     .winner(prediction)
  );
 
- initial begin
-     cnt=0;
-     next_layer=0;
- end
-  
   always @(posedge clk or posedge rst) begin
       if(rst) begin
           cnt <= 0;
