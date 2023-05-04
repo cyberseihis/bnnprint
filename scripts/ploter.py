@@ -18,7 +18,7 @@ def build_dataframe(data):
 
 
 def data_in(fname):
-    df = pd.read_csv(fname, header=None).values.tolist()
+    df = pd.read_csv(fname, header=None, skipinitialspace=True).values.tolist()
     ars = []
     prs = []
     for dname, area, power in df:
