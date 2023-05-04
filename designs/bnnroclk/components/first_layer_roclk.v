@@ -65,7 +65,10 @@ module first_layer_roclk #(
   end
 
   always @(posedge clk or posedge rst) begin
-      if(enable) begin
+      if(rst)
+          for (y=0;y<FEAT_CNT;y=y+1)
+              hiddreg[y] <= 0;
+      else if(enable) begin
           hiddreg[cnt] <= soom >= 0;
       end
   end
