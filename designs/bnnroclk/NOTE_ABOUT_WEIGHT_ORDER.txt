@@ -1,0 +1,7 @@
+The weights(bits) for the weights of the two layers don't follow the same format/order
+due to the different implementations.
+The weights of the first (full precision) layer are in the order of the weight matrix
+as it was saved, row = same input | column = same neuron
+
+The weights of the second (xnor) layer are in the transposed order of the weight matrix
+as it was saved, row = same neuron | column = same input
