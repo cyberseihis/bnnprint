@@ -28,8 +28,6 @@ module xnor_roclk #(
       for (y=0;y<HIDDEN_CNT;y=y+1)
           soom = soom + xfeats[y];
   end
-  wire reached_last;
-  assign reached_last = cnt>=CLASS_CNT;
   
   wire dethrone;
   assign dethrone = soom > sofar;
@@ -38,7 +36,7 @@ module xnor_roclk #(
       if(rst) begin
           sofar <= 0;
       end
-      else if (enable && !reached_last) begin
+      else if (enable) begin
           if (dethrone) begin
               sofar <= soom;
               challenger <= cnt;
