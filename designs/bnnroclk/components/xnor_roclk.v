@@ -7,7 +7,7 @@ module xnor_roclk #(
   input rst,
   input [HIDDEN_CNT-1:0] features,
   input enable,
-  input [$clog2(HIDDEN_CNT)-1:0] cnt,
+  input [$clog2(CLASS_CNT)-1:0] cnt,
   output [$clog2(CLASS_CNT)-1:0] winner
   );
   
@@ -19,6 +19,8 @@ module xnor_roclk #(
   assign features_n = ~features;
   
   wire [HIDDEN_CNT-1:0] hybrid [CLASS_CNT-1:0];
+  wire [HIDDEN_CNT-1:0] slice;
+  assign slice = hybrid[cnt];
   genvar i,j;
   generate
       for(j=0;j<CLASS_CNT;j=j+1)begin
@@ -38,7 +40,7 @@ module xnor_roclk #(
   always @* begin
       soom = 0;
       for (y=0;y<HIDDEN_CNT;y=y+1)
-          soom = soom + hybrid[cnt][y];
+          soom = soom + slice[y];
   end
   
   wire dethrone;

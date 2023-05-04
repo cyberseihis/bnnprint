@@ -33,7 +33,7 @@ module roclk_seq #(
     .rst(rst),
     .enable(next_layer),
     .features(hidden),
-    .cnt(cnt),
+    .cnt(cnt[$clog2(CLASS_CNT)-1:0]),
     .winner(prediction)
  );
 
@@ -42,7 +42,7 @@ module roclk_seq #(
           cnt <= 0;
           next_layer <= 0;
       end
-      else if(cnt<HIDDEN_CNT-1) begin
+      else if(cnt!=HIDDEN_CNT-1) begin
           cnt <= cnt + 1;
       end else begin
           cnt <= 0;
