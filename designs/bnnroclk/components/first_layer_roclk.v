@@ -7,9 +7,9 @@ module first_layer_roclk #(
   input clk,
   input rst,
   input [FEAT_CNT*FEAT_BITS-1:0] features,
-  output [HIDDEN_CNT-1:0] hidden,
   input [$clog2(HIDDEN_CNT)-1:0] cnt,
-  input enable
+  input enable,
+  output [HIDDEN_CNT-1:0] hidden
   );
 
   reg [HIDDEN_CNT-1:0] hiddreg;

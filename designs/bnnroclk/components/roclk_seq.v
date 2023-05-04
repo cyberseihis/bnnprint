@@ -25,7 +25,7 @@ module roclk_seq #(
     .features(features),
     .hidden(hidden),
     .cnt(cnt),
-    .enable(!next_layer)
+    .enable(~next_layer)
   );
 
  xnor_roclk #(.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights(Weights1)) layer2 (
@@ -36,6 +36,11 @@ module roclk_seq #(
     .cnt(cnt),
     .winner(prediction)
  );
+
+ initial begin
+     cnt=0;
+     next_layer=0;
+ end
   
   always @(posedge clk or posedge rst) begin
       if(rst) begin
