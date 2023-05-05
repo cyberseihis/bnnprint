@@ -18,17 +18,13 @@ module roclk_seq #(
   // Implicit assumption that there are more
   // hidden neurons than classes
   reg [$clog2(HIDDEN_CNT)-1:0] cnt;
-  wire [$clog2(HIDDEN_CNT)-1:0] cnt1;
-  wire [$clog2(CLASS_CNT)-1:0] cnt2;
-  assign cnt1 = next_layer?0:cnt;
-  assign cnt2 = next_layer?cnt[$clog2(CLASS_CNT)-1:0]:0;
 
   first_layer_roclk #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0)) layer1 (
     .clk(clk),
     .rst(rst),
     .features(features),
     .hidden(hidden),
-    .cnt(cnt1),
+    .cnt(cnt),
     .enable(~next_layer)
   );
 
@@ -37,7 +33,7 @@ module roclk_seq #(
     .rst(rst),
     .enable(next_layer),
     .features(hidden),
-    .cnt(cnt2),
+    .cnt(cnt[$clog2(CLASS_CNT)-1:0]),
     .winner(prediction)
  );
 
