@@ -40,7 +40,6 @@ DW_addsub_dx #(widf, 2)
          .avg(1'b0), .dplx(1'b0),
          .sum(next_acc)
      );
-assign next_acc = acc + sample;
 assign hidden[i] = next_acc >= 0;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
