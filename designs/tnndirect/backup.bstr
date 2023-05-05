@@ -1,7 +1,0 @@
-`define WVALS 440'b0
-`define WZERO 440'b1
-`define WNNZ 320'h0
-`define WVALSX 79'b0
-`define WCOLX 632'h2
-`define WROWX 56'h3
-`define WNNZX 8'h4f
