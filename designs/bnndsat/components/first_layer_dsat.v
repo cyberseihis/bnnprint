@@ -23,17 +23,23 @@ module first_layer_dsat #(
     for (i=0;i<HIDDEN_CNT;i=i+1) begin
         localparam weight = Weights[i*FEAT_CNT+:FEAT_CNT];
         wire signed [FEAT_BITS:0] hybrid [FEAT_CNT-1:0];
-        wire signed [FEAT_BITS:0] sample;
         for(j=0;j<FEAT_CNT;j=j+1)begin
             if(weight[j])
                 assign hybrid[j] = features[j*FEAT_BITS+:FEAT_BITS];
             else
                 assign hybrid[j] = -(features[j*FEAT_BITS+:FEAT_BITS]);
         end
-      assign sample = hybrid[cnt];
     localparam widf = WIDTHS[i*8+:8];
 reg signed [widf-1:0] acc; // THAT -1 IS ILLEGAL
+wire signed [widf-1:0] sample;
+assign sample = hybrid[cnt];
 wire signed [widf-1:0] next_acc;
+DW_addsub_dx #(widf, 2)
+    U1 ( .a(acc), .b(sample), .ci1(1'b0), .ci2(1'b0),
+         .addsub(1'b0), .tc(1'b1), .sat(1'b1),
+         .avg(1'b0), .dplx(1'b0),
+         .sum(next_acc)
+     );
 assign next_acc = acc + sample;
 assign hidden[i] = next_acc >= 0;
 always @(posedge clk or posedge rst) begin

@@ -6,4 +6,5 @@
 +incdir+../../models/TYPE/orthow/
 +incdir+../../trainingdata/tbparams/
 -y ../argmax/ 
+-y ../designware/
 -y components/
