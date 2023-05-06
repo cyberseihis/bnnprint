@@ -29,7 +29,7 @@ module first_layer_dsat #(
             else
                 assign hybrid[j] = -(features[j*FEAT_BITS+:FEAT_BITS]);
         end
-    localparam widf = WIDTHS[i*8+:8];
+    localparam widf = WIDTHS[i*8+:8]<5?5:WIDTHS[i*8+:8];
 reg signed [widf-1:0] acc; // THAT -1 IS ILLEGAL
 wire signed [widf-1:0] sample;
 assign sample = hybrid[cnt];

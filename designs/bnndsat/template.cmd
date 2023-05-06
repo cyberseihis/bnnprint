@@ -3,7 +3,7 @@
 +define+TESTCASES="DATASETNAME.memh"
 +define+PARAMS="DATASETNAME.par"
 +define+BSTRINGS="DATASETNAME_TYPE.bstr"
-+incdir+../../models/TYPE/orthow/
++incdir+../../models/TYPE/sats/
 +incdir+../../trainingdata/tbparams/
 -y ../argmax/ 
 -y ../designware/
