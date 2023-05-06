@@ -118,15 +118,18 @@ def upershift(l0, neur):
 
 
 def meancaps(l0, sw0):
+    sw0 = np.sign(sw0)
     return [upermeen(l0, neur) for neur in sw0.T]
 
 
 # Min bits with overflow stop foreach neuron
 def caps(l0, sw0):
+    sw0 = np.sign(sw0)
     return np.array([upercut(l0, neur) for neur in sw0.T])
 
 
 def laps(l0, sw0):
+    sw0 = np.sign(sw0)
     return [upershift(l0, neur) for neur in sw0.T]
 
 
