@@ -11,18 +11,21 @@ from rounder import caps
 def capd_weights(fnm):
     mod, X, y = quick_bnn(fnm)
     l0 = (quant(X)*16).to_numpy()
-    wids = max_sum1(mod, X)
+    wids0 = max_sum1(mod, X)
     ws = mod.get_weights()
     sw0 = np.sign(ws[0])
     sw1 = ws[1]
-    wids = caps(l0, sw0)
+    wids = np.maximum(caps(l0, sw0), 5)
+    good = np.where(wids0 > wids, 1, 0)
     bstr0 = matrix_bin_string(sw0.T)
     bstr1 = matrix_bin_string(sw1.T)
+    bgood = ''.join(map(str, good[::-1]))
     bwids = dbytes(wids)
     bweight = f"""\
 `define WEIGHTS0 {len(bstr0)}'b{bstr0}
 `define WEIGHTS1 {len(bstr1)}'b{bstr1}
-`define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
+`define WIDTHS {8*sw0.shape[1]}'h{bwids}
+`define SATURE {len(bgood)}'b{bgood}"""
     with open(f"../models/bnn1/sats/{fnm}_bnn1.bstr", 'w') as file:
         file.write(bweight)
 

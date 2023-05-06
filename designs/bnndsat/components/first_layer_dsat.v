@@ -3,7 +3,8 @@ module first_layer_dsat #(
   parameter FEAT_BITS = 4,
   parameter HIDDEN_CNT = 4,
   parameter [HIDDEN_CNT*FEAT_CNT-1:0] Weights = 0,
-  parameter [HIDDEN_CNT*8-1:0] WIDTHS = -1
+  parameter [HIDDEN_CNT*8-1:0] WIDTHS = -1,
+  parameter [HIDDEN_CNT-1:0] SATURE = 1
   ) (
   input clk,
   input rst,
@@ -34,12 +35,14 @@ reg signed [widf-1:0] acc; // THAT -1 IS ILLEGAL
 wire signed [widf-1:0] sample;
 assign sample = hybrid[cnt];
 wire signed [widf-1:0] next_acc;
+if(SATURE[i]) begin
 DW_addsub_dx #(widf, 2)
     U1 ( .a(acc), .b(sample), .ci1(1'b0), .ci2(1'b0),
          .addsub(1'b0), .tc(1'b1), .sat(1'b1),
          .avg(1'b0), .dplx(1'b0),
          .sum(next_acc)
      );
+end else assign next_acc = acc + sample;
 assign hidden[i] = next_acc >= 0;
 always @(posedge clk or posedge rst) begin
     if (rst) begin

@@ -5,7 +5,8 @@ module dsat_bnn #(
   parameter CLASS_CNT = 4,
   parameter Weights0 = 0,
   parameter Weights1 = 0,
-  parameter WIDTHS = 0
+  parameter WIDTHS = 0,
+  parameter SATURE = 0
   ) (
   input clk,
   input rst,
@@ -18,7 +19,7 @@ module dsat_bnn #(
   wire next_layer;
   wire [SUM_BITS*CLASS_CNT-1:0] scores;
 
-  first_layer_dsat #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0),.WIDTHS(WIDTHS)) layer1 (
+  first_layer_dsat #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.Weights(Weights0),.WIDTHS(WIDTHS),.SATURE(SATURE)) layer1 (
     .clk(clk),
     .rst(rst),
     .features(features),
