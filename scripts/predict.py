@@ -255,3 +255,15 @@ def width_by_step(l0, sw0):
     # if a later width is smaller the previous neednt be larger
     nond_widths = np.minimum.accumulate(widf[::-1, :], axis=0)[::-1]
     return nond_widths
+
+
+def index_dict(lst):
+    return {val: [i for i, x in enumerate(lst) if x == val]
+            for val in set(lst)}
+
+
+def stepwidth_dicts(wbs):
+    # if only the first is 5 group with others
+    wbs[0] = wbs[1]
+    dcs = [index_dict(col)for col in wbs.T]
+    return dcs
