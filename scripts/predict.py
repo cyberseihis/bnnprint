@@ -231,4 +231,26 @@ def loser_posneg(model, X):
 
 # WRONG FOR NEGATIVE POWERS OF TWO
 def min_bits_signed(num):
-    return num.bit_length() + 1
+    n = int(num)
+    if (n < 0):
+        n = -n - 1
+    return n.bit_length() + 1
+
+
+npminbits = np.vectorize(min_bits_signed)
+
+
+def width_by_step(l0, sw0):
+    if (np.max(l0[0]) < 1):
+        l0 = l0 * 16
+    sw0 = np.sign(sw0)
+    cube = l0[:, :, None] * sw0[None, :, :]
+    cs = np.cumsum(cube, axis=1)
+    mcs = np.max(cs, axis=0).astype("int")
+    ncs = np.min(cs, axis=0).astype("int")
+    wmax = npminbits(mcs)
+    wmin = npminbits(ncs)
+    widf = np.maximum(wmax, wmin)
+    # make it nondecreasing,
+    # if a later width is smaller the previous neednt be larger
+    return widf
