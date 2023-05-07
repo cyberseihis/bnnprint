@@ -259,7 +259,7 @@ def width_by_step(l0, sw0):
 
 def index_dict(lst):
     return {val: [i for i, x in enumerate(lst) if x == val]
-            for val in set(lst)}
+            for val in sorted(set(lst))}
 
 
 def stepwidth_dicts(wbs):
