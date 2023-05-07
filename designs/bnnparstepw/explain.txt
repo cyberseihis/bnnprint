@@ -1,0 +1,2 @@
+Parallel bnn with positives and negatives added seperately in
+1st layer and minimum width for each

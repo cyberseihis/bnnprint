@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def layeposnw(mat, widicts):
+def layestep(mat, widicts):
     neus = [neursw(i, a, widicts[i]) for i, a in enumerate(mat)]
     bod = '\n'.join(neus)
     return bod
@@ -22,9 +22,13 @@ def neursw(i, weighs, wdict):
 def neurstep(i, j, weights, indices, wid):
     war = weights[indices]
     bodp = ' '.join([cel(i, a) for i, a in zip(indices, war)])
+    if (j > 0):
+        prev = f" + intra_{i}_{j-1}"
+    else:
+        prev = ""
     al = f"""
     wire signed [{wid-1}:0] intra_{i}_{j};
-    assign intra_{i}_{j} = {bodp};"""
+    assign intra_{i}_{j} = {bodp}{prev};"""
     return al
 
 

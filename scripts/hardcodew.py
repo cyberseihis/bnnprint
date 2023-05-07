@@ -2,9 +2,11 @@ from keras.models import load_model
 import numpy as np
 import os
 import re
+import predict
 from predict import quick_bnn, max_sum1, quick_tnn, max_cntr, inthemiddle, posneg_bits
 from hardcodetnn import l2ter
 from classichc import layeposnw
+from hardstep import layestep
 
 
 def paradump_bnnce(fnm):
@@ -24,6 +26,20 @@ def paradump_bnnce(fnm):
     hard1 = layebin(bw1)
     print(bw0)
     with open('../models/bnn1/hardce/'+fnm+'_bnn1.hrdcd', 'w') as file:
+        file.write(hard0+"\n"+hard1)
+
+
+def paradump_bnnstepw(fnm):
+    mod, X, y = quick_bnn(fnm)
+    sw0, sw1 = mod.get_weights()
+    bw0 = np.sign(sw0.T)
+    bw1 = np.sign(sw1.T)
+    l0 = predict.quant(X).to_numpy()
+    stepwidths = predict.width_by_step(l0, sw0)
+    wdicts = predict.stepwidth_dicts(stepwidths)
+    hard0 = layestep(bw0, wdicts)
+    hard1 = layebin(bw1)
+    with open('../models/bnn1/hardstep/'+fnm+'_bnn1.hrdcd', 'w') as file:
         file.write(hard0+"\n"+hard1)
 
 
