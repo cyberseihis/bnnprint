@@ -253,4 +253,5 @@ def width_by_step(l0, sw0):
     widf = np.maximum(wmax, wmin)
     # make it nondecreasing,
     # if a later width is smaller the previous neednt be larger
-    return widf
+    nond_widths = np.minimum.accumulate(widf[::-1, :], axis=0)[::-1]
+    return nond_widths
