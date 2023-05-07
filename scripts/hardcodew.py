@@ -2,8 +2,9 @@ from keras.models import load_model
 import numpy as np
 import os
 import re
-from predict import quick_bnn, max_sum1, quick_tnn, max_cntr, inthemiddle
+from predict import quick_bnn, max_sum1, quick_tnn, max_cntr, inthemiddle, posneg_bits
 from hardcodetnn import l2ter
+from classichc import layeposnw
 
 
 def paradump_bnnce(fnm):
@@ -23,6 +24,18 @@ def paradump_bnnce(fnm):
     hard1 = layebin(bw1)
     print(bw0)
     with open('../models/bnn1/hardce/'+fnm+'_bnn1.hrdcd', 'w') as file:
+        file.write(hard0+"\n"+hard1)
+
+
+def paradump_bnnposnegw(fnm):
+    mod, X, y = quick_bnn(fnm)
+    pwids, nwids = posneg_bits(mod, X)
+    sw0, sw1 = mod.get_weights()
+    bw0 = np.sign(sw0.T)
+    bw1 = np.sign(sw1.T)
+    hard0 = layeposnw(bw0, pwids, nwids)
+    hard1 = layebin(bw1)
+    with open('../models/bnn1/hardpnw/'+fnm+'_bnn1.hrdcd', 'w') as file:
         file.write(hard0+"\n"+hard1)
 
 
@@ -147,16 +160,6 @@ def get_bnn_filenames():
     return csv_filenames
 
 
-def dump_hard_tnn():
+def dump_hard_tnn(fn):
     for f in get_tnn_filenames():
-        paradump_tnn(f)
-
-
-def dump_hard_bnn():
-    for f in get_bnn_filenames():
-        paradump_bnn(f)
-
-
-def dump_hard_bnnce():
-    for f in get_bnn_filenames():
-        paradump_bnnce(f)
+        fn(f)

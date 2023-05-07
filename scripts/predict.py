@@ -198,15 +198,22 @@ def maxbits(l1):
     return wx
 
 
+def posneg_bits(mod, X):
+    mp, mn = max_posneg(mod, X)
+    posb = np.array([x.bit_length() for x in mp])
+    nosb = np.array([x.bit_length() for x in mn])
+    return posb, nosb
+
+
 def max_posneg(model, X):
     ws = model.get_weights()
-    sw0 = ws[0]
-    l0 = quant(X)
-    p0, n0 = split_posneg(np.sign(sw0))
+    sw0 = np.sign(ws[0])
+    l0 = quant(X)*16
+    p0, n0 = split_posneg(sw0)
     lp1 = l0 @ p0
     ln1 = - l0 @ n0
     # np.ceil(np.log2(pp*16))
-    return np.max(lp1, axis=0), np.max(ln1, axis=0)
+    return np.max(lp1, axis=0).astype("int"), np.max(ln1, axis=0).astype("int")
 
 
 def loser_posneg(model, X):
