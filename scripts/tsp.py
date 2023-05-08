@@ -18,7 +18,7 @@ def reorg(sw0, sw1):
     trueperm = np.array(permutation)[invclk]
     nw0 = sw0[trueperm]
     nw1 = sw1[:, trueperm]
-    return permutation, permclks, trueperm
+    return nw0, nw1, trueperm
 
 
 def dist_mat(mat):

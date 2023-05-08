@@ -6,6 +6,7 @@ import os
 from hardcodew import get_bnn_filenames
 from predict import quick_bnn, max_sum1, quick_tnn, quant
 from rounder import caps
+from tsp import reorg
 
 
 def capd_weights(fnm):
@@ -27,6 +28,25 @@ def capd_weights(fnm):
 `define WIDTHS {8*sw0.shape[1]}'h{bwids}
 `define SATURE {len(bgood)}'b{bgood}"""
     with open(f"../models/bnn1/sats/{fnm}_bnn1.bstr", 'w') as file:
+        file.write(bweight)
+
+
+def permu_weights(fnm):
+    mod, X, y = quick_bnn(fnm)
+    wids = max_sum1(mod, X)
+    ws = mod.get_weights()
+    sw0 = np.sign(ws[0])
+    sw1 = np.sign(ws[1])
+    zw0, zw1, perm = reorg(sw0.T, sw1.T)
+    wids = np.array(wids)[perm]
+    bstr0 = matrix_bin_string(zw0)
+    bstr1 = matrix_bin_string(zw1)
+    bwids = dbytes(wids)
+    bweight = f"""\
+`define WEIGHTS0 {len(bstr0)}'b{bstr0}
+`define WEIGHTS1 {len(bstr1)}'b{bstr1}
+`define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
+    with open(f"../models/bnn1/permutew/{fnm}_bnn1.bstr", 'w') as file:
         file.write(bweight)
 
 

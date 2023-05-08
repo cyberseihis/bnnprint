@@ -1,0 +1,3 @@
+Forked from bnnromesh
+Bnnroll with xnors in l1 + shift register for midbits + permuted neurons so similar neurons have similar indices(in hamming distance)
+in hopes that simplifies look up table synthesys
