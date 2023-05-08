@@ -98,9 +98,9 @@ endfunction
 
   end
 
-  assign reached_end = cnt==HIDDEN_CNT;
+  assign reached_end = cnt==roln(HIDDEN_CNT);
 
-  initial $monitor("%b | %b", cnt, slice);
+  /* initial $monitor("%b | %b", cnt, slice); */
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin

@@ -48,7 +48,7 @@ initial $readmemh("winered.memh",testcases);
   integer i;
   initial begin
     $write("["); //"
-    for(i=0;i<1;i=i+1)
+    for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
     $display("]");
     $finish;
