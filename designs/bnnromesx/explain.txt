@@ -1,0 +1,1 @@
+Bnnroll with xnors in l1 + shift register for midbits + shift xnor instead of counter in l1
