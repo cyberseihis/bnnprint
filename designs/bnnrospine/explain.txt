@@ -1,0 +1,2 @@
+Bnnroll with xnors in l1 + shift register for midbits 
+shift reg doubles as one hot counter
