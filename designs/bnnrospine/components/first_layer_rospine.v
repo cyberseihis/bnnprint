@@ -54,7 +54,7 @@ module first_layer_rospine #(
   generate
     for (i=0;i<FEAT_CNT;i=i+1) begin
         assign sfeat[i] = {1'b0,features[i*FEAT_BITS+:FEAT_BITS]};
-        assign moment[i] = {5{slice[i]}} ^~ sfeat[i];
+        assign moment[i] = {5{chosen[i]}} ^~ sfeat[i];
     end
   endgenerate
 wire [HIDDEN_CNT-1:-1] first;
@@ -87,7 +87,7 @@ endgenerate
       soom = soom + NEG_CNT[cnt*8+:8];
   end
 
-  assign reached_end = cnt==HIDDEN_CNT;
+  assign reached_end = hiddreg[-1];
 
   always @(posedge clk or posedge rst) begin
       if(rst) begin
@@ -104,7 +104,8 @@ endgenerate
   assign checkch =slice^chosen;
 
   initial begin
-      $monitor("%b | %b | %b",slice,chosen,checkch);
+      /* $monitor("%b,%b",reached_end,end2); */
+      /* $monitor("%b | %b | %b",slice,chosen,checkch); */
       /* $monitor("%b | %b | %b",hiddreg,first,seen); */
 
 end

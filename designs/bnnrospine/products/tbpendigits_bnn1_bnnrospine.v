@@ -48,8 +48,8 @@ initial $readmemh("pendigits.memh",testcases);
   integer i;
   initial begin
     /* $write("["); //" */
-    /* for(i=0;i<TEST_CNT;i=i+1) */
-    for(i=0;i<1;i=i+1)
+    /* for(i=0;i<50;i=i+1) */
+    for(i=0;i<TEST_CNT;i=i+1)
         runtestcase(i);
     /* $display("]"); */
     $finish;
@@ -66,7 +66,7 @@ initial $readmemh("pendigits.memh",testcases);
     #period
     #((HIDDEN_CNT+CLASS_CNT)*period)
     rst <= 0;
-    /* $write("%d, ",(prediction)); */
+    $write("%d, ",(prediction));
   end
   endtask
 
