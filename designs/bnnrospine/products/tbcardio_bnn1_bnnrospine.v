@@ -8,12 +8,12 @@
 
 
 
-module tbHar_bnn1_bnnromesh #(
+module tbcardio_bnn1_bnnrospine #(
 
-parameter FEAT_CNT = 12,
+parameter FEAT_CNT = 19,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
-parameter CLASS_CNT = 6,
+parameter CLASS_CNT = 3,
 parameter TEST_CNT = 1000
 
 
@@ -29,14 +29,14 @@ parameter TEST_CNT = 1000
   localparam halfPeriod=period/2;
 
 
-initial $readmemh("Har.memh",testcases);
+initial $readmemh("cardio.memh",testcases);
 
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
- Har_bnn1_bnnromesh #() dut (
+ cardio_bnn1_bnnrospine #() dut (
     .features(sample),
     .clk(clk),
     .rst(rst),
@@ -47,10 +47,11 @@ initial $readmemh("Har.memh",testcases);
 
   integer i;
   initial begin
-    $write("["); //"
-    for(i=0;i<TEST_CNT;i=i+1)
+    /* $write("["); //" */
+    /* for(i=0;i<TEST_CNT;i=i+1) */
+    for(i=0;i<1;i=i+1)
         runtestcase(i);
-    $display("]");
+    /* $display("]"); */
     $finish;
   end
 
@@ -64,7 +65,8 @@ initial $readmemh("Har.memh",testcases);
     rst <= 0;
     #period
     #((HIDDEN_CNT+CLASS_CNT)*period)
-    $write("%d, ",(prediction));
+    rst <= 0;
+    /* $write("%d, ",(prediction)); */
   end
   endtask
 

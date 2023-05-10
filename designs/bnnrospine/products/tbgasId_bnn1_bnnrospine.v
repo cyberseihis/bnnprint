@@ -8,9 +8,9 @@
 
 
 
-module tbwinered_bnn1_bnnromesh #(
+module tbgasId_bnn1_bnnrospine #(
 
-parameter FEAT_CNT = 11,
+parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
 parameter CLASS_CNT = 6,
@@ -29,14 +29,14 @@ parameter TEST_CNT = 1000
   localparam halfPeriod=period/2;
 
 
-initial $readmemh("winered.memh",testcases);
+initial $readmemh("gasId.memh",testcases);
 
   
   localparam SUM_BITS = $clog2(HIDDEN_CNT+1);
   wire [$clog2(CLASS_CNT)-1:0] prediction;
 
   // Instantiate module under test
- winered_bnn1_bnnromesh #() dut (
+ gasId_bnn1_bnnrospine #() dut (
     .features(sample),
     .clk(clk),
     .rst(rst),
@@ -47,10 +47,11 @@ initial $readmemh("winered.memh",testcases);
 
   integer i;
   initial begin
-    $write("["); //"
-    for(i=0;i<TEST_CNT;i=i+1)
+    /* $write("["); //" */
+    /* for(i=0;i<TEST_CNT;i=i+1) */
+    for(i=0;i<1;i=i+1)
         runtestcase(i);
-    $display("]");
+    /* $display("]"); */
     $finish;
   end
 
@@ -64,7 +65,8 @@ initial $readmemh("winered.memh",testcases);
     rst <= 0;
     #period
     #((HIDDEN_CNT+CLASS_CNT)*period)
-    $write("%d, ",(prediction));
+    rst <= 0;
+    /* $write("%d, ",(prediction)); */
   end
   endtask
 

@@ -23,7 +23,7 @@ module `DUTNAME #(
   localparam Weights0 = `WEIGHTS0 ;
   localparam Weights1 = `WEIGHTS1 ;
 
-  romesh_seq #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights0(Weights0),.Weights1(Weights1)) bnn (
+  rospine_seq #(.FEAT_CNT(FEAT_CNT),.FEAT_BITS(FEAT_BITS),.HIDDEN_CNT(HIDDEN_CNT),.CLASS_CNT(CLASS_CNT),.Weights0(Weights0),.Weights1(Weights1)) bnn (
     .clk(clk),
     .rst(rst),
     .features(features),
