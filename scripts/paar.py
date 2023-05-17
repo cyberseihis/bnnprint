@@ -8,6 +8,7 @@ def paar(met):
     while (i != j):
         # get weight foreach pair
         dist = np.tril(mat.T @ mat, k=-1)
+        # indexes of max hamming of pair
         i, j = np.unravel_index(np.argmax(dist), dist.shape)
         new = mat[:, i] * mat[:, j]
         new_n = np.logical_not(new)
