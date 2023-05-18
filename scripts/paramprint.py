@@ -7,6 +7,7 @@ from hardcodew import get_bnn_filenames
 from predict import quick_bnn, max_sum1, quick_tnn, quant
 from rounder import caps
 from tsp import reorg
+from paar import decompose_layer
 
 
 def capd_weights(fnm):
@@ -47,6 +48,24 @@ def permu_weights(fnm):
 `define WEIGHTS1 {len(bstr1)}'b{bstr1}
 `define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
     with open(f"../models/bnn1/permutew/{fnm}_bnn1.bstr", 'w') as file:
+        file.write(bweight)
+
+
+def paar_weights(fnm):
+    mod, X, y = quick_bnn(fnm)
+    wids = max_sum1(mod, X)
+    ws = mod.get_weights()
+    sw0 = ws[0]
+    sw1 = ws[1]
+    paar0, ymap = paarams(sw0.T)
+    bstr1 = matrix_bin_string(sw1.T)
+    bwids = dbytes(wids)
+    bweight = f"""\
+`define PAAR0 {4*len(paar0)}'h{paar0}
+`define YMAP {4*len(ymap)}'h{ymap}
+`define WEIGHTS1 {len(bstr1)}'b{bstr1}
+`define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
+    with open(f"../models/bnn1/paar/{fnm}_bnn1.bstr", 'w') as file:
         file.write(bweight)
 
 
@@ -116,3 +135,13 @@ def mysign(a):
 def dbytes(mat):
     kay = mat[::-1].flatten().astype(np.uint8).tobytes()
     return binascii.hexlify(kay).decode()
+
+
+def dwords(mat):
+    kay = mat[::-1].flatten().astype(np.uint16).byteswap().tobytes()
+    return binascii.hexlify(kay).decode()
+
+
+def paarams(sw0):
+    ops, ymap = decompose_layer(sw0)
+    return dwords(ops), dwords(ymap)

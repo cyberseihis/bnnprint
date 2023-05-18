@@ -1,4 +1,5 @@
 import numpy as np
+from itertools import chain
 
 
 def paar(met):
@@ -27,9 +28,9 @@ def simuladd(ops, x):
     return x
 
 
-met = np.array(
-    [[1, 1, 0, 0],
-     [1, 1, 1, 0],
-     [1, 1, 1, 1],
-     [0, 1, 1, 1]]
-)
+def decompose_layer(sw0):
+    mat = np.sign(sw0)
+    fmat = np.hstack((mat > 0, mat < 0)).astype(int)
+    ops, ymap = paar(fmat)
+    oops = list(chain.from_iterable(ops))
+    return np.array(oops), ymap
