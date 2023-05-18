@@ -51,13 +51,19 @@ generate
 for(i=0;i<ADDCNT;i=i+1) begin
     localparam op1 = PAAR0[i*32+:16];
     localparam op2 = PAAR0[i*32+16+:16];
-    localparam nodeloc = (2 * FEAT_CNT) + 1;
+    localparam nodeloc = (2 * FEAT_CNT) + i;
     assign node[nodeloc] = node[op1] + node[op2];
 end
 for(i=0;i<HIDDEN_CNT;i=i+1) begin
     assign hidden[i] = node[YMAP[i*16+:16]] >= 0;
 end
 endgenerate
+
+/* initial begin */
+/*     #10 */
+/*     for(j=0;j<FULLCNT;j=j+1) */
+/*         $display("%d | %d", j, node[j]); */
+/* end */
 
 generate
 for(i=0;i<CLASS_CNT;i=i+1) begin

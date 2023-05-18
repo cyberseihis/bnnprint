@@ -36,9 +36,10 @@ integer i;
 initial begin
     features = testcases[0];
     /* $write("[");//" */
-    for(i=0;i<5;i=i+1) begin
+    for(i=0;i<TEST_CNT;i=i+1) begin
         features = testcases[i];
         #period
+        /* $write(""); */
         $write("%d, ",prediction);
     end
     /* $display("]"); */
