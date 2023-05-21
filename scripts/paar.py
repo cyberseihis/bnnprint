@@ -2,6 +2,43 @@ import numpy as np
 from itertools import chain
 
 
+def paar_ter(met):
+    mat = np.copy(met)
+    # 1->1 -1->i
+    cmat = np.sqrt(mat+0j)
+    i, j = 4, 5
+    ops = []
+    while (i != j):
+        # get weight foreach pair
+        samt = cmat.conjugate().T
+        dift = cmat.T * -1j
+        both = np.stack((samt, dift))
+        xdist = both @ cmat
+        dist = np.tril(xdist, k=-1)
+        # indexes of max hamming of pair and operation
+        s, i, j = np.unravel_index(np.argmax(dist), dist.shape)
+        if (i == j):
+            break
+        if (s == 0):
+            new = np.where(cmat[:, i] == cmat[:, j], cmat[:, i], 0)
+        else:
+            new = np.where(cmat[:, i] * cmat[:, j] == 1j, cmat[:, i], 0)
+        new_n = np.logical_not(new)
+        cmat[:, i] *= new_n
+        cmat[:, j] *= new_n
+        cmat = np.hstack((cmat, new[:, None]))
+        ops.append((s, i, j))
+    # return cmat, dist
+    ymap = np.nonzero(cmat)[1]
+    return ops, ymap
+
+
+smat = np.array([[1, 0],
+                 [1, -1],
+                 [-1, -1],
+                 [1, 1]])
+
+
 def paar(met):
     mat = np.copy(met)
     i, j = 4, 5
