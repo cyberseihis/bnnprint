@@ -69,6 +69,24 @@ def paarter_weights(fnm):
         file.write(bweight)
 
 
+def paarX_weights(fnm):
+    mod, X, y = quick_bnn(fnm)
+    # wids = max_sum1(mod, X)
+    ws = mod.get_weights()
+    sw0 = ws[0]
+    sw1 = ws[1]
+    paar0, ymap = paarams(sw0.T)
+    paar1, ymap1 = paarams(sw1.T)
+    # bwids = dbytes(wids)
+    bweight = f"""\
+`define PAAR0 {4*len(paar0)}'h{paar0}
+`define YMAP {4*len(ymap)}'h{ymap}
+`define PAAR1 {4*len(paar1)}'h{paar1}
+`define YMAP1 {4*len(ymap1)}'h{ymap1}"""
+    with open(f"../models/bnn1/paarx/{fnm}_bnn1.bstr", 'w') as file:
+        file.write(bweight)
+
+
 def paar_weights(fnm):
     mod, X, y = quick_bnn(fnm)
     wids = max_sum1(mod, X)
