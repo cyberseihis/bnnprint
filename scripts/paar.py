@@ -29,7 +29,7 @@ def paar_ter(met):
         cmat = np.hstack((cmat, new[:, None]))
         ops.append((s, i, j))
     # return cmat, dist
-    ymap = np.nonzero(cmat)[1]
+    ymap = list(zip(np.nonzero(cmat)[1], np.sum(cmat, axis=1)**2))
     return ops, ymap
 
 
@@ -56,6 +56,21 @@ def paar(met):
         ops.append((i, j))
     ymap = np.nonzero(mat)[1]
     return ops[:-1], ymap
+
+
+def simulsub(ops, x):
+    for s, i, j in ops:
+        if (s == 0):
+            nu = x[i] + x[j]
+        else:
+            nu = x[i] - x[j]
+        x = np.append(x, nu)
+    return x
+
+
+def fullsim(ops, ymap, x):
+    h = simulsub(ops, x)
+    return [np.real(s)*h[i] for i, s in ymap]
 
 
 def simuladd(ops, x):
