@@ -52,9 +52,9 @@ for(i=0;i<ADDCNT;i=i+1) begin
     localparam op2 = PAAR0[i*48+32+:16];
     localparam nodeloc = FEAT_CNT + i;
     if(adsub)
-        assign node[nodeloc] = node[op1] + node[op2];
-    else
         assign node[nodeloc] = node[op1] - node[op2];
+    else
+        assign node[nodeloc] = node[op1] + node[op2];
 end
 for(i=0;i<HIDDEN_CNT;i=i+1) begin
     localparam ymap = YMAP[i*32+:16];
@@ -62,16 +62,16 @@ for(i=0;i<HIDDEN_CNT;i=i+1) begin
     if(signy)
         assign hidden[i] = node[ymap] >= 0;
     else
-        assign hidden[i] = node[ymap] < 0;
+        assign hidden[i] = node[ymap] <= 0;
 end
 endgenerate
 
-initial begin
-    #10
-    for(j=0;j<FULLCNT;j=j+1) begin
-        $display("%d | %d | %b, %d, %d", j, node[j], PAAR0[(j- FEAT_CNT )*48],  PAAR0[(j-FEAT_CNT)*48+16+:16], PAAR0[(j-FEAT_CNT)*48+32+:16]);
-    end
-end
+/* initial begin */
+/*     #10 */
+/*     for(j=0;j<FULLCNT;j=j+1) begin */
+/*         $display("%d | %d | %b, %d, %d", j, node[j], PAAR0[(j- FEAT_CNT )*48],  PAAR0[(j-FEAT_CNT)*48+16+:16], PAAR0[(j-FEAT_CNT)*48+32+:16]); */
+/*     end */
+/* end */
 
 generate
 for(i=0;i<CLASS_CNT;i=i+1) begin
