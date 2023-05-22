@@ -41,6 +41,7 @@ initial begin
         #period
         $write("");
         /* $write("%d, ",prediction); */
+        /* $display("%b", dut.hidden); */
     end
     /* $display("]"); */
 end
