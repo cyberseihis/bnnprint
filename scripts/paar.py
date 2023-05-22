@@ -29,7 +29,7 @@ def paar_ter(met):
         cmat = np.hstack((cmat, new[:, None]))
         ops.append((s, i, j))
     # return cmat, dist
-    ymap = list(zip(np.nonzero(cmat)[1], np.sum(cmat, axis=1)**2))
+    ymap = list(zip(np.nonzero(cmat)[1], np.sum(cmat, axis=1)))
     return ops, ymap
 
 
@@ -70,7 +70,7 @@ def simulsub(ops, x):
 
 def fullsim(ops, ymap, x):
     h = simulsub(ops, x)
-    return [np.real(s)*h[i] for i, s in ymap]
+    return [(s**2) * h[i] for i, s in ymap]
 
 
 def simuladd(ops, x):
@@ -86,3 +86,12 @@ def decompose_layer(sw0):
     ops, ymap = paar(fmat)
     oops = list(chain.from_iterable(ops))
     return np.array(oops), ymap
+
+
+def decompose_ter(sw0):
+    mat = np.sign(sw0)
+    ops, ymap = paar_ter(mat)
+    oops = list(chain.from_iterable(ops))
+    ym = [(i, np.real(s)) for i, s in ymap]
+    ym = np.array(list(chain.from_iterable(ym))).astype("int")
+    return np.array(oops), ym
