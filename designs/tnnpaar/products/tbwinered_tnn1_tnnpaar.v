@@ -32,7 +32,7 @@ initial $readmemh("winered.memh",testcases);
 
 winered_tnn1_tnnpaar dut (.features(features),.prediction(prediction));
 
-integer i;
+integer i,j;
 initial begin
     features = testcases[0];
     /* $write("[");//" */
@@ -41,6 +41,9 @@ initial begin
         #period
         /* $write(""); */
         $write("%d, ",prediction);
+        /* for(j=0;j<CLASS_CNT;j=j+1) */
+        /*     $write("%d, ", dut.scorarr[j]); */
+        /* $display(""); */
     end
     /* $display("]"); */
 end

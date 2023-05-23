@@ -32,6 +32,7 @@ wire signed [FEAT_BITS:0] feature_array [FEAT_CNT-1:0];
 wire [HIDDEN_CNT-1:0] hidden;
 wire [HIDDEN_CNT-1:0] hidden_n;
 wire [CLASS_CNT*SUM_BITS-1:0] scores; 
+wire [SUM_BITS-1:0] scorarr [CLASS_CNT-1:0];
 assign hidden_n = ~hidden;
 
 wire signed [INDEX_BITS:0] node [FULLCNT-1:0];
@@ -59,11 +60,32 @@ for(i=0;i<HIDDEN_CNT;i=i+1) begin
 end
 endgenerate
 
-/* initial begin */
-/*     #10 */
-/*     for(j=0;j<FULLCNT;j=j+1) */
-/*         $display("%d | %d", j, node[j]); */
-/* end */
+function [7:0] zerocnt(input integer k);
+    integer i,j;
+    reg [HIDDEN_CNT-1:0] neur1;
+    begin
+        i = 0;
+        neur1 = WNNZ[k*HIDDEN_CNT+:HIDDEN_CNT];
+        for(j=0;j<HIDDEN_CNT;j=j+1)
+            i = i + !(neur1[j]);
+        zerocnt = i;
+    end
+endfunction
+
+function [7:0] minzc(input integer k);
+    integer i,j,h;
+    begin
+        i = HIDDEN_CNT;
+        for(j=0;j<CLASS_CNT;j=j+1) begin
+            h = zerocnt(j);
+            if(h<i)
+                i = h;
+        end
+        minzc = i;
+    end
+endfunction
+
+localparam MINZC = minzc(0);
 
 generate
 for(i=0;i<CLASS_CNT;i=i+1) begin
@@ -81,7 +103,8 @@ for(i=0;i<CLASS_CNT;i=i+1) begin
         end
         end
     end
-    assign scores[i*SUM_BITS+:SUM_BITS] = tmpscore;
+    assign scores[i*SUM_BITS+:SUM_BITS] = 2*tmpscore + zerocnt(i) - MINZC;
+    /* assign scorarr[i] = 2*tmpscore + zerocnt(i) - MINZC; */
 end
 endgenerate
 
