@@ -111,8 +111,9 @@ bit. I interpreted this a sign that a similar method could work if I
 used an order of operations in which arithmetic operations that are
 common between neurons are shared. I first tried to get the arithmetic
 operations that are used after optimization by Design Compiler from the
-analysis of datapath extraction report it provides. Then I decided I 
-would rather not have to synthesize twice and searched for an algorithm
+analysis of datapath extraction report it provides. It turned out to
+be harder than I thought and I 
+would rather not have to synthesize twice so I searched for an algorithm
 to do a similar arithmetic optimization beforehand.
 
 # BNNPARSIGN -> BNNPAAR
@@ -122,16 +123,103 @@ to do a similar arithmetic optimization beforehand.
 # BNNPAAR -> BNNPAARTER
 
 # BNNSEQ
+This implements the layers sequentialy in regards to the inputs of the
+layer, meaning each neuron has an accumulator and each cycle it is 
+active it adds/subtracts the an input feature. All neurons update
+on the the same feature on the same cycle.
+Features get chosen to be the current sample in order.
+In the first layer a counter and multiplexer is used to pick the current
+sample. Features are picked in order. The column of binary weights that
+corresponds to the feature also gets picked from the weight matrix.
+Each accumulator receives as input the current feature and the weight bit
+of it's neuron and feature and depending on the weight bit either adds or
+subtracts the feature from it's running total.
+
+Once the counter reaches the last feature a flag that signals the first
+layer is done is set. This enables the second layer to start
+accumulating and freezes the first layer.
+Instead of choosing the weight bit that corresponds to each hidden
+feature and neuron and adding their xnor the second layer hardcodes
+the vector from which a neuron recieves it's inputs so it has the output
+of the previous layer in the position of an activation if the
+activation's weight with the neuron is 1 and it's inverse otherwise.
+
+That way the accumulators of the second layer are simply counters with
+an enable signal that is set to the bit they would have to add.
+The results of the second layer are passed to an argmax module that
+returns the predicted class.
+
+A design where shift registers where used to hold the weights
+instead of indexing a constant array with the counter was also attempted
+but turned out to be far worse.
 
 # BNNSEQ -> BNNDIRECT
+The difference of bnndirect with bnnseq is it also uses a hardcoded
+input vector for each neuron in the first layer instead of just the second.
+For each 4-bit input feature and every neuron a 5-bit signed seqment of the
+neuron's custom input vector is set to either the feature or the negative
+of the feature.
+
+It improves area and power except in the case of gasId, which has an order
+of magnitude more input features than other datasets and thus scales
+differently.
 
 # BNNDIRECT -> BNNDW
+Bnndw is bnndirect with first layer accumulators getting their bitwidth
+set to the minimum needed similarly to bnnparw.
+The gains are more pronounced than the parallel case since the registers
+take up a significant portion of the resources and each bit shaved off
+an accumulator's range removes a flip-flop.
 
 # BNNDW -> BNNDSAT
+In bnndsat saturation is used in combination with bnndw's truncation to
+reduce the number of registers farther. Using the DW_addsub_dx module
+from designware the result of adding a sample to the value of the
+accumulator is set to the maximum value the accumulator can hold in the
+case it would otherwise overflow and similarly to the minimum value it can
+fit in case of underflow.
 
-# BNNSEQ -> BNNROLIN
+The bitwidth needed to have the final value after all samples are added
+have the correct sign using saturation is shrunk for many neurons.
+For neurons where saturation doesn't reduce the number of bits in the
+accumulator simple truncation is used instead to avoid the overhead.
+
+(Note: for some reason the simulation module of DW_addsub_dx slowed
+simulation with iverilog by two orders of magnitude.)
+
+# BNNROLIN
+Also a sequential design, this time the outputs of the layer being
+the dynamic dimension instead of the inputs as in bnnseq. This means
+that each layer has a single adder tree that computes the output of a
+single neuron of the layer per cycle.
+
+In the first layer a custom input vector per neuron is used again like
+bnndirect. The adder sums the entire vector of the neuron and the sign
+of the result is stored to a register corresponding to the layers output.
+Instead of having the negative of the input feature in positions of the
+vector that have weight -1 the inverse of it's 5-bit expansion is used.
+With the idea that the negative in 2's compliment is the inverse plus 1,
+we add a correction term equal to the number of negative weights of the
+neuron to the sum to get the correct result.
+The correction terms are stored at an array of constants and are indexed
+by the counter like the input vectors.
+This was measured to be more efficient.
+
+After the counter of the first layer reaches the last neuron the next
+layer is activated in a similar fashion with previous sequential designs.
+Unlike the first layer the second doesn't need to store the outputs of all
+it's neurons. Since it is the last layer we can store only the largest value
+seen thus far in a register and only overwrite it when the result of the
+current neuron is larger. Along with this the value of the counter (which
+corresponds to the index of the neuron) is also written into a register each
+time the current result is larger than the previous best. This way the
+argmax is calculated at the same time as the output neurons.
 
 # BNNROLIN -> BNNROMEM
+Instead of hardcoding a custom input vector for each neuron the row of
+weights that correspond to each neuron are indexed from the weight 
+matrix by the counter and the 5-bit expansion of each input feature is
+xnored by it's weight bit.
 
 # BNNROMEM -> BNNROMESH
 
