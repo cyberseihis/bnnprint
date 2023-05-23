@@ -3,7 +3,7 @@ import numpy as np
 import binascii
 import re
 import os
-from hardcodew import get_bnn_filenames
+from hardcodew import get_bnn_filenames, get_tnn_filenames
 from predict import quick_bnn, max_sum1, quick_tnn, quant
 from rounder import caps
 from tsp import reorg
@@ -87,21 +87,24 @@ def paarX_weights(fnm):
         file.write(bweight)
 
 
-def paar_weights(fnm):
-    mod, X, y = quick_bnn(fnm)
-    wids = max_sum1(mod, X)
+def paar_weights(fnm, tnn=False):
+    quick = quick_tnn if tnn else quick_bnn
+    mod, _, _ = quick(fnm)
     ws = mod.get_weights()
     sw0 = ws[0]
     sw1 = ws[1]
     paar0, ymap = paarams(sw0.T)
-    bstr1 = matrix_bin_string(sw1.T)
-    bwids = dbytes(wids)
+    swadd1 = np.maximum(sw1.T, 0)
+    swnnz = np.abs(sw1.T)
+    bstr1 = bin_string(swadd1)
+    bstr1nz = bin_string(swnnz)
     bweight = f"""\
 `define PAAR0 {4*len(paar0)}'h{paar0}
 `define YMAP {4*len(ymap)}'h{ymap}
 `define WEIGHTS1 {len(bstr1)}'b{bstr1}
-`define WIDTHS {8*sw0.shape[1]}'h{bwids}"""
-    with open(f"../models/bnn1/paar/{fnm}_bnn1.bstr", 'w') as file:
+`define WNNZ1 {len(bstr1nz)}'b{bstr1nz}"""
+    fil = "tnn1" if tnn else "bnn1"
+    with open(f"../models/{fil}/paar/{fnm}_{fil}.bstr", 'w') as file:
         file.write(bweight)
 
 
@@ -153,6 +156,12 @@ def dump_bitstrings():
             bitstr_weights(fnm)
 
 
+def bin_string(mat):
+    bflat = np.maximum(np.sign(mat), 0).flatten()
+    flbin = bflat.astype(np.uint8).tobytes()
+    return binascii.hexlify(flbin).decode()[1::2][::-1]
+
+
 def matrix_bin_string(mat):
     flatw = mysign(mat).flatten()
     bflat = np.maximum(flatw, 0)
@@ -162,7 +171,6 @@ def matrix_bin_string(mat):
 
 def mysign(a):
     signs = np.sign(a)
-
 # Replace the sign of the zeroes with 1 (positive) or -1 (negative)
     signs_no_zero = np.where(signs == 0, 1, signs)
     return signs_no_zero
