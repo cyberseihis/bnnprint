@@ -8,9 +8,9 @@
 
 
 
-module tbHar_tnn1_tnnpaar #(
+module tbwinered_tnn1_tnnpaarter #(
 
-parameter FEAT_CNT = 12,
+parameter FEAT_CNT = 11,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
 parameter CLASS_CNT = 6,
@@ -27,10 +27,10 @@ parameter period = Nsperiod/1000;
 
 
 
-initial $readmemh("Har.memh",testcases);
+initial $readmemh("winered.memh",testcases);
 
 
-Har_tnn1_tnnpaar dut (.features(features),.prediction(prediction));
+winered_tnn1_tnnpaarter dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

@@ -8,12 +8,12 @@
 
 
 
-module tbcardio_tnn1_tnnpaar #(
+module tbHar_tnn1_tnnpaarter #(
 
-parameter FEAT_CNT = 19,
+parameter FEAT_CNT = 12,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
-parameter CLASS_CNT = 3,
+parameter CLASS_CNT = 6,
 parameter TEST_CNT = 1000
 
 
@@ -27,10 +27,10 @@ parameter period = Nsperiod/1000;
 
 
 
-initial $readmemh("cardio.memh",testcases);
+initial $readmemh("Har.memh",testcases);
 
 
-cardio_tnn1_tnnpaar dut (.features(features),.prediction(prediction));
+Har_tnn1_tnnpaarter dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin

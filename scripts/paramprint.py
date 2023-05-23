@@ -87,13 +87,14 @@ def paarX_weights(fnm):
         file.write(bweight)
 
 
-def paar_weights(fnm, tnn=False):
+def paar_weights(fnm, tnn=False, ternary=False):
     quick = quick_tnn if tnn else quick_bnn
     mod, _, _ = quick(fnm)
     ws = mod.get_weights()
     sw0 = ws[0]
     sw1 = ws[1]
-    paar0, ymap = paarams(sw0.T)
+    heurist = paarterams if ternary else paarams
+    paar0, ymap = heurist(sw0.T)
     swadd1 = np.maximum(sw1.T, 0)
     swnnz = np.abs(sw1.T)
     bstr1 = bin_string(swadd1)
@@ -104,7 +105,8 @@ def paar_weights(fnm, tnn=False):
 `define WEIGHTS1 {len(bstr1)}'b{bstr1}
 `define WNNZ1 {len(bstr1nz)}'b{bstr1nz}"""
     fil = "tnn1" if tnn else "bnn1"
-    with open(f"../models/{fil}/paar/{fnm}_{fil}.bstr", 'w') as file:
+    kind = "paarter" if ternary else "paar"
+    with open(f"../models/{fil}/{kind}/{fnm}_{fil}.bstr", 'w') as file:
         file.write(bweight)
 
 

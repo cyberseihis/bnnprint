@@ -8,9 +8,9 @@
 
 
 
-module tbwinered_tnn1_tnnpaar #(
+module tbgasId_tnn1_tnnpaarter #(
 
-parameter FEAT_CNT = 11,
+parameter FEAT_CNT = 128,
 parameter HIDDEN_CNT = 40,
 parameter FEAT_BITS = 4,
 parameter CLASS_CNT = 6,
@@ -27,10 +27,10 @@ parameter period = Nsperiod/1000;
 
 
 
-initial $readmemh("winered.memh",testcases);
+initial $readmemh("gasId.memh",testcases);
 
 
-winered_tnn1_tnnpaar dut (.features(features),.prediction(prediction));
+gasId_tnn1_tnnpaarter dut (.features(features),.prediction(prediction));
 
 integer i,j;
 initial begin
