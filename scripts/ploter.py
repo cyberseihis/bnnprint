@@ -39,3 +39,4 @@ def plot_compare(fname):
     ax.set_title("Area comparison")
     px.set_title("Power comparison")
     plt.show()
+    return ars, prs
