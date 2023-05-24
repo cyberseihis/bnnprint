@@ -31,6 +31,12 @@ shown for comparison.
 Since bnns are easier to try things with some designs for bnns have no
 tnn equivelant yet.
 
+When a design is derived from an earlier design it will be annotated as
+**EARLIER DESIGN -> NEW DESIGN**.
+
+Due to a self-imposed deadline only the descriptions for bnn designs
+are completed. The descriptions for tnn designs will follow soon.
+
 # BNNPAR
 In bnnpar the arithmetic operations for each neuron are written out in
 verilog. For first layer neurons the features that correspond to
@@ -109,7 +115,7 @@ Truncating subexpressions impeded datapath extraction and so the results
 were negative for most datasets, althougth Har and winewhite improved a
 bit.
 
-# BNNPARSIGN -> BNNPAAR
+# BNNPARSIGN -> BNNPAAR, BNNPAARX, BNNPAARTER
 Since bnnstepw didn't work I thought finding the order of operations
 Design Compiler uses after optimization and truncating widths there
 may fare better. I first tried to get the arithmetic
@@ -119,10 +125,36 @@ be harder than expected and having to synthesize twice is suboptimal
 so I searched for an algorithm to do a similar arithmetic optimization
 beforehand.
 
+Paar's algorithm, found in [1] is used. It is explained well
+in that paper so I won't repeat the explanation here. Paar's algorithm
+considers the case where elements are only added, so to make it work
+for our case where there are also subtractions the negatives of input
+features are treated as seperate additional elements, so the operations
+for all neurons can be written with additions only.
 
-# BNNPAAR -> BNNPAARX
+By running it on the weight matrix of the first layer we get a series
+of additions between pairs of input features and/or intermediate results
+that calculate the total sum of each neuron. The additions are
+implemented in the same order in the design with an array to hold the
+intermediate results. Bitwidths for intermediate and final results
+were left at the default width from bnnparsign, custom widths were
+not implemented.
+Designs that have only the first layer implementing the operations
+found from the algorithm are called bnnpaar and those that have
+both layers are bnnpaarx.
 
-# BNNPAAR -> BNNPAARTER
+Paar's algorithm was also expanded to work with subtractions.
+The implementation will be described seperately. Since it also uses
+subtraction it gives shorter series of operations. Designs using
+the ternary expansion in the first layer are called bnnpaarter.
+
+I expected the results to be worse for all designs since Design
+Compiler would use the best available heuristics, so the fact
+hardcoding the order of operations with Paar's algorithm and the
+ternary expansion had up to 30% area reduction for some designs,
+even though it was worse for cardio and gasId, makes me suspect
+I have somehow crippled the datapath extraction of bnnparsign,
+though I don't see what could be a problem.
 
 # BNNSEQ
 This implements the layers sequentialy in regards to the inputs of the
@@ -233,24 +265,73 @@ result reaches the right-most position and all the results are stored
 in order.
 
 # BNNROMESH -> BNNROMESX
+This design was implemented mostly out of curiosity and not
+because it would help much.
+
+Since the counter is not used to index the position the result is
+stored, the sequence of values it takes doesn't have to be 
+linear(0, 1, 2..). Instead of a 6-bit counter we can use any FSM that
+gives a sequence of 40 unique 6-bit values in it's place, given that
+we replace the array of weights we indexed with the counter's values
+with a lookup table with the new sequence's values as indexes.
+The smallest such FSM is a linear-feedback shift register with a single
+xor gate for the two most significant bits, so that is implemented.
+
+The gain from removing a 6-bit add-1 circuit is negligable and I don't
+think the lookup table was implemented as well as it could so the
+results were negative.
 
 # BNNROMESH -> BNNROPERM
+This design was also implemented mostly out of curiosity.
+
+I had a vague notion that the logic that implements the decoder from the counter to the weights would be simpler if weight rows with
+"more similar" bits corresponded to counter values with "more similar"
+bits. To try to test that I made a graph of the hamming distances of the 
+neuron weights and got an aproximate solution to TSP on it to get a
+sequence of neurons that minimises the number of bit changes between
+neighbouring neurons. I then got a similar sequence for the values of
+the counter (i.e. numbers 0-39) and permuted the rows of the weight
+matrix so the i-th neuron in the sequence maps to the i-th value in the
+counter sequence.
+The columns of the second layer's weight matrix had the same permutation
+applied to them so the second layer's results are not affected.
+
+The area increased in half the datasets and decreased in the other
+half, so it doesn't seem to be better than a random permutation.
 
 # BNNROMESH -> BNNROSPINE
+The shifting regiter that stores the 1st layer's outputs gets initialised
+with a 1 in the left-most position and 0s in all other positions. A
+circuit that outputs a one-hot vector where only the bit in the position
+of the left-most nonzero bit in the shifting register is set to 1 is
+added.
+That implements a one-hot shifting register that encodes the index
+of the currently calculated neuron without using additional memory
+elements.
+
+Using the bits of the one-hot vector as select signals for the weight
+rows the counter and it's encoder can be removed, leading in efficiency
+gains.
 
 # BNNROSPINE -> BNNROSPINOR
+Instead of the lookup table used for weights in bnnrospine,
+the current weight that corresponds to a given input feature is
+calculated by a NOR of the bits of the one-hot vector in positions
+where the weight column of the feature would be -1.
+
+Except for cardio, it is an improvement.
 
 # BNNROSPINE -> BNNROBUS
+Every input feature gets the current weight bit from an open bus to
+which a tristate buffer for each entry in the feature's column in
+the weight matrix is connected. Each buffer in a bus corresponds
+to a neuron and is controled by that neuron's select signal from the
+one-hot vector.
 
-# BNNPAR -> TNNPAR
-TNNPARSIGN
-TNNPARW
-TNNPAAR
-TNNPAARTER
+Decent improvements in power are achieved at the cost of significantly
+larger areas. At least the power for pendigits got under 30 mW, which
+I'm happy about.
 
-# BNNSEQ -> TNNSEQ
+# TODO: Descriptions for tnn designs
 
-# TNNSEQ -> TNNZEQ
-
-# TNNZEQ -> TNNZEW
-
+[1] Banik, S., Funabiki, Y., Isobe, T. (2019). More Results on Shortest Linear Programs. In: Attrapadung, N., Yagi, T. (eds) Advances in Information and Computer Security. IWSEC 2019. Lecture Notes in Computer Science(), vol 11689. Springer, Cham. https://doi.org/10.1007/978-3-030-26834-3_7
