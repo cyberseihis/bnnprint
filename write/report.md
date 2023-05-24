@@ -91,7 +91,6 @@ Subtracting the closest power of two that gets the range of values to
 a reduced bitwidth may do better.
 
 # BNNPARW -> BNNSTEPW
-I expected this one to do worse than bnnparw and it did.
 For each hidden neuron we add/subtract the features in order for each
 sample of the dataset. For each step of the process we find what the
 minimum bitwidth to hold each of the values is.
@@ -105,18 +104,21 @@ every sample for which there would be an overflow in the earlier step
 with the smaller width would at some following feature underflow back in
 the range it supports. This has been taken into account.
 
+I expected this one to do worse than bnnparw and it did.
 Truncating subexpressions impeded datapath extraction and so the results
 were negative for most datasets, althougth Har and winewhite improved a
-bit. I interpreted this a sign that a similar method could work if I
-used an order of operations in which arithmetic operations that are
-common between neurons are shared. I first tried to get the arithmetic
-operations that are used after optimization by Design Compiler from the
-analysis of datapath extraction report it provides. It turned out to
-be harder than I thought and I 
-would rather not have to synthesize twice so I searched for an algorithm
-to do a similar arithmetic optimization beforehand.
+bit.
 
 # BNNPARSIGN -> BNNPAAR
+Since bnnstepw didn't work I thought finding the order of operations
+Design Compiler uses after optimization and truncating widths there
+may fare better. I first tried to get the arithmetic
+operations that are used after optimization from the
+analysis of datapath extraction report it provides. It turned out to
+be harder than expected and having to synthesize twice is suboptimal
+so I searched for an algorithm to do a similar arithmetic optimization
+beforehand.
+
 
 # BNNPAAR -> BNNPAARX
 
@@ -222,6 +224,13 @@ matrix by the counter and the 5-bit expansion of each input feature is
 xnored by it's weight bit.
 
 # BNNROMEM -> BNNROMESH
+Instead of a decoder from the counter to index the register bit
+the current result of the first layer should be written to,
+bnnromesh stores the value at the end of a shifting register.
+At each cycle the register array shifts right once, so when the last
+neuron's result is written at the left-most position the first neuron's
+result reaches the right-most position and all the results are stored
+in order.
 
 # BNNROMESH -> BNNROMESX
 
