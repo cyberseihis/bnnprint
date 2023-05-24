@@ -1,0 +1,146 @@
+
+    wire signed [8:0] intra_0;
+    assign intra_0 = - feature_array[0] - feature_array[1]   + feature_array[4]   + feature_array[7] - feature_array[8] - feature_array[9] ;
+    assign hidden[0] = intra_0 >= 0;
+assign hidden[1] = 1;
+
+    wire signed [8:0] intra_2;
+    assign intra_2 =   + feature_array[2]  - feature_array[4] - feature_array[5] - feature_array[6] - feature_array[7] + feature_array[8] + feature_array[9] + feature_array[10];
+    assign hidden[2] = intra_2 >= 0;
+
+    wire signed [8:0] intra_3;
+    assign intra_3 = + feature_array[0] - feature_array[1]   - feature_array[4] + feature_array[5] - feature_array[6] - feature_array[7]   ;
+    assign hidden[3] = intra_3 >= 0;
+
+    wire signed [8:0] intra_4;
+    assign intra_4 = - feature_array[0] - feature_array[1]  + feature_array[3] - feature_array[4] + feature_array[5]    + feature_array[9] + feature_array[10];
+    assign hidden[4] = intra_4 >= 0;
+
+    wire signed [8:0] intra_5;
+    assign intra_5 =   - feature_array[2] - feature_array[3]   + feature_array[6] - feature_array[7]   ;
+    assign hidden[5] = intra_5 >= 0;
+
+    wire signed [8:0] intra_6;
+    assign intra_6 =  + feature_array[1] + feature_array[2] + feature_array[3] + feature_array[4]  + feature_array[6] + feature_array[7]  - feature_array[9] ;
+    assign hidden[6] = intra_6 >= 0;
+
+    wire signed [8:0] intra_7;
+    assign intra_7 = + feature_array[0] + feature_array[1]   - feature_array[4] - feature_array[5] - feature_array[6] - feature_array[7]   - feature_array[10];
+    assign hidden[7] = intra_7 >= 0;
+
+    wire signed [8:0] intra_8;
+    assign intra_8 = - feature_array[0] + feature_array[1] + feature_array[2]   - feature_array[5] + feature_array[6]  - feature_array[8] - feature_array[9] ;
+    assign hidden[8] = intra_8 >= 0;
+
+    wire signed [8:0] intra_9;
+    assign intra_9 = - feature_array[0]   - feature_array[3] + feature_array[4]  + feature_array[6] + feature_array[7] - feature_array[8]  + feature_array[10];
+    assign hidden[9] = intra_9 >= 0;
+
+    wire signed [8:0] intra_10;
+    assign intra_10 =    + feature_array[3]  + feature_array[5] + feature_array[6] - feature_array[7]   ;
+    assign hidden[10] = intra_10 >= 0;
+
+    wire signed [8:0] intra_11;
+    assign intra_11 =  + feature_array[1] + feature_array[2]  + feature_array[4] - feature_array[5] + feature_array[6]  + feature_array[8] - feature_array[9] - feature_array[10];
+    assign hidden[11] = intra_11 >= 0;
+
+    wire signed [8:0] intra_12;
+    assign intra_12 =  + feature_array[1] + feature_array[2]   + feature_array[5]  + feature_array[7]  - feature_array[9] - feature_array[10];
+    assign hidden[12] = intra_12 >= 0;
+
+    wire signed [8:0] intra_13;
+    assign intra_13 =   + feature_array[2]  + feature_array[4] - feature_array[5]   + feature_array[8]  - feature_array[10];
+    assign hidden[13] = intra_13 >= 0;
+
+    wire signed [8:0] intra_14;
+    assign intra_14 =  + feature_array[1] + feature_array[2] + feature_array[3] - feature_array[4]  - feature_array[6] - feature_array[7]  + feature_array[9] - feature_array[10];
+    assign hidden[14] = intra_14 >= 0;
+
+    wire signed [8:0] intra_15;
+    assign intra_15 =    - feature_array[3]   + feature_array[6] - feature_array[7] - feature_array[8]  ;
+    assign hidden[15] = intra_15 >= 0;
+assign hidden[16] = 1;
+
+    wire signed [8:0] intra_17;
+    assign intra_17 = + feature_array[0] - feature_array[1]   - feature_array[4] + feature_array[5]  - feature_array[7] - feature_array[8]  ;
+    assign hidden[17] = intra_17 >= 0;
+
+    wire signed [8:0] intra_18;
+    assign intra_18 =  + feature_array[1] + feature_array[2] + feature_array[3]   + feature_array[6] + feature_array[7] - feature_array[8]  - feature_array[10];
+    assign hidden[18] = intra_18 >= 0;
+
+    wire signed [8:0] intra_19;
+    assign intra_19 =  + feature_array[1] - feature_array[2] - feature_array[3] - feature_array[4] - feature_array[5] + feature_array[6]   - feature_array[9] ;
+    assign hidden[19] = intra_19 >= 0;
+
+    wire signed [8:0] intra_20;
+    assign intra_20 = + feature_array[0] + feature_array[1]   - feature_array[4] + feature_array[5] - feature_array[6] - feature_array[7]   + feature_array[10];
+    assign hidden[20] = intra_20 >= 0;
+
+    wire signed [8:0] intra_21;
+    assign intra_21 = + feature_array[0] + feature_array[1]  - feature_array[3]    + feature_array[7] + feature_array[8] - feature_array[9] - feature_array[10];
+    assign hidden[21] = intra_21 >= 0;
+
+    wire signed [8:0] intra_22;
+    assign intra_22 = + feature_array[0] + feature_array[1] + feature_array[2] - feature_array[3]  - feature_array[5] - feature_array[6]  + feature_array[8]  + feature_array[10];
+    assign hidden[22] = intra_22 >= 0;
+assign hidden[23] = 1;
+
+    wire signed [8:0] intra_24;
+    assign intra_24 = + feature_array[0] + feature_array[1] + feature_array[2] - feature_array[3]  - feature_array[5] + feature_array[6] - feature_array[7]   - feature_array[10];
+    assign hidden[24] = intra_24 >= 0;
+
+    wire signed [8:0] intra_25;
+    assign intra_25 =  - feature_array[1]  + feature_array[3] - feature_array[4]   - feature_array[7]   + feature_array[10];
+    assign hidden[25] = intra_25 >= 0;
+assign hidden[26] = 0;
+
+    wire signed [8:0] intra_27;
+    assign intra_27 =   - feature_array[2] + feature_array[3] + feature_array[4]  + feature_array[6]   + feature_array[9] ;
+    assign hidden[27] = intra_27 >= 0;
+assign hidden[28] = 0;
+
+    wire signed [8:0] intra_29;
+    assign intra_29 = + feature_array[0] - feature_array[1] - feature_array[2] - feature_array[3]  + feature_array[5]  - feature_array[7] - feature_array[8] - feature_array[9] + feature_array[10];
+    assign hidden[29] = intra_29 >= 0;
+
+    wire signed [8:0] intra_30;
+    assign intra_30 =  - feature_array[1]  + feature_array[3] + feature_array[4] + feature_array[5]  + feature_array[7]  + feature_array[9] ;
+    assign hidden[30] = intra_30 >= 0;
+
+    wire signed [8:0] intra_31;
+    assign intra_31 = - feature_array[0] - feature_array[1]    + feature_array[5]  + feature_array[7]   + feature_array[10];
+    assign hidden[31] = intra_31 >= 0;
+assign hidden[32] = 1;
+assign hidden[33] = 1;
+
+    wire signed [8:0] intra_34;
+    assign intra_34 =  - feature_array[1] - feature_array[2] + feature_array[3] + feature_array[4] + feature_array[5] - feature_array[6]    ;
+    assign hidden[34] = intra_34 >= 0;
+
+    wire signed [8:0] intra_35;
+    assign intra_35 = + feature_array[0] + feature_array[1] + feature_array[2] - feature_array[3] - feature_array[4]  + feature_array[6] - feature_array[7] + feature_array[8] + feature_array[9] ;
+    assign hidden[35] = intra_35 >= 0;
+
+    wire signed [8:0] intra_36;
+    assign intra_36 =  + feature_array[1] - feature_array[2]   - feature_array[5] - feature_array[6] - feature_array[7]  + feature_array[9] ;
+    assign hidden[36] = intra_36 >= 0;
+
+    wire signed [8:0] intra_37;
+    assign intra_37 =  + feature_array[1]  - feature_array[3] - feature_array[4] - feature_array[5] + feature_array[6]   - feature_array[9] ;
+    assign hidden[37] = intra_37 >= 0;
+
+    wire signed [8:0] intra_38;
+    assign intra_38 =  + feature_array[1] + feature_array[2]        - feature_array[10];
+    assign hidden[38] = intra_38 >= 0;
+
+    wire signed [8:0] intra_39;
+    assign intra_39 = - feature_array[0]    - feature_array[4] + feature_array[5] + feature_array[6] - feature_array[7] - feature_array[8]  + feature_array[10];
+    assign hidden[39] = intra_39 >= 0;
+assign popcount[0] = + hidden_n[1] + hidden[4] + hidden_n[6] + hidden[7] + hidden_n[9] + hidden_n[10] + hidden[11] + hidden[15] + hidden_n[16] + hidden[18] + hidden[20] + hidden_n[23] + hidden[28] + hidden_n[38];assign scores[0] = 2*popcount[0] + 7;
+assign popcount[1] = + hidden[7] + hidden_n[10] + hidden[11] + hidden_n[16] + hidden[19] + hidden[20] + hidden[22] + hidden_n[23] + hidden[24] + hidden[28] + hidden_n[30] + hidden_n[31] + hidden_n[34] + hidden[37] + hidden[38];assign scores[1] = 2*popcount[1] + 6;
+assign popcount[2] = + hidden_n[9] + hidden[18] + hidden[20] + hidden[24] + hidden_n[25] + hidden_n[33] + hidden[36] + hidden[37];assign scores[2] = 2*popcount[2] + 13;
+assign popcount[3] = + hidden[1] + hidden[15] + hidden[16] + hidden[23] + hidden[24] + hidden[31] + hidden_n[33] + hidden[37];assign scores[3] = 2*popcount[3] + 13;
+assign popcount[4] = + hidden_n[8] + hidden_n[12] + hidden_n[16] + hidden_n[21] + hidden[22] + hidden[28] + hidden_n[33];assign scores[4] = 2*popcount[4] + 14;
+assign popcount[5] = + hidden_n[11] + hidden_n[13] + hidden_n[16] + hidden_n[23] + hidden[31] + hidden_n[33];assign scores[5] = 2*popcount[5] + 15;
+assign popcount[6] = + hidden_n[1] + hidden_n[2] + hidden[4] + hidden[5] + hidden_n[6] + hidden_n[12] + hidden[13] + hidden_n[16] + hidden_n[17] + hidden[18] + hidden[20] + hidden_n[23] + hidden[24] + hidden_n[27] + hidden_n[30] + hidden_n[32] + hidden_n[33] + hidden_n[34] + hidden_n[35] + hidden[37] + hidden_n[38];assign scores[6] = 2*popcount[6] + 0;

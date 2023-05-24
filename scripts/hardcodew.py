@@ -90,6 +90,24 @@ def paradump_bnn(fnm):
         file.write(hard0+"\n"+hard1)
 
 
+def paradump_tnnsign(fnm):
+    mod, X, y = quick_tnn(fnm)
+    ws = mod.get_weights()
+    sw0 = ws[0]
+    sw1 = ws[1]
+    featn = X.shape[1]
+    setw = np.ceil(np.log2(featn+1)) + 5
+    wids = np.ones(sw0.shape[1])*setw
+    wids = wids.astype("int")
+    # Need to transpose to allign rows with neurons
+    bw0 = np.sign(sw0.T)
+    bw1 = np.sign(sw1.T)
+    hard0 = layep(bw0, wids)
+    hard1 = l2ter(bw1)
+    with open('../models/tnn1/hardwsign/'+fnm+'_tnn1.hrdcd', 'w') as file:
+        file.write(hard0+"\n"+hard1)
+
+
 def paradump_tnn(fnm):
     mod, X, y = quick_tnn(fnm)
     wids = max_sum1(mod, X)
