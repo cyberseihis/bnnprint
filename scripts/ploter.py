@@ -10,6 +10,7 @@ def build_dataframe(data):
     df = pd.DataFrame(index=rows, columns=cols)
     for i, j, v in data:
         df.loc[i, j] = v
+    df = df.sort_index()
     return df
 
 
@@ -67,7 +68,26 @@ def scatter_comp(fname, designs):
     plt.ylabel('Area')
 
 # Add a title
-    plt.title('Area vs. Power for Different Accelerators and Datasets')
+    plt.title(f"{designs[0]} vs {designs[1]}")
 
-# Show the plot
-    plt.show()
+    desmerg = '_'.join(designs)
+    plt.savefig(f"{desmerg}.svg")
+
+
+def tablecomp(fn, designs):
+    ars, prs = data_in(fn)
+    ars = build_dataframe(ars)/10**8
+    prs = build_dataframe(prs)*10**3
+    ars = ars.loc[:, designs].astype("float").round(2)
+    prs = prs.loc[:, designs].astype("float").round(2)
+    ars = ars.add_suffix(" area")
+    prs = prs.add_suffix(" power")
+    da = 100*(ars.iloc[:, 1] - ars.iloc[:, 0])/ars.iloc[:, 0]
+    dp = 100*(prs.iloc[:, 1] - prs.iloc[:, 0])/prs.iloc[:, 0]
+    ars["area change"] = ["{:+.1f}%".format(val) for val in da]
+    prs["power change"] = ["{:+.1f}%".format(val) for val in dp]
+    res = pd.concat([ars, prs], axis=1).to_markdown()
+    desmerg = '_'.join(designs)
+    with open(f"{desmerg}tab.md", "w") as f:
+        f.write(res)
+    print(res)

@@ -150,3 +150,22 @@ def capshift(l0, neur, k):
         j = np.maximum(j, ncap)
     dut = np.sign(j + mold + 1e-5)
     return gold == dut
+
+
+# For graph of saturated execution
+def capedrun(x, neur, k):
+    wall = x * neur
+    pcap = 2**(k-1) - 1
+    ncap = -2**(k-1)
+    j = 0
+    h = 0
+    js = [0]
+    hs = [0]
+    for col in wall:
+        j = j + col
+        h = h + col
+        j = np.minimum(j, pcap)
+        j = np.maximum(j, ncap)
+        js.append(j)
+        hs.append(h)
+    return np.array(hs), np.array(js)
