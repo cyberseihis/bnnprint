@@ -106,6 +106,8 @@ are completed. The descriptions for tnn designs will follow soon.
 ![Power comparisons](./bnn_power.svg)
 
 # BNNPAR
+![](tikz1/tbpar.png)
+
 In bnnpar the arithmetic operations for each neuron are written out in
 verilog. For first layer neurons the features that correspond to
 positive weights are split from those that correspond to negative weights,
@@ -125,6 +127,18 @@ of the array of hidden features, which is "hidden"):
 assign scores[0*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden[1] + hidden[2] + ... + hidden_n[39];
 ```
 # BNNPAR -> BNNPARSIGN
+![](tikz1/tbparsign.png)
+![](comps/bnnpar_bnnparsign.svg)
+
+|           |   bnnpar area |   bnnparsign area | area change   |   bnnpar power |   bnnparsign power | power change   |
+|:----------|--------------:|------------------:|:--------------|---------------:|-------------------:|:---------------|
+| Har       |         29.4  |             24.52 | -16.6%        |           92.1 |               78.8 | -14.4%         |
+| cardio    |         46.71 |             33.27 | -28.8%        |          145.3 |              106.2 | -26.9%         |
+| gasId     |        269.76 |            175.09 | -35.1%        |          767.7 |              499.1 | -35.0%         |
+| pendigits |         42.95 |             33.38 | -22.3%        |          136.8 |              108.9 | -20.4%         |
+| winered   |         27.82 |             22.45 | -19.3%        |           90.7 |               74.6 | -17.8%         |
+| winewhite |         26.01 |             20.47 | -21.3%        |           84.6 |               68   | -19.6%         |
+
 The difference from bnnpar is all the input features are added together
 in the first layer instead of split in positives and negatives. Features
 that correspond to weights of the neuron that are 1 are added and those
@@ -141,6 +155,17 @@ increasing sharing hardware. I assume the reason it is better is  that having al
 posibilities in rearanging them to share subexpressions.
 
 # BNNPARSIGN -> BNNPARW
+![](comps/bnnparsign_bnnparw.svg)
+
+|           |   bnnparsign area |   bnnparw area | area change   |   bnnparsign power |   bnnparw power | power change   |
+|:----------|------------------:|---------------:|:--------------|-------------------:|----------------:|:---------------|
+| Har       |             24.52 |          24.25 | -1.1%         |               78.8 |            77.6 | -1.5%          |
+| cardio    |             33.27 |          33.21 | -0.2%         |              106.2 |           105.4 | -0.8%          |
+| gasId     |            175.09 |         171.37 | -2.1%         |              499.1 |           486.9 | -2.4%          |
+| pendigits |             33.38 |          33.97 | +1.8%         |              108.9 |           109.6 | +0.6%          |
+| winered   |             22.45 |          21.87 | -2.6%         |               74.6 |            72.3 | -3.1%          |
+| winewhite |             20.47 |          20.36 | -0.5%         |               68   |            66.7 | -1.9%          |
+
 Bnnparw differs with bnnparsign only in the number of bits that are
 used for the result of the operations of the hidden neurons.
 In bnnparsign all total sums have the maximum width a series of sums and
@@ -153,6 +178,17 @@ Bnnparpnw is the equivelant for bnnpar, where the minimum bitwidth for the
 positive and negative components of the neuron sum is used.
 
 # BNNPARW -> BNNPARCE
+![](comps/bnnparw_bnnparce.svg)
+
+|           |   bnnparw area |   bnnparce area | area change   |   bnnparw power |   bnnparce power | power change   |
+|:----------|---------------:|----------------:|:--------------|----------------:|-----------------:|:---------------|
+| Har       |          24.25 |           24.99 | +3.1%         |            77.6 |             79   | +1.8%          |
+| cardio    |          33.21 |           34.84 | +4.9%         |           105.4 |            110.5 | +4.8%          |
+| gasId     |         171.37 |          181.82 | +6.1%         |           486.9 |            516.1 | +6.0%          |
+| pendigits |          33.97 |           35.74 | +5.2%         |           109.6 |            115.5 | +5.4%          |
+| winered   |          21.87 |           20.76 | -5.1%         |            72.3 |             67.7 | -6.4%          |
+| winewhite |          20.36 |           20.48 | +0.6%         |            66.7 |             65.8 | -1.3%          |
+
 For each hidden neuron the average of the maximum and minimum value it's
 total sum can take is subtracted from the sum in order to make the range
 of values centered on zero and thus reduce the bitwidth needed for it.
@@ -164,7 +200,18 @@ RESULTS
 Subtracting the closest power of two that gets the range of values to
 a reduced bitwidth may do better.
 
-# BNNPARW -> BNNSTEPW
+# BNNPARW -> BNNPARSTEPW
+![](comps/bnnparw_bnnparstepw.svg)
+
+|           |   bnnparw area |   bnnparstepw area | area change   |   bnnparw power |   bnnparstepw power | power change   |
+|:----------|---------------:|-------------------:|:--------------|----------------:|--------------------:|:---------------|
+| Har       |          24.25 |              23.16 | -4.5%         |            77.6 |                73.7 | -5.0%          |
+| cardio    |          33.21 |              39.29 | +18.3%        |           105.4 |               125.5 | +19.1%         |
+| gasId     |         171.37 |             326.98 | +90.8%        |           486.9 |               935.2 | +92.1%         |
+| pendigits |          33.97 |              37.09 | +9.2%         |           109.6 |               120.3 | +9.8%          |
+| winered   |          21.87 |              22.78 | +4.2%         |            72.3 |                75.3 | +4.1%          |
+| winewhite |          20.36 |              20    | -1.8%         |            66.7 |                65.8 | -1.3%          |
+
 For each hidden neuron we add/subtract the features in order for each
 sample of the dataset. For each step of the process we find what the
 minimum bitwidth to hold each of the values is.
@@ -184,6 +231,18 @@ were negative for most datasets, althougth Har and winewhite improved a
 bit.
 
 # BNNPARSIGN -> BNNPAAR, BNNPAARX, BNNPAARTER
+![](tikz1/tbpaar.png)
+![](comps/bnnparsign_bnnpaar.svg)
+
+|           |   bnnparsign area |   bnnpaar area | area change   |   bnnparsign power |   bnnpaar power | power change   |
+|:----------|------------------:|---------------:|:--------------|-------------------:|----------------:|:---------------|
+| Har       |             24.52 |          17.42 | -29.0%        |               78.8 |            57.2 | -27.4%         |
+| cardio    |             33.27 |          38.74 | +16.4%        |              106.2 |           124.1 | +16.9%         |
+| gasId     |            175.09 |         281.55 | +60.8%        |              499.1 |           807.6 | +61.8%         |
+| pendigits |             33.38 |          35.43 | +6.1%         |              108.9 |           114.6 | +5.2%          |
+| winered   |             22.45 |          18.55 | -17.4%        |               74.6 |            62.6 | -16.1%         |
+| winewhite |             20.47 |          18.01 | -12.0%        |               68   |            59.8 | -12.1%         |
+
 Since bnnstepw didn't work I thought finding the order of operations
 Design Compiler uses after optimization and truncating widths there
 may fare better. I first tried to get the arithmetic
@@ -225,6 +284,7 @@ I have somehow crippled the datapath extraction of bnnparsign,
 though I don't see what could be a problem.
 
 # BNNSEQ
+![](tikz1/tbseq.png)
 This implements the layers sequentialy in regards to the inputs of the
 layer, meaning each neuron has an accumulator and each cycle it is 
 active it adds/subtracts the an input feature. All neurons update
@@ -256,6 +316,18 @@ instead of indexing a constant array with the counter was also attempted
 but turned out to be far worse.
 
 # BNNSEQ -> BNNDIRECT
+![](tikz1/tbdirect.png)
+![](comps/bnnseq_bnndirect.svg)
+
+|           |   bnnseq area |   bnndirect area | area change   |   bnnseq power |   bnndirect power | power change   |
+|:----------|--------------:|-----------------:|:--------------|---------------:|------------------:|:---------------|
+| Har       |         29.55 |            27.63 | -6.5%         |          132.7 |             128.8 | -2.9%          |
+| cardio    |         31.47 |            30.5  | -3.1%         |          143.1 |             150.8 | +5.4%          |
+| gasId     |         47.67 |            88.62 | +85.9%        |          216.8 |             364.5 | +68.1%         |
+| pendigits |         34.71 |            32.93 | -5.1%         |          139   |             135.7 | -2.4%          |
+| winered   |         29.57 |            27.11 | -8.3%         |          131.7 |             125.7 | -4.6%          |
+| winewhite |         29.75 |            27.31 | -8.2%         |          128.6 |             122.6 | -4.7%          |
+
 The difference of bnndirect with bnnseq is it also uses a hardcoded
 input vector for each neuron in the first layer instead of just the second.
 For each 4-bit input feature and every neuron a 5-bit signed seqment of the
@@ -267,6 +339,17 @@ of magnitude more input features than other datasets and thus scales
 differently.
 
 # BNNDIRECT -> BNNDW
+![](comps/bnndirect_bnndw.svg)
+
+|           |   bnndirect area |   bnndw area | area change   |   bnndirect power |   bnndw power | power change   |
+|:----------|-----------------:|-------------:|:--------------|------------------:|--------------:|:---------------|
+| Har       |            27.63 |        25.39 | -8.1%         |             128.8 |         116.4 | -9.6%          |
+| cardio    |            30.5  |        26.26 | -13.9%        |             150.8 |         124.9 | -17.2%         |
+| gasId     |            88.62 |        81.87 | -7.6%         |             364.5 |         325.6 | -10.7%         |
+| pendigits |            32.93 |        29.9  | -9.2%         |             135.7 |         123.1 | -9.3%          |
+| winered   |            27.11 |        24.51 | -9.6%         |             125.7 |         112.1 | -10.8%         |
+| winewhite |            27.31 |        23.98 | -12.2%        |             122.6 |         106.2 | -13.4%         |
+
 Bnndw is bnndirect with first layer accumulators getting their bitwidth
 set to the minimum needed similarly to bnnparw.
 The gains are more pronounced than the parallel case since the registers
@@ -274,6 +357,18 @@ take up a significant portion of the resources and each bit shaved off
 an accumulator's range removes a flip-flop.
 
 # BNNDW -> BNNDSAT
+![](saturationgraph.png)
+![](comps/bnndw_bnndsat.svg)
+
+|           |   bnndw area |   bnndsat area | area change   |   bnndw power |   bnndsat power | power change   |
+|:----------|-------------:|---------------:|:--------------|--------------:|----------------:|:---------------|
+| Har       |        25.39 |          24.02 | -5.4%         |         116.4 |           109.2 | -6.2%          |
+| cardio    |        26.26 |          24.77 | -5.7%         |         124.9 |           118.7 | -5.0%          |
+| gasId     |        81.87 |          81.05 | -1.0%         |         325.6 |           318.9 | -2.1%          |
+| pendigits |        29.9  |          29.79 | -0.4%         |         123.1 |           121.6 | -1.2%          |
+| winered   |        24.51 |          23.02 | -6.1%         |         112.1 |           104.5 | -6.8%          |
+| winewhite |        23.98 |          22.43 | -6.5%         |         106.2 |            98.5 | -7.3%          |
+
 In bnndsat saturation is used in combination with bnndw's truncation to
 reduce the number of registers farther. Using the DW_addsub_dx module
 from designware the result of adding a sample to the value of the
@@ -290,6 +385,7 @@ accumulator simple truncation is used instead to avoid the overhead.
 simulation with iverilog by two orders of magnitude.)
 
 # BNNROLIN
+![](tikz1/tbrolin.png)
 Also a sequential design, this time the outputs of the layer being
 the dynamic dimension instead of the inputs as in bnnseq. This means
 that each layer has a single adder tree that computes the output of a
@@ -318,12 +414,34 @@ time the current result is larger than the previous best. This way the
 argmax is calculated at the same time as the output neurons.
 
 # BNNROLIN -> BNNROMEM
+![](comps/bnnrolin_bnnromem.svg)
+
+|           |   bnnrolin area |   bnnromem area | area change   |   bnnrolin power |   bnnromem power | power change   |
+|:----------|----------------:|----------------:|:--------------|-----------------:|-----------------:|:---------------|
+| Har       |            8.29 |            8.16 | -1.6%         |             36.3 |             35.1 | -3.3%          |
+| cardio    |           10.85 |            9.74 | -10.2%        |             45.6 |             40.8 | -10.5%         |
+| gasId     |           38.54 |           37.87 | -1.7%         |            131.3 |            130   | -1.0%          |
+| pendigits |           10.37 |            9.55 | -7.9%         |             42.6 |             38.2 | -10.3%         |
+| winered   |            8.04 |            7.96 | -1.0%         |             35.7 |             35.2 | -1.4%          |
+| winewhite |            8    |            7.96 | -0.5%         |             34.9 |             34.9 | +0.0%          |
+
 Instead of hardcoding a custom input vector for each neuron the row of
 weights that correspond to each neuron are indexed from the weight 
 matrix by the counter and the 5-bit expansion of each input feature is
 xnored by it's weight bit.
 
 # BNNROMEM -> BNNROMESH
+![](comps/bnnromem_bnnromesh.svg)
+
+|           |   bnnromem area |   bnnromesh area | area change   |   bnnromem power |   bnnromesh power | power change   |
+|:----------|----------------:|-----------------:|:--------------|-----------------:|------------------:|:---------------|
+| Har       |            8.16 |             8.11 | -0.6%         |             35.1 |              35.3 | +0.6%          |
+| cardio    |            9.74 |             9.67 | -0.7%         |             40.8 |              40.1 | -1.7%          |
+| gasId     |           37.87 |            37.63 | -0.6%         |            130   |             129.6 | -0.3%          |
+| pendigits |            9.55 |             9.43 | -1.3%         |             38.2 |              38.7 | +1.3%          |
+| winered   |            7.96 |             7.99 | +0.4%         |             35.2 |              34.8 | -1.1%          |
+| winewhite |            7.96 |             7.79 | -2.1%         |             34.9 |              34.1 | -2.3%          |
+
 Instead of a decoder from the counter to index the register bit
 the current result of the first layer should be written to,
 bnnromesh stores the value at the end of a shifting register.
@@ -333,6 +451,17 @@ result reaches the right-most position and all the results are stored
 in order.
 
 # BNNROMESH -> BNNROMESX
+![](comps/bnnromesh_bnnromesx.svg)
+
+|           |   bnnromesh area |   bnnromesx area | area change   |   bnnromesh power |   bnnromesx power | power change   |
+|:----------|-----------------:|-----------------:|:--------------|------------------:|------------------:|:---------------|
+| Har       |             8.11 |             8.38 | +3.3%         |              35.3 |              36.9 | +4.5%          |
+| cardio    |             9.67 |            10.03 | +3.7%         |              40.1 |              42   | +4.7%          |
+| gasId     |            37.63 |            37.84 | +0.6%         |             129.6 |             135.5 | +4.6%          |
+| pendigits |             9.43 |             9.47 | +0.4%         |              38.7 |              40.4 | +4.4%          |
+| winered   |             7.99 |             8.13 | +1.8%         |              34.8 |              35.9 | +3.2%          |
+| winewhite |             7.79 |             7.98 | +2.4%         |              34.1 |              35.4 | +3.8%          |
+
 This design was implemented mostly out of curiosity and not
 because it would help much.
 
@@ -350,6 +479,17 @@ think the lookup table was implemented as well as it could so the
 results were negative.
 
 # BNNROMESH -> BNNROPERM
+![](comps/bnnromesh_bnnroperm.svg)
+
+|           |   bnnromesh area |   bnnroperm area | area change   |   bnnromesh power |   bnnroperm power | power change   |
+|:----------|-----------------:|-----------------:|:--------------|------------------:|------------------:|:---------------|
+| Har       |             8.11 |             8.14 | +0.4%         |              35.3 |              35.2 | -0.3%          |
+| cardio    |             9.67 |             9.56 | -1.1%         |              40.1 |              39.1 | -2.5%          |
+| gasId     |            37.63 |            37.67 | +0.1%         |             129.6 |             131.7 | +1.6%          |
+| pendigits |             9.43 |             9.35 | -0.8%         |              38.7 |              38.5 | -0.5%          |
+| winered   |             7.99 |             7.87 | -1.5%         |              34.8 |              34.7 | -0.3%          |
+| winewhite |             7.79 |             7.85 | +0.8%         |              34.1 |              33.9 | -0.6%          |
+
 This design was also implemented mostly out of curiosity.
 
 I had a vague notion that the logic that implements the decoder from the counter to the weights would be simpler if weight rows with
@@ -368,6 +508,17 @@ The area increased in half the datasets and decreased in the other
 half, so it doesn't seem to be better than a random permutation.
 
 # BNNROMESH -> BNNROSPINE
+![](comps/bnnromesh_bnnrospine.svg)
+
+|           |   bnnromesh area |   bnnrospine area | area change   |   bnnromesh power |   bnnrospine power | power change   |
+|:----------|-----------------:|------------------:|:--------------|------------------:|-------------------:|:---------------|
+| Har       |             8.11 |              7.82 | -3.6%         |              35.3 |               31.7 | -10.2%         |
+| cardio    |             9.67 |              9.3  | -3.8%         |              40.1 |               36   | -10.2%         |
+| gasId     |            37.63 |             37.31 | -0.9%         |             129.6 |              124.4 | -4.0%          |
+| pendigits |             9.43 |              9.08 | -3.7%         |              38.7 |               35.1 | -9.3%          |
+| winered   |             7.99 |              7.61 | -4.8%         |              34.8 |               30.9 | -11.2%         |
+| winewhite |             7.79 |              7.49 | -3.9%         |              34.1 |               30.9 | -9.4%          |
+
 The shifting regiter that stores the 1st layer's outputs gets initialised
 with a 1 in the left-most position and 0s in all other positions. A
 circuit that outputs a one-hot vector where only the bit in the position
@@ -382,6 +533,17 @@ rows the counter and it's encoder can be removed, leading in efficiency
 gains.
 
 # BNNROSPINE -> BNNROSPINOR
+![](comps/bnnrospine_bnnrospinor.svg)
+
+|           |   bnnrospine area |   bnnrospinor area | area change   |   bnnrospine power |   bnnrospinor power | power change   |
+|:----------|------------------:|-------------------:|:--------------|-------------------:|--------------------:|:---------------|
+| Har       |              7.82 |               7.76 | -0.8%         |               31.7 |                31.5 | -0.6%          |
+| cardio    |              9.3  |               9.35 | +0.5%         |               36   |                36.2 | +0.6%          |
+| gasId     |             37.31 |              37.11 | -0.5%         |              124.4 |               121.8 | -2.1%          |
+| pendigits |              9.08 |               8.81 | -3.0%         |               35.1 |                34.1 | -2.8%          |
+| winered   |              7.61 |               7.57 | -0.5%         |               30.9 |                30.8 | -0.3%          |
+| winewhite |              7.49 |               7.48 | -0.1%         |               30.9 |                30.6 | -1.0%          |
+
 Instead of the lookup table used for weights in bnnrospine,
 the current weight that corresponds to a given input feature is
 calculated by a NOR of the bits of the one-hot vector in positions
@@ -390,6 +552,17 @@ where the weight column of the feature would be -1.
 Except for cardio, it is an improvement.
 
 # BNNROSPINE -> BNNROBUS
+![](comps/bnnrospine_bnnrobus.svg)
+
+|           |   bnnrospine area |   bnnrobus area | area change   |   bnnrospine power |   bnnrobus power | power change   |
+|:----------|------------------:|----------------:|:--------------|-------------------:|-----------------:|:---------------|
+| Har       |              7.82 |            9.97 | +27.5%        |               31.7 |             26.1 | -17.7%         |
+| cardio    |              9.3  |           12.44 | +33.8%        |               36   |             29.4 | -18.3%         |
+| gasId     |             37.31 |           55.39 | +48.5%        |              124.4 |             97.9 | -21.3%         |
+| pendigits |              9.08 |           11.93 | +31.4%        |               35.1 |             29.7 | -15.4%         |
+| winered   |              7.61 |            9.66 | +26.9%        |               30.9 |             25.7 | -16.8%         |
+| winewhite |              7.49 |            9.56 | +27.6%        |               30.9 |             25.2 | -18.4%         |
+
 Every input feature gets the current weight bit from an open bus to
 which a tristate buffer for each entry in the feature's column in
 the weight matrix is connected. Each buffer in a bus corresponds

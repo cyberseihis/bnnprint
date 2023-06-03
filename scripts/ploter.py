@@ -43,18 +43,22 @@ def scatter_comp(fname, designs):
     ars, prs = data_in(fname)
     ars = build_dataframe(ars)
     prs = build_dataframe(prs)
+    ars = ars.loc[:, designs]
+    prs = prs.loc[:, designs]
+
     marker_styles = ['o', 's', 'D', '^', 'v', 'p']
     colors = ['red', 'blue', 'green', 'purple']
     legend_elements = []
     for i, dataset in enumerate(ars.index):
-        marker = marker_styles[i % len(marker_styles)]
+        marker = marker_styles[i]
         legend_elements.append(Line2D([0], [0], marker=marker, color='w', label=dataset, markerfacecolor='black', markersize=8))
     for j, accelerator in enumerate(designs):
-        color = colors[j % len(colors)]
+        color = colors[j]
         legend_elements.append(Line2D([0], [0], marker='o', color='w', label=accelerator, markerfacecolor=color, markersize=8))
 # Assuming 'df' is your dataframe containing the data
     for i, dataset in enumerate(ars.index):
         for j, accelerator in enumerate(designs):
+            print(i,j,dataset,accelerator)
             area = ars.loc[dataset, accelerator]
             power = prs.loc[dataset, accelerator]
             plt.scatter(power, area,
@@ -72,6 +76,7 @@ def scatter_comp(fname, designs):
 
     desmerg = '_'.join(designs)
     plt.savefig(f"{desmerg}.svg")
+    plt.clf()
 
 
 def tablecomp(fn, designs):
