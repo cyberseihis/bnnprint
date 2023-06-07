@@ -414,6 +414,7 @@ time the current result is larger than the previous best. This way the
 argmax is calculated at the same time as the output neurons.
 
 # BNNROLIN -> BNNROMEM
+![](./tikz1/bnnromem.png)
 ![](comps/bnnrolin_bnnromem.svg)
 
 |           |   bnnrolin area |   bnnromem area | area change   |   bnnrolin power |   bnnromem power | power change   |
@@ -508,6 +509,7 @@ The area increased in half the datasets and decreased in the other
 half, so it doesn't seem to be better than a random permutation.
 
 # BNNROMESH -> BNNROSPINE
+![](./tikz1/bnnrospine.png)
 ![](comps/bnnromesh_bnnrospine.svg)
 
 |           |   bnnromesh area |   bnnrospine area | area change   |   bnnromesh power |   bnnrospine power | power change   |
@@ -573,6 +575,152 @@ Decent improvements in power are achieved at the cost of significantly
 larger areas. At least the power for pendigits got under 30 mW, which
 I'm happy about.
 
-# TODO: Descriptions for tnn designs
+# BNNPAR -> TNNPAR
+![](./tnstuf/bnnpar_tnnpar.svg)
+
+|           |   bnnpar area |   tnnpar area | area change   |   bnnpar power |   tnnpar power | power change   |
+|:----------|--------------:|--------------:|:--------------|---------------:|---------------:|:---------------|
+| Har       |         29.4  |         14.58 | -50.4%        |           92.1 |           46.1 | -49.9%         |
+| cardio    |         46.71 |         20.55 | -56.0%        |          145.3 |           66.3 | -54.4%         |
+| gasId     |        269.76 |        110.99 | -58.9%        |          767.7 |          325.4 | -57.6%         |
+| pendigits |         42.95 |         29.97 | -30.2%        |          136.8 |           97.4 | -28.8%         |
+| winered   |         27.82 |         13.42 | -51.8%        |           90.7 |           44   | -51.5%         |
+| winewhite |         26.01 |         10.49 | -59.7%        |           84.6 |           35.1 | -58.5%         |
+
+Tnnpar is exactly the same as bnnpar except for weights that are set to
+0 corresponding to the feature being added to neither the positive or
+negativ sum of the neuron in the first layer and neither the bit output
+of a hidden neuron nor it's inverse being added to the popcount of the
+output neuron for the second layer.
+
+# BNNPARSIGN -> TNNPARSIGN 
+![](./tikz1/tnnparsign.png)
+![](./tnstuf/bnnparsign_tnnparsign.svg)
+
+|           |   bnnparsign area |   tnnparsign area | area change   |   bnnparsign power |   tnnparsign power | power change   |
+|:----------|------------------:|------------------:|:--------------|-------------------:|-------------------:|:---------------|
+| Har       |             24.52 |             13.4  | -45.4%        |               78.8 |               42.7 | -45.8%         |
+| cardio    |             33.27 |             19.21 | -42.3%        |              106.2 |               62.4 | -41.2%         |
+| gasId     |            175.09 |            101.65 | -41.9%        |              499.1 |              297.1 | -40.5%         |
+| pendigits |             33.38 |             29.43 | -11.8%        |              108.9 |               95.8 | -12.0%         |
+| winered   |             22.45 |             11.78 | -47.5%        |               74.6 |               40   | -46.4%         |
+| winewhite |             20.47 |              9.53 | -53.4%        |               68   |               32.8 | -51.8%         |
+
+Equivelant to bnnparsign with the connections that correspond to
+weights of 0 being ignored by having their input not included
+in the neuron's sum in either of the layers.
+
+# TNNPARSIGN -> TNNPARW
+![](./tnstuf/tnnparsign_tnnparw.svg)
+
+|           |   tnnparsign area |   tnnparw area | area change   |   tnnparsign power |   tnnparw power | power change   |
+|:----------|------------------:|---------------:|:--------------|-------------------:|----------------:|:---------------|
+| Har       |             13.4  |          13.82 | +3.1%         |               42.7 |            44.2 | +3.5%          |
+| cardio    |             19.21 |          19.85 | +3.3%         |               62.4 |            63.9 | +2.4%          |
+| gasId     |            101.65 |         101.42 | -0.2%         |              297.1 |           294.6 | -0.8%          |
+| pendigits |             29.43 |          29.74 | +1.1%         |               95.8 |            97.2 | +1.5%          |
+| winered   |             11.78 |          12.26 | +4.1%         |               40   |            40.6 | +1.5%          |
+| winewhite |              9.53 |          10.18 | +6.8%         |               32.8 |            34.1 | +4.0%          |
+
+Equivelant of bnnparw, widths of neurons have been reduced to the minimum
+that supports all their output values. Unlike it's fully connected
+counterpart reducing the widths for ternary networks was all around
+bad for performance. That goes against my prior expectation, as I
+assumed that the output values being smaller would let the width decrease
+more and thus simplify the adder further.
+I think the issue is again with
+obstructing datapath extraction since it needs to calculate different
+widths of the same intermediate values for different neurons, althougth
+if the exact same adder trees as in tnnparsign were used and then only
+a truncated part of the results was compared to 0, which just means a
+different bit than the MSB is taken as the sign bit, that would implement
+tnnparw with the same area and power as tnnparsign so I have trouble
+with how it ended up that worse off.
+
+# TNNPARSIGN -> TNNPAAR, TNNPAARTER
+![](./tnstuf/tnnparsign_tnnpaar.svg)
+![](./tnstuf/tnnparsign_tnnpaarter.svg)
+
+|           |   tnnparsign area |   tnnpaar area | area change   |   tnnparsign power |   tnnpaar power | power change   |
+|:----------|------------------:|---------------:|:--------------|-------------------:|----------------:|:---------------|
+| Har       |             13.4  |          14.03 | +4.7%         |               42.7 |            44   | +3.0%          |
+| cardio    |             19.21 |          18.75 | -2.4%         |               62.4 |            61.4 | -1.6%          |
+| gasId     |            101.65 |         107.06 | +5.3%         |              297.1 |           312.8 | +5.3%          |
+| pendigits |             29.43 |          28.34 | -3.7%         |               95.8 |            93.2 | -2.7%          |
+| winered   |             11.78 |          12.61 | +7.0%         |               40   |            42.2 | +5.5%          |
+| winewhite |              9.53 |          10.47 | +9.9%         |               32.8 |            34.9 | +6.4%          |
+
+|           |   tnnparsign area |   tnnpaarter area | area change   |   tnnparsign power |   tnnpaarter power | power change   |
+|:----------|------------------:|------------------:|:--------------|-------------------:|-------------------:|:---------------|
+| Har       |             13.4  |             14.01 | +4.6%         |               42.7 |               44.7 | +4.7%          |
+| cardio    |             19.21 |             19.87 | +3.4%         |               62.4 |               65   | +4.2%          |
+| gasId     |            101.65 |            110.62 | +8.8%         |              297.1 |              324.5 | +9.2%          |
+| pendigits |             29.43 |             27.95 | -5.0%         |               95.8 |               93   | -2.9%          |
+| winered   |             11.78 |             12.85 | +9.1%         |               40   |               43.7 | +9.3%          |
+| winewhite |              9.53 |             10.29 | +8.0%         |               32.8 |               34.2 | +4.3%          |
+
+There is no difference in how Paar's algorithm is implemented for ternary
+networks, it works the same way for sparse matrices. Only pendigits had
+a 5% improvement here, which disapoints me.
+
+# BNNSEQ -> TNNSEQ
+![](./tikz1/tnnseq.png)
+![](./tnstuf/bnnseq_tnnseq.svg)
+
+|           |   bnnseq area |   tnnseq area | area change   |   bnnseq power |   tnnseq power | power change   |
+|:----------|--------------:|--------------:|:--------------|---------------:|---------------:|:---------------|
+| Har       |         29.55 |         25.69 | -13.1%        |          132.7 |          119.6 | -9.9%          |
+| cardio    |         31.47 |         21.74 | -30.9%        |          143.1 |          101.4 | -29.1%         |
+| gasId     |         47.67 |         35.6  | -25.3%        |          216.8 |          158.2 | -27.0%         |
+| pendigits |         34.71 |         34.64 | -0.2%         |          139   |          139.1 | +0.1%          |
+| winered   |         29.57 |         24.95 | -15.6%        |          131.7 |          117.3 | -10.9%         |
+| winewhite |         29.75 |         24.45 | -17.8%        |          128.6 |          115.5 | -10.2%         |
+
+The way sparcity is added to the first layer of bnnseq is that an additional memory is added beyond the one that records whether the operation
+the neuron shall do on the current sample.
+The new memory stores a boolean matrix of which weights in the layer
+are nonzero. The bit for the current feature controls a multiplexer
+on it's corresponding neuron to select the feature or 0 for the value
+that gets added/subtracted.
+
+On the second layer the midle values are added in a different order by
+each output neuron, such that each cycle the next input that has a
+nonzero weight to the neuron is added to the accumulator. Because
+of that the second layer takes as many cycles to finish as the
+greatest number of nonzero weights an output neuron has, instead of the
+full count of midle neurons.
+
+# TNNSEQ -> TNNZEQ
+![](./tikz1/tnnzeq.png)
+![](./tnstuf/tnnseq_tnnzeq.svg)
+
+|           |   tnnseq area |   tnnzeq area | area change   |   tnnseq power |   tnnzeq power | power change   |
+|:----------|--------------:|--------------:|:--------------|---------------:|---------------:|:---------------|
+| Har       |         25.69 |         23.86 | -7.1%         |          119.6 |          115.7 | -3.3%          |
+| cardio    |         21.74 |         22.16 | +1.9%         |          101.4 |          105.9 | +4.4%          |
+| gasId     |         35.6  |         60.56 | +70.1%        |          158.2 |          236.5 | +49.5%         |
+| pendigits |         34.64 |         32.95 | -4.9%         |          139.1 |          135.7 | -2.4%          |
+| winered   |         24.95 |         22.66 | -9.2%         |          117.3 |          110.8 | -5.5%          |
+| winewhite |         24.45 |         22.08 | -9.7%         |          115.5 |          108.9 | -5.7%          |
+
+The change from tnnseq is that in the first layer each neuron has it's
+own multiplexer to regular/negated input features as in bnndirect, but
+additionaly inputs of the multiplexer in positions that correspond
+to weights of zero have a value of 0.
+
+# TNNZEQ -> TNNZEW
+![](./tnstuf/tnnzeq_tnnzew.svg)
+
+|           |   tnnzeq area |   tnnzew area | area change   |   tnnzeq power |   tnnzew power | power change   |
+|:----------|--------------:|--------------:|:--------------|---------------:|---------------:|:---------------|
+| Har       |         23.86 |         19.85 | -16.8%        |          115.7 |           94.5 | -18.3%         |
+| cardio    |         22.16 |         18.06 | -18.5%        |          105.9 |           83.4 | -21.2%         |
+| gasId     |         60.56 |         57.54 | -5.0%         |          236.5 |          221.6 | -6.3%          |
+| pendigits |         32.95 |         28.85 | -12.4%        |          135.7 |          117.5 | -13.4%         |
+| winered   |         22.66 |         18.73 | -17.3%        |          110.8 |           89.3 | -19.4%         |
+| winewhite |         22.08 |         18.5  | -16.2%        |          108.9 |           89.1 | -18.2%         |
+
+The widths of the accumulators of the first layer are reduced to the
+minimum required.
 
 [1] Banik, S., Funabiki, Y., Isobe, T. (2019). More Results on Shortest Linear Programs. In: Attrapadung, N., Yagi, T. (eds) Advances in Information and Computer Security. IWSEC 2019. Lecture Notes in Computer Science(), vol 11689. Springer, Cham. https://doi.org/10.1007/978-3-030-26834-3_7
