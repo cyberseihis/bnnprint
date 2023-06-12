@@ -220,6 +220,82 @@ electronics could look like, but don't go beyond the vision stage.
 
 \newpage
 
+# Ubiquitous computing; Mission statement
+
+Technology in general and more specifically computation plays an ever
+increasing part in our lives and there are no signs of the trend slowing
+down any time soon. There still however exists a relatively rigid real
+world - computational domain gap, meaning most of of our interactions of
+the world around us don't involve any computation taking place. It is
+not hard to imagine countless examples where computational elements
+would add value to everyday activities such as grocery shopping or
+reduce required labour in production processes such as manufacturing if
+those elements had close to zero cost and greater embedability
+associated with them. Although almost everyone in developed countries
+carries and interacts with powerful computers everywhere they happen to
+be, the form of interaction cannot easily adapt to the surrounding
+context they are in. One cannot simply ask the bananas they got if they
+are ripe enough, call out to their keys to find where they left them,
+check with their shoes on how many more steps they got in them.
+Furthermore it is clear that uncountable processes are horribly
+unoptimised compared to what could be achieved if a continuous stream of
+detailed information from each of of it's constituents and access to
+fine grained control over the minutia of them was in place. Think for
+example a farm where every individual fruit on any tree has it's growth
+progress tracked.
+Essentially taking the ideas of the Internet-of-Things(IoT) and pushing
+them to their logical limit, ubiquitous computing is an aspirational
+ideal to a future where every product is a smart device, every
+observable anyone would reasonably care for is accessible. Self driving
+cars will be able to safely navigate without access to vision by
+querying the positions of nearby devices, since whatever is not a
+device directly at least has one or more attached.
+
+Printed electronics are positioned to play a major role in at the very
+least the early stages of such a transformation. Printing is currently
+the only manufacturing method that can provide sub-cent computational
+elements, and cost is the greatest bottleneck to how pervasive they can
+become. Additionally the non-toxicity is crucial to make adding them to
+fast moving consumer goods that are disposable at these scales. The
+flexibility also helps with embedding more easily.  Even relatively
+"modest" compared to the complete vision applications that we can expect
+to come eventually, such as RFID tags replacing barcodes and enabling
+stores to track every individual item of stock or printed food quality
+sensors making best-before dates obsolete have great potential to
+disrupt a wide range of industries.
+
+Machine learning can accelerate the process by many orders of magnitude
+compared to how long it would take for specialised people in multiple
+fields to design a computational model to interpret and process the sensor data. In many cases the upfront engineering cost would be enough to stop the adoption of the paradigm altogether. If all it takes is for some sensor data to be collected and labeled that can easily be handled by any employee. We also depend on autoML being good enough for most of these small scale data applications, since otherwise we would just run into the same bottleneck with needing a data scientist for every little thing.
+Methods to lighten the resources demanded of the printed system that
+implements the model, such as quantization and binarization can clearly
+expand the scope of how complex the classification supported can be.
+
+The concept of this thesis is taking place in such a scenario. I have
+insured that the entire process from dataset to netlist you can pass to
+the printer requires no manual intervention. Anyone can pass their
+sensor data in one end and receive measurements for the model accuracy,
+circuit area and power requirements on the other, without special
+knowledge on any domain being required of them. 
+
+Imagine if you will the scenario of a coffee shop owner. They decide
+they would like the glasses they serve their coffee in to indicate the
+amount of sugar or other sweeteners used in the contained beverage.
+This would prevent people from grabbing the wrong coffee from the table
+because they all look indistinguishable. After searching on an online
+repository for what sensor would be of any use here, they order a few
+sample sheets of these printed sensors and a small gadget that clips on
+the sheet and records the measurements of the sensors. After dipping
+them on a dozen coffees with different mixtures of sweeteners inside,
+they plug the gadget to their computer and get a spreadsheet of sensor
+values for each dipping session. They simply append the label they
+decided each sweetener level corresponds to and pass the spreadsheet to
+the system. They decide that the reported accuracy and area are
+manageable order the resulting circuit to be printed on a batch of
+flexible patches they can stick to the inside of the glasses.
+
+\newpage
+
 # Datasets
 The datasets chosen to train models for and implement are the ones used
 by [x20] and [prof]. That way results for model accuracy and area
