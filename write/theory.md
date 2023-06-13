@@ -341,6 +341,151 @@ Printed piezoelectric sensor[x4] | Pendigits
 Printed pH sensor[x2], Inkjet mineral sensor[x3] | Wine Quality(White)
 Printed pH sensor[x2], Inkjet mineral sensor[x3] | Wine Quality(Red)
 
+\newpage
+
+# TinyML
+Edge computing enables applications where data processing is location
+sensitive. It provides greater security, privacy and availability
+guarantees to the end users. It is a fundamental component of the IoT
+market, that can reduce the dependance on cloud systems. The main
+bottleneck to it's addoption spread are the resource contstraints it
+imposes.  
+
+To deal with the demand of running machine learning
+applications on the edge for inteligent devices, traditional
+architectures are too bloated to make the cut. Many models nowadays
+demand computing capabilities out of reach for even the most high-end
+consumer hardware, let alone low power devices. TinyML is the field of
+optimising machine learning architectures to run on ultra resource
+constrained systems, typically no more than a few milliwatts.  
+
+Multidisciplinary work is demanded for this undertaking, as both the ML
+algorithms, the software and the hardware that supports them must
+accomodate these constraints while not compromising the accuracy of the
+models to a significant degree. Roughly the constraints at play are
+energy efficiency, processing capacity, memory space and production and
+engineering costs. It should be emphasised that the concern is with the
+inference step of ML although enabling the training phase on edge
+hardware is also it's own niche endeavor. 
+
+Since pretrained ML models cannot be run on these terms by default,
+end to end pipelines are required from data acquisition to inference,
+giving rise to the field of TinyML-as-a-Service or TinyMaaS. Special
+precausions must be taken at every intermediate step to lead to a
+runtime model lightweight enough.  
+
+Algorithmic approaches to the problem include:
+
+- An alternative to common ML models that can function at lower energy
+budgets is Hyperdimensional computing (HDC). In this paradigm. It
+leverages the propery of high-dimentional spaces that randomly sampled
+vectors are almost certainly close to orthogonal to each other to
+represent classes and features as ensembles of hypervectors. Samples are
+mapped to querry hypervectors during inference, which are then compared
+to the class encoders and the most similar is declared as the predicted
+class. Vectors usually have binary elements of 1 or -1 to reduce
+requirements. It can handle noisy and/or incomplete data, which is a big
+plus. Unfortunately the count of dimensions needed for many problems are
+so large we cannot make savings by this method. 
+\newpage
+- Another promising alternative machine learning technique is the recently
+proposed swapping. The layers of the neural network are split into
+so-called tiles, that can be computed individually. Each is mapped to a
+chunk of memory and those are swapped so the main memory only needs to
+hold the tile currently computed. Carefully orchestrated parrallelism is
+needed to mask the overhead of the memory accesses.  
+
+- One of the most ubiquitous methods in the field is constrained neural
+architecture search (NAS). Neural architecture search examines a search
+space of different architectures for different hyperparameters. An
+algorithm tries to locate the best possible architecture to maximise
+model performance on the objective function. An evaluator examines the
+trade-offs between accuracy and efficiency on deployement, given
+declared constraints of memory, energy etc. It may consider one or many
+target models on a single or multiple platforms. Both the search space
+and the search algorithm are hardware-aware. It is a multi-objective
+optimisation problem that is usually implemented as a multi-stage
+single-objective optimisation problem. Running the search is very time
+consuming but results outperform most manually designed networks.
+
+- An obvious approach to handling the memory constraint issue is using
+data compression techniques on the ML model. A key approach that has
+demonstrated 15-40x compression factors are Kronecker Products (KP).
+Large accuracy penalties may occur however, and a method called doped
+Kronecker product (DKP) leverages co-matrix adaptation to try and remedy
+those.
+
+- Once-for-all network is the name of a method for decoupling the
+architecture search from model training. OFA can find specialised
+subnetworks that largely maintain the accuracy of the full accuracy
+larger model without the need for training. A recent progressive
+shrinking algorithm (PSA) reduces depth and width of layers while
+retaining a higher final accuracy than equivalent general pruning.
+
+![](../../../Downloads/tinymldiagram.jpeg){width=50%}
+![](../../../Downloads/iotl.png){width=50%}
+
+\newpage
+
+- Over-parameterization is the property of a neural network where
+redundant neurons do not improve the accuracy of results. This
+redundancy can often be removed with little or no accuracy loss. Fully
+connected deep neural networks require N^2 connections between neurons.
+Network pruning removes parameters that don't impact accuracy by a large
+amount. A common case where this can easily be done is when parameters
+are either zero or sufficiently close to it. Similarly when the
+parameter values are redundantly duplicated. It can be applied at any
+granularity, from individual connections, neurons to entire layers. When
+a pruning procedure results in the neural network losing it's
+symmetrical structure it is referred to as unstructured pruning,
+otherwise it is structured pruning. Unstructured pruning results to
+sparse weight matrices that general processors do not execute
+efficiently.  Retraining a network after pruning parameters that weren't
+contributing enough can allow it to reach higher accuracies than before.
+Even pruning a randomly initialised network without training it before
+or after can result to a decent accuracy. Pruning is split into static
+pruning and dynamic pruning. Static pruning removes neurons between the
+training and inference stages, while in dynamic pruning it happens
+during the runtime. Usually all of the model's weights are available in
+runtime and a controller conditionally includes or excludes parts of the
+network from the computation based on detecting certain feature
+patterns. This controller is often also a trained machine learning
+model. Criteria for which elements to prune include brute-force pruning,
+where the entire model is searched element by element to find ones that
+don't affect the outcome. Norms of weight vectors may be used to prune
+neurons, in particular the popular l₁ norm in the LASSO method. Optimal
+Brain Damage uses the second derivative or Hessian matrix of the loss
+function to locate unneeded weights and was succeeded by the similar
+Optimal Brain Surgeon. Calculating these derivatives is too
+computationally expensive to be applied to larger networks. Average
+Percentage Of Zeros is a method to judge if the outputs of a neuron are
+usually contibuting to the result. Penalty based pruning introduces
+constraints during training to result to more weights being near zero so
+they can be pruned. Feature selection removes input features of the
+model that are not utilised sufficiently. It prevents overfitting and
+accelerates training. Another method clusters hidden features of a layer
+and removes those that are close enough to be reduntant. Iteratively
+pruning a network then retraining it with only the remaining elements
+allows to remove a much larger percentage of parameters without damaging
+performance. Knowledge distillation with the original network as the
+teacher and the pruned network as student can be used to recover lost
+accuracy.
+
+![](../../../Downloads/distillcartoon.png)
+![](../../../Downloads/pruninpng.png)
+
+- Knowledge distillation is a process of training a smaller, shallower
+student network to much the output logits of a larger, more capable
+teacher network that has been trained to satisfactory accuracy. More
+advanced variants include ensembles of small networks each trying to
+match the results of the congregated ensemble, or self-distillation in
+which shallower layers of a deep neural network try to learn to match
+the more complicated features of the deeper layers. If the size
+difference between the student and teacher networks is too large an
+intermediate size teacher assistant network gets the teacher's answers
+distilled into it and subsequently distills them to the student.
+
+\newpage
 
 [x1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
 Jozina B. De Graaf, George G. Malliaras, Inkjet-Printed PEDOT:PSS
