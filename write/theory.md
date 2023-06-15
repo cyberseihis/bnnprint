@@ -485,6 +485,20 @@ difference between the student and teacher networks is too large an
 intermediate size teacher assistant network gets the teacher's answers
 distilled into it and subsequently distills them to the student.
 
+- Quantization is the process of reducing the numerical precision of
+  values in the model. Networks are typically using 32 bit floating
+  point numbers during training[x22]. The most common quantization
+  targets for those are either 8-bit or 4-bit integers. In many cases
+  the network does not utilise this level of precision to it's full
+  extend. Reducing the precision in these cases can relieve the
+  computational burden associated with negligible accuracy sacrifices.
+  It has been in use since the early 90s. At first reducing the memory
+  requirements of weights was done by clustering their values and
+  sharing them. Quantization-aware training, in which the full precision
+  network is finetuned of retrained into the reduced form succeeded
+  quantizing the network only after the training process is completed. 
+
+
 \newpage
 
 [x1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
@@ -544,3 +558,5 @@ J. Henkel, “Cross-Layer Approximation For Printed Machine
 Learning Circuits,” in Design, Automation Test in Europe Conference
 & Exhibition (DATE), 2022, [Online]. Available: https://arxiv.org/
 abs/2203.05915
+
+[x22] Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
