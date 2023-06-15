@@ -52,17 +52,22 @@ def scatter_comp(fname, designs):
     for i, dataset in enumerate(ars.index):
         marker = marker_styles[i]
         legend_elements.append(Line2D([0], [0], marker=marker, color='w', label=dataset, markerfacecolor='black', markersize=8))
-    for j, accelerator in enumerate(designs):
+    for j, accelerator in enumerate(designs[1:]):
         color = colors[j]
         legend_elements.append(Line2D([0], [0], marker='o', color='w', label=accelerator, markerfacecolor=color, markersize=8))
 # Assuming 'df' is your dataframe containing the data
     for i, dataset in enumerate(ars.index):
-        for j, accelerator in enumerate(designs):
-            print(i,j,dataset,accelerator)
-            area = ars.loc[dataset, accelerator]
-            power = prs.loc[dataset, accelerator]
+        for j, accelerator in enumerate(designs[1:]):
+            print(i, j, dataset, accelerator)
+            area = ars.loc[dataset, accelerator] / ars.iloc[i, 0] - 1
+            power = prs.loc[dataset, accelerator] / prs.iloc[i, 0] - 1
             plt.scatter(power, area,
                         marker=marker_styles[i], color=colors[j])
+
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.axvline(0, color='black', linewidth=0.5)
 
 # Add legend
     plt.legend(handles=legend_elements)
