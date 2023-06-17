@@ -257,6 +257,23 @@ def width_by_step(l0, sw0):
     return nond_widths
 
 
+def widthstepforgraph(l0, sw0):
+    if (np.max(l0[0]) < 1):
+        l0 = l0 * 16
+    sw0 = np.sign(sw0)
+    cube = l0[:, :, None] * sw0[None, :, :]
+    cs = np.cumsum(cube, axis=1)
+    mcs = np.max(cs, axis=0).astype("int")
+    ncs = np.min(cs, axis=0).astype("int")
+    wmax = npminbits(mcs)
+    wmin = npminbits(ncs)
+    widf = np.maximum(wmax, wmin)
+    # make it nondecreasing,
+    # if a later width is smaller the previous neednt be larger
+    nond_widths = np.minimum.accumulate(widf[::-1, :], axis=0)[::-1]
+    return cs, nond_widths
+
+
 def index_dict(lst):
     return {val: [i for i, x in enumerate(lst) if x == val]
             for val in sorted(set(lst))}
