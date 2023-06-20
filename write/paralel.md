@@ -78,6 +78,7 @@ Code sample:
 assign scores[0*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden[1] + hidden[2] + ... + hidden_n[39];
 ```
 
+
 ## Signed sum
 
 ![Implementation a single sum per neuron](./tikz1/tbparsign.png)
@@ -126,6 +127,8 @@ not used by the compiler. Additionally the two sums need comparators to
 produce the binarized output of the neuron, whereas in the case the
 signed sum this corresponds to the sign bit of the sum which means no
 additional hardware.
+
+\newpage
 
 # Minimum range bit-width reduction
 
@@ -180,6 +183,8 @@ truncation goes against best practices and blocks the datapath
 extraction process for some neurons, so certain optimizations do not get
 applied to them and some would be common resources do not get shared. I
 have not found a method to work around this limitation at this point.
+
+\newpage
 
 # Range centering
 
@@ -257,6 +262,8 @@ actual value at the middle of the range $h_{i mid}$, for example the
 nearest power of two, would lessen the computational burden of the
 additional subtraction and comparison, but not enough to be worth
 implementing.
+
+\newpage
 
 # Naively reducing bitwidths of intermediate results
 ## Rationale
@@ -336,3 +343,243 @@ has 128 sensor features, it has gotten bad enough to almost double the
 area and power requirements. This shows that the issue is indeed
 considerable when there is more than a handful of inputs, and ways to
 work around it shall be searched for.
+
+\newpage
+
+# Preemptive arithmetic optimization
+
+![placeholder](./tikz1/tbpaar.png)
+
+## Rationale
+Based on the results from above I attempt to get the arithmetic
+expression that the design computes after synthesis, with the intent
+of fitting later approximation techniques to it rather than having the
+approximations dictate the graph of operations and forego these
+advantages.
+
+Design compiler provides an "*resource and datapath extraction*" report,
+which quoting the user guide "analyzes the arithmetic contents of the
+design and provides feedback so you can improve the RTL code as
+needed". In this report the arithmetic operations that are performed
+post-optimization by each datapath block are described in the block's
+resource section. From this an addition / subtraction graph from input
+elements to layer outputs could be reconstructed with relatively
+straightforward parsing.
+
+Unfortunately, the report does not provide a
+mapping between the symbols it uses for input and output
+variables of the datapath blocks and the corresponding wires in the
+original design. Due to this the reconstructed adder graph cannot be
+used to implement the network's layers before the inputs and outputs are
+otherwise labeled.
+
+Conceivably a method that unfolds all intermediate steps of the
+calculation into full explicit sums of input variables for each output
+variable could be used to achieve this labeling. After all intemediate
+variables / nodes of the adder graph are eliminated (for example, $x =
+a + b; y_1 = c + x; y_2 = d - x;$ would be expanded to $y_1 = c + a + b;
+y_2 = d - a - b;$) the addition and subtraction operations can be mapped
+to a matrix with binary {-1, 1} weights. A permutation matrix that turns
+the original weight matrix of the layer into this reconstructed matrix
+is then searched for, and the permutations are assigned as the labels of
+the input and output elements of the adder graph.
+
+Another path around this problem comes from the inclusion of references
+to the operator or operators in the original verilog design that is
+implemented by a given arithmetic operation mentioned in a datapath
+block's report. These references only point to the line of the verilog
+file the operator apears in, so to narrow it down with certainty the HDL
+file must beformated in a way that only a single arithmetic operator
+occurs per line.Then the variables named as operants in the report can
+be matched to the variables associated with the operator in the line or
+lines pointed to.
+
+Some early attempts in this direction are made but it becomes clear that
+a process that involves the network to be implemented in an HDL,
+synthesized, reverse engineered from the synthesised result, implemented
+in HDL in a different way and re-synthesised would require considerably
+more complex orchestration than first impressions imply. Even if it
+panned out without any issues the speed with which modifications to the
+designs could be tried out would be slowed down to a degree I was not
+comfortable with.
+
+As an alternative I search the literature for algorithms or heuristics
+that would perform an equivalent arithmetic optimization to the one
+Design Compiler provides. It does not appear too hopeful that a de facto
+standard method for such cases exists and perhaps even is the one used
+under the compiler's hood, so the operations found are exactly or close
+to the same. 
+
+![An example of a datapath block's extraction report. An intermediate
+value that is reused multiple times is highlighted.](./pics/extraction_report.png)
+
+## Implementation
+
+A formulation of the problem is the following:  Given a list of
+expressions of the general form $y_i = x_0 + x_1 - x_2 - ... + x_n$ in
+which operants can be shared between the expressions find the minimum
+number of additions or subtractions that need to be performed to
+evaluate all expressions. 
+
+The problem turns out considerable less well-studied than initially
+expected. While the deceptively simple description suggests a
+straightforward way to answer it, it is NP-Complete difficult, more
+specifically in the MaxSNP family of optimization problems. As a direct
+result only approximate solutions are attempted. [guy] searches for
+exact solutions by leveraging SAT solvers, but only manages to get this
+to work for very small matrix sizes up to 8 x 8. Not much is else found
+on the exact scenario above, but a close-enough problem having to do
+with factoring similar lists of expressions of the form $y_i = x_0
+\oplus x_1 \oplus ... \oplus x_n$ using the minimum possible XOR
+operations is actively worked on thanks to some applications in the
+field of cryptographic accelerators. Both belong to the shortest linear
+program family of problems.
+
+I choose to try utilising Paar's factoring algorithm [paar] first. It is
+older than most heuristics that have been applied to the XOR factoring
+problem, but has the advantage of not exploiting term cancellation.
+Thanks to the property $x \oplus x = 0$ some optimal solutions to the
+XOR problem include two subexpressions containing the same term $x$
+being combined by XOR to produce a desired expression that does not
+include $x$. Heuristics developed after Paar's take advantage of this
+feature, and while there is a parallel between it and the term
+cancellation of opposites in our scenario ($x - x = 0$ or $x + -x = 0$)
+I have not managed to find the adjustments needed to apply their
+insights to the new domain. Thus I give precedence to the more
+straightforward method, that directly translates to using addition in
+place of parity.
+
+\newpage
+
+## Paar's algorithm
+
+It is essentially a greedy algorithm that picks the two elements that
+are common in the largest number of expressions each time and adds the
+result of their XOR to the list of elements.
+
+Let $N$ be the number of inputs, $M$ be the count of expressions to
+evaluate, $x_i$ be the $i$-th input, $y_i$ the $i$-th expression and $A
+\in M\times{N}$ be the binary matrix we aim to factor. The value of
+$A_{i,j}$ is set to 1 if the term $x_j$ is included in the XOR
+expression $y_i$ and 0 otherwise.
+
+For example if $N = 4$ the expression $y_i = x_0 \oplus x_2$ corresponds
+to the row $A_i = [1 0 1 0]$.
+
+The following steps are repeatedly applied:
+
+1. Find the two columns $A_{:,i}$ and $A_{:,j}$ that have the bitwise
+   AND with the largest weight. This corresponds to the columns with the
+   largest dot product, so they can quickly be calculated by $i,j =
+   \arg\max\limits_{k>l} (A^T A)_{k,l}$. This corresponds to finding the
+   operation between two inputs or intermediate results that occurs the
+   most times across all expressions.
+
+2. Append the resulting product column  $A_{:,N} = A_{:,i} \land
+   A_{:,j}$ to $A$. Increase $N$ by one to reflect the new width of the
+   matrix. Intuitively this translates to including $x_i \oplus x_j$ as
+   a new intermediate result $x_N$ to be used in farther operations.
+
+3. Set $A'_{:,i} = A_{:,i} \land \neg A_{:,j}$ and $A'_{:,j} = A_{:,j}
+   \land \neg A_{:,i}$. Thusly the dependence of expressions to $x_i$
+   and $x_j$ is removed when it is now covered by the inclusion of $x_i
+   \oplus x_j$ in them.
+
+In the end only one element in each row has value $1$, and the index $j$ of
+the column the only $1$ of the $i$-th row occurs in tells as the input
+or intermediate result the $i$-th expression equals, $y_i = x_j$.
+
+Paar's algorithm can work for a group of expressions that consist only
+of addition, but the expressions we have to work with include both
+additions and subtractions. To reconcile this issue the negative of each
+input element is treated as a separate input element that is added where
+the original would be subtracted. Given the original weight matrix $W$ with
+$W_{i,j} \in {-1, 1}$ denoting whether element $x_j$ is added or
+subtracted from the expression $y_i$, we construct the matrix $A$ we pass as
+the initial state to the algorithm by first turning all the $-1$
+elements to $0$ and then appending the inverse of the matrix to itself,
+or $A = \max(0,[W,-W])$.
+
+From this process a list $L$ of successive indices such that $L_n =
+(i,j) \iff x_n = x_i + x_j$ is acquired, and the additions implied by
+them are hardcoded in the verilog description of the designs.
+
+## Extension to support subtractions
+
+I try a slight modification to the original procedure so it can be
+compatible with expressions including subtractions. The way I
+described previously to use negative inputs with Paar's strategy often
+has to unnecessarily repeat calculations. For a minimal example, the expressions $y_0 = x_0 - x_1 + x_2, y_1 = x_0 + x_1 - x_2$
+would result in 4 operations ($x_3 = x_0 + -x_1, y_0 = x_3 + x_2, x_4 = x_0
++ x_1, y_1 = x_4 + -x_2$), instead of the 3 needed ($x_3 = x_1 - x_2, y_0 = x_0 + x_3,
+y_1 = x_0 - x_3$). This can be avoided by taking the ability to subtract
+instead of only add intermediate results into account.
+
+In summary this works by using {-1, 0, 1} for the elements of the
+matrix $A$, where $A_{i,j} = -1$ when the expression for $y_i$ contains
+the negative of the value $x_j$. Instead of counting the number of (1,1)
+pairs of elements for columns as before, the count of pairs of elements
+that are either (1,1) or (-1,-1) corresponds to the number of times the
+sum of the values is used, and the count of pairs of elements
+that are either (1,-1) or (-1,1) corresponds to the number of times the
+difference of the values is used. As before the operation that occurs in
+the most expressions is chosen as the next operation to be implemented.
+
+Finding these two counts for all pairs of columns can still be done with
+a matrix multiplication like before so the new approach is not much
+slower.
+
+## Discussion
+
+I expected that either:
+
+1. The results of hardwiring the order of operations for calculating the
+   pre-activation result of the neurons using Paar's heuristic would be
+   considerably worse than the result of letting Design Compiler use the
+   results of it's own optimization heuristics, since they ought to have
+   implemented the best known ones. In this case trying an alternative
+   to preemptively optimise the operations beforehand is most likely
+   wasted effort because finding a competitive heuristic would be harder
+   than parsing the results of their solution.
+
+2. The results would have a negligible difference, because the
+   heuristics used are related and / or the quality of results that can
+   be expected by current methods for reasonable compute budgets hits a
+   certain ceiling for the various approaches. In this case applying
+   approximation techniques to the estimated arithmetic operation graph
+   can go ahead.
+
+The results show that although it is not consistant across the networks,
+there is an improvement of 20-30% to the area and power estimates of
+the smallest ones. This causes suspicion, since if such an old and
+common algorithm performed better for some cases of the problem they
+would reasonably have simply used it already. I initially look for
+ways the original designs could be obstructing datapath extraction more
+than they should, but nothing jumps out to me.
+
+There seems to be a scaling in effect where the size of the weight
+matrix or the number of total operations are inversely correlated with
+how well Paar's algorithm performs compared to the compiler's unknown
+solution. I hypothesise that they chose the methods they did for
+arithmetic optimization giving more weight to the performance on heavier
+workloads, where the savings are more important, or alternatively the
+trade-offs these methods consider apply better to heavier loads. This
+leaves some wiggle room for improvement in the sizes of the examined
+networks.
+
+Unfortunately, the issue I am trying to address has to do with
+performance losses from disrupting compiler's arithmetic optimizations
+scaling with model size, and the relative performance of the alternative
+heuristic scales inversely with that size. This means that the attempted
+fix cannot apply to the cases that need it most, so the underlying
+problem remains unresolved.
+
+The ternary take on Paar's heuristic outperforms the original by a
+relatively consistant ratio with exception of the Har model's network.
+This gives me some hope that applying more advanced heuristics used in
+Shortest Linear Programs modefied for this particular usecase would
+raise the network size threshold for which results can be improved.
+
+\newpage
+
+# Sequential evaluation of accumulated values
