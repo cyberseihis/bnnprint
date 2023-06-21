@@ -582,4 +582,272 @@ raise the network size threshold for which results can be improved.
 
 \newpage
 
-# Sequential evaluation of accumulated values
+# Sequential evaluation
+
+## Rationale
+
+The classifications considered here are mostly not time critical and do
+not require high throughput. Evaluating the quality of a wine every
+second or multiple times per second does not offer any more value than
+doing it every few minutes. Since time is the less precious resource for
+our purposes it can be traded for lowering area and power demands.
+
+A way to approach this trade-off is by extending evaluation of neurons'
+values to multiple clock cycles so that the adder graphs needed to
+perform all of the numerical operations can be replaced with simpler
+adder circuits that get reused between cycles. This requires the inclusion
+of memory elements to hold intermediate results of calculations between
+cycles.
+
+I first try to make all neurons sequentially evaluate their
+pre-activation values by updating their held value on new inputs on
+successive clock cycles until they have included all of their input
+values into their total. This means that each layer will take as many
+cycles to calculate it's outputs as the number of input features it has.
+Layers get evaluated successively, so the entire inference will take a
+cycle count equal to the sum of all the inputs and hidden features of
+the network.
+
+## Implementation
+
+### First layer
+
+![The first layer of a sequentially evaluated BNN](tikz1/tbseq.png)
+
+In the first layer each neuron is implemented by an accumulator that
+holds a running total of the weighted sum of the input features seem
+thus far and an adder-subtractor that given the weight bit of the
+connection between the neuron and the input feature currently updated on
+as a control either adds of subtracts the newly presented feature with
+the previous value of the accumulator to get next value of the
+accumulator. In each cycle a new input element is selected for all
+neurons of the layer and they either add it or subtract it from their
+running totals.
+
+The weights of the layer are stored in a memory. A counter is used to
+select the current feature from a multiplexer and the column of the
+weight matrix from the weight memory that will provide the control
+signals to the adder-subtractors. When the value of the counter reaches
+the final value that indexes an input feature, $N-1$, a flag is set that
+stops the counter and the accumulators of the current layer from
+updating their held values and signals the next layer to start it's own
+process. A reset signal is used to bring these memory elements back to
+their zeroed initial values when inference of the next set of inputs is
+desired. A reset is required to happen before each inference starts.
+
+Let $k$ be the number of cycles since the start of the inference / the
+current value of the counter. $h_{i,k}$ be the value of the accumulator
+of the $i$-th neuron on the $k$-th cycle, or after updating on the
+first $k$ input elements. Clearly $h_{i,0} = 0$ and $h_{i,N-1}$ would be
+equal to $h_i$. $x_k$ is the input element selected on the $k$-th cycle
+and $h'_{i,k}$ is the output of the adder-subtractor of the $i$-th
+neuron at the end of the $k$-th cycle. 
+
+$$ h_{i,k+1} = h'_{i,k} = h_{i,k} + x_k = \sum_{j=0}^{k} x_j$$
+
+Because the output of the add-subtract unit when the last input of the
+layer is selected is equal to the pre-activation value of the neuron,
+this value does not have to be stored in the accumulator to be used.
+Instead the sign bit that determines the binarized output of the neuron
+for the next layer can be taken directly from the adder-subtractor's
+output. This way the first layer can be evaluated in $N-1$ cycles
+instead of $N$, as long as the selected input of the first layer stays
+at the last ($N-1$-th) position for the duration of the second layer's
+evaluation.
+
+An alternative implementation where the weight matrix was stored in
+shifting registers instead of a constant array indexed by the counter was
+tested. The memory elements are very expensive in this technology so
+this version ended up underperforming the previous by a large margin due
+to the required registers.
+
+### Second layer
+
+The second layer starts after receiving an enable signal from the first
+layers halting flag. Because of the linear transformation described in
+the start in this layer instead of subtracting one from the running
+total when the weighted current input would be -1 instead 0 is added to
+the running total, so it remains unchanged. It could be implemented
+similar to how the first layer is implemented if the adder-subtractors
+are exchanged with XNOR gates, by storing the weights of the layer in a
+memory and calculating the XNOR of the weight column $W2_{:,k}$ with the
+output bit of the previous layer $s_k$ to add to the running totals on
+the $k+1$-th cycle.
+
+Instead , each neuron gets it's own multiplexer over input features,
+where the $k$-th data line of the $i$-th neuron's multiplexer is set to
+be $s_k$ if the weight $W2_{i,k}$ of the connection between the hidden
+feature $s_k$ and the neuron $y_i$ is 1, and $\neg s_k$ in the case it
+is -1. This is equivalent to hardcoding the result of the XNOR operation
+for that particular neuron as the data line of the multiplexer.
+
+In each cycle the neuron receives a single bit and adds it to the value
+in its accumulator. It can therefore be implemented via a counter with
+this bit as an enable signal.
+
+The main goal of this approach is to remove the need for storing theweights of the layer and the decoder to select them, not the negligible XNOR gates that would be used.
+These multiplexers share their input data lines with a lot of the other
+multiplexers, so the hardware cost of their implementation is
+considerably cheaper than $C$ separate ones.
+
+## Discussion
+
+The cost of the adder graph in the fully parallel designs scales
+superlinearly with the count of input elements of the layer, at a faster
+rate than multiplexers and decoders used in these sequential designs,
+and the number of required registers scales about logarithmically.
+It is expected then, that the advantage of a sequential to a parallel
+design would also scale to the number of input features $N$.
+
+The expense of the sequential elements is also pronounced in this
+technology, and since as mentioned before it doesn't increase by much
+due to additional inputs, a clear disadvantage is given to the smaller
+networks, exaggerating the scaling effect.
+
+Most of the networks under examination are small enough to be in the
+range that is disadvantaged by the change, with the smallest ending up
+50% larger. Only the largest model's
+network, with 128 input features, is clearly gaining anything from this
+trade-off, as the sequential design takes up 70% less area. 
+
+Perhaps the upfront cost can be lessened, which would be bring littler
+networks into the range that benefits from this sequential design area
+wise. Even if the way to achieve this ends up diminishing the scaling
+benefits described above, it can be applied only to models with $N$
+lower than a threshold, so it would not be an issue.
+
+\newpage
+
+## Removing the weight array
+
+![The first layer of a sequential design with the required
+subtractions hardcoded](tikz1/tbdirect.png)
+
+The process used in the second layer in the previous part, where each
+neuron gets its own multiplexer over normal and inverted input hidden
+features in order to have no need of a weight memory, is here applied to
+the inputs of the first layer as well.
+
+For a hidden neuron $h_i$ the $j$-th data line in its multiplexer will
+be denoted $x_{i,j}$. The data lines of the multiplexer will be 5 bit
+signed integers, so they can represent the values of the 4 bit input
+features as well as their negatives. Similarly to how a data line in the
+second layer described above would be set to either $s_k$ or $\neg s_k$,
+the data lines in the first layer are set as such:
+
+$$
+x_{i,j} = \begin{dcases}
+    x_j,& \text{if } W1_{i,j} = 1\\
+    -x_j,& \text{if } W1_{i,j} = -1
+\end{dcases}
+$$
+
+The adder-subtractors and the weight array with the decoders that
+selected the control signals from them are removed. Since the input is
+taken already negated when appropriate, only an adder is needed for the
+accumulator.
+
+Although some up-front costs are gone, the extra machinery to negate
+each input feature and for the custom multiplexers makes each input more
+expensive. The largest network, gasId, is as such almost doubled in
+required area, but this change was aimed for the smaller networks. It
+manages up to 8% improvement there, which is nowhere near enough to
+break even with the parallel version.
+
+\newpage
+
+## Register width reduction
+
+The number of bits the register of the accumulator of each neuron can be
+reduced to the minimum required to support the range of values it
+encounter in the dataset. This is exactly the same bitwidth reduction as
+the one described for the parallel design. Each bit shaved off an
+accumulator’s range removes a flip-flop.
+
+Because the registers take up a significant chunk of the resources, the
+improvement is more pronounced than in the fully parallel equivalent,
+freeing up around 10% of the area and power across the board.
+
+## Accumulator saturation
+
+![Value of a neuron's accumulator over the course of the evaluation,
+with and without saturation of the results](saturationgraph.png)
+
+Since removing flip-flops by reducing the bitwidth of the registers
+appears to help alleviate the up-front cost of changing to sequential
+evaluation for smaller networks, expending some extra combinatorial
+logic to lead to further shortening can be justified. The method to do
+that approached here is by saturating the results of the addition
+between the previous running total stored in the register and the new
+input feature to stay in the bounds of a smaller range.
+
+The result $h_i$ that is found for the neuron $i$ at the end of the
+layer's evaluation does not need to be the actual weighted sum of the
+input features it is supposed to represent. Since binarization of the
+result occurs before it is passed to the next layer, an approximate
+result does not lead to an error in the neuron's output $s_i$ as long as
+it still has the same sign as the original.
+
+If at some cycle during the layer's evaluation the absolute value of the
+running total becomes sufficiently large, it becomes unlikely that the
+remaining features will add up to be even larger in the opposite
+direction without overshooting the difference by some distance. This
+means we can saturate the intermediate results to a range $[-2^r,2^r-1]$
+without much risk the final aggregate having the wrong sign.
+
+Take the case where $k$ is the last cycle the value of the accumulator
+gets saturated to $-2^r$. In order for an error in the output to occur
+because the sign of the accumulated value in the end flips to positive
+when it would not if the full range of values was supported, the weighted
+sum of the remaining features that will be added in the next cycles must
+be larger than $2^r$, but smaller than the true running total.
+
+$$ 2^r \leq \sum_{j=k}^{N-1} \leq \sum_{j=0}^{k-1} $$
+
+The smallest value of $r$ is found for each neuron such as this case or
+its equivalent in the opposite direction do not occur for any samples in
+the dataset. The bitwidth of the accumulator of that neuron is then set
+to $r+1$ and the results of the addition of a feature are saturated to
+that range using the DW_addsub_dx module from designware, if and only if
+$r+1$ is smaller than the width the neuron was previously reduced to
+that fit it's entire range of values. In the case that width is the same
+as $r+1$, saturating the values is not allowing the flip-flops of the
+accumulator to decrease and there is no benefit to incur the extra logic
+of implementing saturation for this neuron.
+
+## Discussion
+
+After these improvements, 4 out of the 6 networks demand less area in
+the sequential design than in the parallel one. But the impovement is
+not substancial enough to justify evaluation taking up many more cycles,
+and the power is still not competitive with the parallel designs. This
+tells me that this version of sequential designs is not salvageable. A
+different process of splitting the workload among cycles must be
+constructed from the ground up.
+
+\newpage
+
+# Single adder tree sequential evaluation
+
+## Rationale
+
+Since the previous attempt where all neurons update in parallel
+on a single input feature each cycle did not pan out, the clear next
+candidate is an arrangement where a single neuron of the layer updates
+on all input features in parallel in a given clock cycle. This means
+that a single adder tree will calculate the total value of a neuron
+$h_i$ by summing up the weighted features in a single cycle, and perform
+the same for a different neuron of the same layer in the next cycle.
+
+This way the adder graph that encompasses the calculations required for
+the entire layer in the fully parallel version gets reduced to the adder
+tree a single neuron's inference demands. This can more than make up for
+the encoding of weighting the features appropriately before their
+accumulation than must now be done since the operations are not simply
+hard-coded into the circuit.
+
+## Implementation
+
+![A single-adder sequential BNN implementation](tikz1/bnnrolx.png)
+
+The 
