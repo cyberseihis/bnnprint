@@ -3,6 +3,7 @@ header-includes:
  - \usepackage{fvextra}
  - \usepackage{mathtools}
  - \usepackage{amsmath}
+ - \usepackage{tikz}
  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
@@ -242,6 +243,8 @@ that this method decreases the bitwidth compared the one calculated from
 the "unbalanced" range. For the rest there is no reason to incur the
 overhead for no benefit so they are declared the same as they are using
 minimum range bit-width reduction.
+
+![lorem ipsum](tikz1/bnnparce.png)
 
 ## Discussion
 The results show that the hardware requirements of the additional
@@ -815,6 +818,8 @@ as $r+1$, saturating the values is not allowing the flip-flops of the
 accumulator to decrease and there is no benefit to incur the extra logic
 of implementing saturation for this neuron.
 
+![loremipsum](tikz1/bnndsat.png)
+
 ## Discussion
 
 After these improvements, 4 out of the 6 networks demand less area in
@@ -850,4 +855,177 @@ hard-coded into the circuit.
 
 ![A single-adder sequential BNN implementation](tikz1/bnnrolx.png)
 
-The 
+The multiplexing that was described in the previous sequential design 
+is rearranged here in the sense that the $M$ multiplexers with $N$ data
+lines each turn into $N$ multiplexers of $M$ elements. Instead of a
+multiplexer belonging to a certain neuron and selecting the weighted
+feature that neuron should increment by this moment, now a multiplexer
+corresponds to a specific input feature and selects which "weighting" of
+that feature the currently examined neuron needs. It is analogous to
+having the axis flipped.
+
+Let's call the value selected to represent the $j$-th input feature on
+the $i$-th cycle of the layer's evaluation $x_{i,j}$. The way it is
+derived from the original input $x_j$ is as stated before:
+
+$$
+x_{i,j} = \begin{dcases}
+    x_j,& \text{if } W1_{i,j} = 1\\
+    -x_j,& \text{if } W1_{i,j} = -1
+\end{dcases}
+$$
+
+The functional difference is that the counter is indexing on the value
+$i$ instead of $j$. Like before the negation only happens once per
+input.
+
+The selected weighted inputs are then parsed by a generic $N$ input
+adder tree that provides the sign of their sum, on the $i$-th cycle $s_i
+= sign(\sum_{j=0}^{N-1} x_{i,j})$. Only the sign bit needs to be stored
+to be available to following calculations by the next layer, the
+pre-activation value $h_i$ can be safely discarded. A 1-bit register is
+thus indexed by the counter to store the current neuron's output. This
+process takes as many cycles to evaluate a layer as count of its
+neurons, so $M$ clock cycles for the first layer.
+
+A close to identical system as the previous approach detects when the
+last neuron of the layer has finished operations and passes the torch to
+the next layer to start. The next layer conditionally inverts the input
+features it receives before passing them to multiplexers' data lines on
+the logic the first layer negates them.
+
+On the second and final layer results do not need to be stored at all.
+Because the output of neurons is calculated one at a time, the argmax
+operation can be embedded in this process. Two registers are used, one
+holding the largest output of a neuron seen so far $y_{max}$ and the
+other the index of the aforementioned neuron in the layer, which is
+taken from the value of the cycle counter of the layer.
+
+If the result of the popcount operation on the current weighted inputs
+on the $i$-th cycle of the second layer's activity $y_i$ is greater than
+the previous best $y_{max}$, the new result is stored as the new best so
+far and the index is overwritten by the cycle count $i$. Beyond saving a
+lot of flip-flops the overhead of the additional argmax module that had
+to be activated after the second layer is removed.
+
+The second layer takes as many cycles as classes to be examined for
+prediction. The full inference therefore takes up $M+C$ clock cycles.
+Again a reset signal must be given between successive inferences.
+
+## Discussion 
+
+A large improvement on the previous sequential design method, using a
+single adder tree gets us 60 - 75% smaller footprints than the fully
+parallel circuits. Given the delay of the inference has been multiplied
+by a factor between one and two orders of magnitude this trade-off is
+kind of underwhelming. Like before an upfront cost in multiplexers /
+weight storage has to be paid upfront, and since the sizes of the
+networks are on the small side the scaling savings of reusing logic
+accross neurons do not deliver in full. The constraint reminds me of
+Amdaul's law, where instead of the speedup achievable by providing N
+parallel cores being limited by the ratio of the computation that is
+sequential, the resource savings are constrained by the ratio of
+hardware that can be shared between the N parallel cores.
+
+Combinations of sequential approaches on the two layers where also
+tested to confirm that it was an improvement for both of them.
+
+\newpage
+
+# Deconstructing input negation
+
+![lorem ](tikz1/bnnromem.png)
+
+Negating each input involves a 4 bit increment-by-1 circuit per feature. 
+Although it does not sound very alarming it is still an expense that
+scales with the input count $N$. The negation operation can be
+deconstructed into inverting the input and adding 1 to the result. If
+instead of providing the negative of the input as the result of
+multiplying by the appropriate weight to the multiplexer the inverse of
+all the bits of the input are provided, entire section simplifies into a
+1-bit look up table indexed by the cycle counter whose output gets
+XOR'ed with all the bits of the input feature. This saves some logic.
+
+In order to not risk errors from this approximation a correction term
+$b_i$ needs to be added to the sum, equal to the number of 1s that were
+not added to negate in this cycle, or the count of elements of the
+weight row that belongs to the currently computed hidden neuron that are
+-1.
+
+$$ b_i = \sum_{j \in W1_i} [j = -1] $$
+$$ h_i = \sum_{j=0}^{N-1} x_j \oplus \neg bin(W1_{i,j}) + b_i $$
+
+\newpage
+
+# Shifting registers for timekeeping
+
+![lol lmao](tikz1/bnnrospine.png)
+
+Instead of having a decoder from the cycle counter's current value $i$
+select the register to which the binary post-activation output $s_i$ of
+the neuron that was computed will be saved, it is simpler to use a
+shifting register. Each cycle the previously held values are shifted one
+position to the right and the result of the current evaluation is saved
+to the left-most position of the register. After $N$ cycles pass the
+right-most position of the register contains the result of the first
+neuron's evaluation that has been shifted $N-1$ positions and all
+outputs are in their proper place. The flag that halts the operation of
+the first layer is then set and the results are frozen in place to be
+used by the next layer.
+
+The inclusion of a shifting register where the values set on
+initialisation are discarded provides and opportunity to shed the cycle
+counter altogether. When the reset signal brings the registers to
+their pre-set values we assign the left-most bit to be 1 and all the
+rest to 0. The position of the most significant 1 in the register is
+shifted once to the right every cycle. By utilising a simple one-hot
+equivalent of a priority encoder a $M$ bit signal of a one hot
+representation of the current cycle count is produced.
+
+This one hot signal can be used to detect when the final neuron is
+evaluated and layer transition flag ought to be set, and can select the
+weight row for the at the moment computed from the lookup table without
+requiring a decoder from the cycle counter. This lets the counter to be
+retired, without requiring extra state keeping elements to preserve its
+functionality.
+
+## Tristate weight memory
+
+![Implementing the one-hot indexed weight memory using an open bus per
+input feature](tikz1/bnnrobus.png)
+
+Every input feature gets the current weight bit from an open bus to
+which a tristate buffer for each entry in the feature’s column in
+the weight matrix is connected. Each buffer corresponds to a single
+element of the weight matrix $W1$. The tri-buffer that holds the value
+of $W1_{i,j}$ has its output connected to the same open bus as the other
+buffers that hold a weight in $W1_{:,j}$ and activates by the $i$-th bit
+of the one-hot select signal from above.
+
+The goal of this is to avoid the nested OR gates that are used to reduce
+the selected value of the column into one bit in the standard look up
+table implementation.
+
+## Discussion
+
+These changes give a 10-20% decrease in area and power requirements
+compared to the initial single adder tree implementation. With the use
+of tristate buffers the power saving goes up to ~35% but at a very harsh
+area penalty of 10-30% compared to the first design. I think the
+explanation for this is that more tristate buffers are required than OR
+gates since logical simplifications cannot be made on them, but the
+considerable switching power consumption from the intermediate nets that
+connect nested OR gates is removed. This trade-off allows to optimise
+for whichever of area and power is the largest bottleneck to the desired
+application.
+
+All in all compared to the fully parallel designs requirements are
+reduced $3-5\times$. This opens up the space of implementable applications. The relative savings would get considerably better for larger networks given the scaling observed.
+
+\begin{tikzpicture}
+    \draw (0, 0) rectangle (5.8, 5.8);
+    \draw (7, 0) rectangle ++(2.9, 2.9);
+\end{tikzpicture}
+
+Actual size comparison of the estimated area of the printed designs for
+the pendigits dataset's model. Parallel on left, sequential on right.
