@@ -1029,3 +1029,138 @@ reduced $3-5\times$. This opens up the space of implementable applications. The 
 
 Actual size comparison of the estimated area of the printed designs for
 the pendigits dataset's model. Parallel on left, sequential on right.
+
+\newpage
+
+# Ternary weight networks
+
+## Rationale
+
+Ternary Neural Networks (**TNNs**) use weights and activations in the
+range of {-1, 0, 1} instead of the {-1, 1} of BNNs. This enables much
+greater representational ability, and thus higher accuracies are
+achievable.When computed with CPUs or GPUs the inclusion of the 0 makes
+the bit-level operations that make BNNs so compute friendly not
+applicable, since the activations and weights now take up two bits and
+their MAC operations are not reducible to XNORs and popcounts. With
+hardware dedicated to running TNNs implemented in FPGAs or ASICs more
+optimizations can be made, but the efficiency is still sub-par compared
+to binary networks.
+
+In our case the designs are fully bespoke to a single model/set of
+weights. This enables the isomorphism between ternary weight networks
+and sparse binary weight networks to be exploited, since connections
+removed from the sparse network can be omitted from the design upfront,
+something that is not doable in the case that all models of a certain
+architecture must be supported.
+
+For the single-cycle / fully combinatorial designs this translates to
+fewer arithmetic operations to build components for. The model accuracy
+and the resulting circuit's area / power demands are both improved in
+this way by switching to ternary weights, pretty good deal.
+
+Only the weights but not the activations will be ternarized in this
+implementation. The additional model ability achieved by using ternary
+activations for the hidden layer on top of the weights was not
+significant enough to justify the suspected cost of implementing 2-bit
+arithmetic in the subsequent layer.
+
+\newpage
+
+## Fully combinatorial implementation
+
+![AAAA](tikz1/tnnparsign.png)
+
+After training the same datasets with the same parameter counts using
+ternary instead of binary weights the equivalent weight matrices $W1 \in
+\{-1,0,1\}^{M,N}$ and $W2 \in \{-1,0,1\}^{C,M}$ are used to define the
+desired operations similarly to the binary counterparts:
+
+$$
+h_i = \sum_{j=0}^{N-1} \begin{dcases}
+    + x_j,& \text{if } W1_{i,j} > 0\\
+    - x_j,              & \text{if } W1_{i,j} < 0
+\end{dcases}
+$$
+
+$$
+y_i = \sum_{j=0}^{M-1} \begin{dcases}
+    s_j,& \text{if } W2_{i,j} > 0\\
+    \neg s_j,              & \text{if } W2_{i,j} < 0
+\end{dcases}
+$$
+
+In the first layer for connections that have weights of 0 neither
+addition nor subtraction is actualised for the feature in the neuron's
+specified expression. It is simply ignored since it always contributes 0
+to the sum.
+
+Some neurons turn out to have all their non-zero weights have the same
+sign, either all being 1 or all -1. In such a case since the input
+features are all positive the sign of the multiply-accumulate result for
+this neuron will always be the same. So the outputs of these neurons are
+hardcoded into constants to avoid unnecessary overhead.
+
+In the second layer, as well, connections with weights equal to zero get
+neither the hidden feature they connect to nor it's inverse included in
+the related output neuron's popcount. The required logic is thus reduced
+in both layers by each connection severed.
+
+Remember the linear transformation used to go from sums
+weight-activation products of {-1,1} to popcounts of XNORs that now
+encode the values that would be -1 as 0. To achieve $-1\to 0$ and $1\to
+1$ $f(x) = \frac{(x+1)}{2}$ is that linear transformation. When applied
+to an array $v \in \{-1,1\}^M$ binary values the sum is:
+
+$$ \sum_{i=0}^{M-1} f(v_i) = \sum_{i=0}^{M-1} (v_i+1)/2 =
+\frac{1}{2}\sum_{i=0}^{M-1} v_i+1 = \frac{1}{2}\sum_{i=0}^{M-1} v_i +
+\frac{M}{2} $$
+
+In the last layer, that in this case is the second one, so far the
+number of inputs of all output neurons was the same, thus the factor
+$\frac{M}{2}$ could be omitted when comparing outputs between the
+neurons and the XNOR/popcount results can be used directly for the
+argmax calculations.
+
+Now, since the output neurons are treated as sparse binary ones, they no
+longer have the same input count and therefore the constant term
+$\frac{M}{2}$ is no longer the same for the whole layer. The issue can
+also be described as elements with value 0 included in the vector $v$
+contributing $f(0) = \frac{1}{2}$ each to the sum after the linear
+transfomation, which is not reflected by ignoring them completely as
+done here.
+
+In order to fix this issue a correction term equal to $\frac{z_i}{2}$
+ought to be added to the result the XNOR/popcount computation gives,
+where $z_i$ denotes the number of elements in the weight row of the
+$i$-th output neuron $W2_i$. This term can be large compared to the
+value of the popcount when a neuron is sparse enough, so instead we can
+add $\frac{z_i - \min\limits_{j=0}^{M-1} z_j}{2}$ as a smaller
+correction term, so the neuron with the least severed connections gets
+nothing added to it's popcount and the rest get theirs based on how many
+extra zeroed weights they contain compared to it.
+
+In the design this is done by shifthing the result of the popcount once
+to the left and adding the count of zeroes over the minimum as is to
+it, giving us $2y_i + (z_i-\min\limits_{j=0}^{M-1} z_j)$. The results
+of the neurons can now be compared correctly.
+
+If we were dealing with a layer that was using XNOR and popcount that
+was not the final one the correction term $\lceil \frac{z_i -
+\min\limits_{j=0}^{M-1} z_j}{2} \rceil$ would instead be used as the
+threshold for binarization of the neuron's output instead of 0.
+
+## Discussion
+
+Thanks to the removal of terms from the arithmetic operations that
+define the design of the layers the area and power requirements were
+almost halved compared to the fully combinatorial designs of the binary
+models that were trained on the same datasets as the ternary ones. The
+accuracy was also improved across the board while at it.
+
+Unfortunately applying bitwidth reduction or pre-synthesis arithmetic
+optimization underperformed the original TNN circuits, even for datasets
+whose binary network implementations where improved by these methods.
+There is nothing to note on the implementation of these since no change
+needs to be made to accommodate TNNs. I am not sure what to make of this
+yet.
