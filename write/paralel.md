@@ -7,6 +7,114 @@ header-includes:
  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
+# Proposed framework
+
+![Proposed framework](./masterplan.png)
+
+As outlined in the ubiquitous computing section, the deliverable of this
+thesis is meant to be a framework that allows a labeled set of sensor
+data to produce a fully functional printed circuit that implements a
+classifier for this dataset. Due to lack of access to equipment the
+actual printing is not viable in this context and the scope will be
+restricted to the dataset \to netlist part of the process.
+
+The classifier architecture will in particular be a Binary Neural
+Network(BNN), explained in the preliminaries. It may not necessarily be
+the most suitable architecture in every case, but it was created with
+the purpose to reduce resource consumption, which is the core concern.
+It was thus chosen as the niche I will be carving here.
+
+The rough sequence of processes performing that transformation
+comprises of the following:
+
+1. Hyperparameter search: In order for a hands-off training process to
+   be applicable to a vast space of possible sensor datasets for which
+   printed classifiers may be desired a single generic configuration of
+   training hyperparameters wont cut it. So a search must be performed
+   to find a set suitable to the data distribution at hand.
+2. Model training: After a useable hyperparameter configuration is found
+   a model is trained under them and evaluated. If the test split
+   accuracy is sufficient for the user's needs the rest of the process
+   may take place. The weights and network architecture of the final
+   model are passed to be processed.
+3. Parameter optimization: Some pieces of information derived from the
+   weights and dataset can be used to help the design avoid unnecessary
+   computations. For an extreme but applied example, if a neuron never
+   changes it's output based on its input activations it can be flagged
+   to be replaced with a static constant assignment.
+4. Parameter encoding: The weights, measures of the network architecture
+   and derived assisting information are either used to produce verilog
+   code that performs the computations they imply or formatted such that
+   they can be read and parsed by the control mechanisms of verilog.
+5. Design instantiation: A template for the type of design that ought to
+   be produced gets the snippets of custom functionality and/or the
+   formatted parameters needed to derive that functionality using
+   generate blocks imported into it. The result is a design that is
+   bespoke to the exact trained model under question.
+6. Verification: A behavioural simulation of the design is performed to
+   confirm that classifier accuracy is satisfactorily preserved.
+7. Synthesis: An optimised netlist is produced from the HDL
+   specification. A farther gate level simulation is performed to
+   guarantee functionality.
+8. Metric estimation: Area and power estimates are taken from the
+   synthesis and simulation tools using information from the printed
+   components PDK. If these demands seem to be supported by the budget
+   of the usecase the user may place a printing order.
+
+Parts of the wider procedure out of scope of this framework are:
+
+- Printed sensor availability
+- Access to printed sensor data for labeling
+- Examination of other promising architectures
+- Design of masks for placement of printed components
+- Inclusion of sensor, ADC and output indicator resource consumption in
+  reported estimates. 
+
+The rest of the thesis will almost entirely deal with the design of
+efficient bespoke BNN classifier hardware. This includes parts 3 and 5
+of the process listed above. The rest, although time consuming to
+implement, have no parts of interest to report on and will be summarised
+in the experimental setup section.
+
+The points that need to be impressed upfront in order for the following
+talk of HDL implementations to be comprehensible are:
+
+- Over the course of working on the presented designs 6 models that
+  correspond to 6 of the 7 datasets shown above are consistently used to
+  test and compare results. The one dataset of the 7 that didn't make
+  the cut was Arrhythmia, because the learned strategy of the model
+  wasn't acceptable.
+
+- All of these networks have one hidden layer that takes 4 bit inputs
+  that are received from the ADCs connected to the respective sensors
+  and one output layer that receives 1 bit binary inputs from the
+  previous layer and produces a score for how likely each class is. An
+  argmax module is also included in all of the following implementations
+  to provide the index of the predicted class and is also included in
+  the area/power estimates.
+
+- All these networks have exactly 40 hidden neurons in the first layer.
+  This is not reflective of an actual limitation of the framework. A
+  first batch of models that were used to evaluate the designs and were
+  meant to be replaced at some point ended up staying until the end.
+  Initially they were kept out of inertia and past some point replacing
+  them would require re-evaluating every type of design implementation
+  with every new model in order for result comparisons to be
+  informative, which would take a substantial usage of synthesis time
+  and would halt further progress for a while.
+
+- During synthesis a practically unlimited timing budget is allowed so
+  timing optimizations do not take place and trade off against more
+  important to the project goals.
+
+- The power draw estimate is done with a gate level simulation of the
+  synthesised circuit evaluating 1000 samples of the dataset to
+  reproduce a realistic usage environment. The clock frequency is set to
+  the critical timing frequency of the circuit reported by the synthesis
+  tool.
+
+\newpage
+
 # Symbol definitions
 - $N$ = the number of input features,  
 - $M$ = the number of hidden neurons (in our case it is always 40),  
@@ -1164,3 +1272,14 @@ whose binary network implementations where improved by these methods.
 There is nothing to note on the implementation of these since no change
 needs to be made to accommodate TNNs. I am not sure what to make of this
 yet.
+
+The attempts at sequential designs for ternary weight networks do not
+perform to a satisfactory level so they won't be expanded on.
+
+\newpage
+
+# Evaluation
+
+## Experimental setup
+
+
