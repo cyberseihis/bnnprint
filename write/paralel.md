@@ -76,8 +76,8 @@ of the process listed above. The rest, although time consuming to
 implement, have no parts of interest to report on and will be summarised
 in the experimental setup section.
 
-The points that need to be impressed upfront in order for the following
-talk of HDL implementations to be comprehensible are:
+The points that I think are helpful to be impressed upfront in order for
+my following talk of HDL implementations to be comprehensible are:
 
 - Over the course of working on the presented designs 6 models that
   correspond to 6 of the 7 datasets shown above are consistently used to
@@ -1278,8 +1278,135 @@ perform to a satisfactory level so they won't be expanded on.
 
 \newpage
 
-# Evaluation
+# Experimental setup
 
-## Experimental setup
+## Data preparation
 
+The files that comprise the 7 datasets described in the preliminaries
+where procured from the UCI repository. Afterwards using the
+descriptions of what each feature of the tabular dataset represents
+categorical features that could not correspond to a sensor's output are
+descarded. Additionally features that are constant or near constant (for
+example only 3 samples in the whole dataset have a different value for
+this feature from the rest) are removed since they could not provide
+useful information.
 
+For each feature the range of values is then normalised in the $[0,1]$
+range so the features use similar scales. These values are then
+quantised in 4 bit precision by the formula $\lfloor x * (16-\epsilon)
+\rfloor$, taking integer values in the range $[0,15]$. This way the data
+is treated during training as if seen from a 4-bit ADC interpreting a
+sensor's analog output, like it is supposed to be under inference
+conditions.
+
+The labels for each sample are enumerated so they take the range
+$[0,C-1]$, which will later help with making the selection of the
+predicted class's index by the argmax module simpler. All of the
+datasets are finally converted into a standard format, that of a CSV
+file with one sample per row and feature per column and labels as the last column. 
+
+## Training
+
+The datasets are split randomly with a predetermined seed into a 70-30
+split of training and test data.
+
+All the training splits of the datasets are passed from a grid
+hyperparameter search using 5 fold cross validation provided by scikit
+learn to find the best performing configuration set. This selected
+hyperparameter configuration is then used to train the final model. Ten
+training runs are performed with the previous training split getting
+further divided into a smaller training split and a validation split.
+The model originating from the training run of the ten that achieves the
+highest validation accuracy is chosen as the result of the whole
+training process. The accuracy achieved by this model on the test split
+is reported as the accuracy of the learned classifier.
+
+The actual model was initially implemented using the Larq framework for
+quantised models and afterwards switched to using the similar Qkeras
+framework after it was empirically found to achieve higher performing
+classifiers.
+
+Interestingly the models that were trained under the Larq framework
+benefited from the inclusion of a batch normalisation layer whereas
+models trained with the Qkeras framework had their performance hindered
+by it. I have not yet found a convincing explanation for this
+difference. I will note here that not using a batch normalisation layer
+after the hidden layer is what allows the threshold that the output of
+the first layer's neurons are compared to in order to produce their
+binarized output to be always zero. So this discrepancy was another
+point for the preference of Qkeras over Larq.
+
+### Dataset accuracies table graphs
+
+## Parameter optimization and encoding
+
+The models resulting from the above process are stored in a
+predetermined location that is accessible by the script that uses the
+weight matrices and architecture details obtained by the saved model
+plus as well as the original dataset in order to compute some derivative
+information, such as the minimum required bitwidth of neurons or the
+order of operations given by preemptive optimization. These auxiliary
+results are then passed to the script that encodes them as well as the
+raw weight matrices into a form that can be used as part of template
+verilog file.
+
+This can take the form of writing out bespoke verilog instructions to
+implement the calculations necessary that are specific to the model.
+More commonly this information is formatted as parameters that can be
+imported into the verilog template and determine the actualised
+primitives and submodules that get instantiated and their connections
+via conditionals in generate blocks.
+
+Both styles are equally able to describe the desired actualised design
+and either style can be used for any occasion the other can. In practice
+generating verilog instructions was found to be more convenient for the
+simpler fully parallel designs, and parameterised modules were more
+easy to work with for the rest of the cases.
+
+## Design instantiation and functional verification
+
+The formatted custom functionality in either form described above is
+embedded into a template verilog module via the use of the icarus verilog
+tool as a verilog preprocessor. The result is a verilog module that
+describes a custom implementation of the specific model that was used as
+input. This is fully standalone and the stored model or derived
+parameters are not needed from this point forward.
+
+After the custom module is instantiated it is used to simulate
+evaluation of 1000 samples from the dataset it is associated with. The
+reason that only 1000 samples are used instead of the full dataset is
+simply to speed up the process, since the requirements for exact
+execution are not so strict in our case that it is necessary to be
+fearful of a potential error that does not materialise once in 1000
+samples. Even if execution of the design does not precisely match the
+functionality of the original model in some edge cases as long as the
+classification accuracy is not measurably affected we are in the clear.
+
+The results of the simulation are compared to those of evaluating the
+trained model in it's native framework for these same samples, and if
+everything matches up the process can continue. Note that a case where
+the design is found to not match the model's results is not expected to
+occur during hypothetical execution of the process by an actual user,
+the main goal of this simulation is for debugging purposes during
+development of the design template.
+
+## Synthesis and requirement evaluation
+
+The custom design is synthesised using Design Compiler. The compilation
+is set to prioritise area efficiency and effectively no time constraint
+is given in order for timing optimizations not to interfere. The area
+estimation is taken from the compiler at this stage.
+
+The netlist that was generated then goes under a gate-level simulation
+using Chronologic of the same 1000 dataset samples as the previous
+functional simulation to give realistic usage data for the estimation of
+the required power.
+
+\newpage
+
+# Results
+
+Graphs and tables are presented here that show the area and power
+requirements for the various versions of hardware implementation for the
+6 datasets and their trained models. Comparisons for the effect of the
+various design decisions outlined above are also made.
