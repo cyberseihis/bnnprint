@@ -1410,3 +1410,249 @@ Graphs and tables are presented here that show the area and power
 requirements for the various versions of hardware implementation for the
 6 datasets and their trained models. Comparisons for the effect of the
 various design decisions outlined above are also made.
+
+The designs will be referred to by nicknames in the following graphs and
+tables. Here is which explanation of each design corresponds to each
+nickname:
+
+Design nickname | Link to relevant description
+---|---
+bnnpar| [Combinatorial fully connected implementations](#combinatorial-fully-connected-implementations)
+bnnpar| [Positive negative sum](#positive-negative-sum)
+bnnparsign| [Signed sum ](#signed-sum)
+bnnparw| [Minimum range bit width reduction](#minimum-range-bit-width-reduction)
+bnnparce| [Range centering](#range-centering)
+bnnparstepw| [Naively reducing bitwidths of intermediate results ](#naively-reducing-bitwidths-of-intermediate-results)
+bnnpaar| [Preemptive arithmetic optimization ](#preemptive-arithmetic-optimization)
+bnnpaarter| [Extension to support subtractions](#extension-to-support-subtractions)
+bnnseq| [Sequential evaluation](#sequential-evaluation)
+bnndirect| [Removing the weight array](#removing-the-weight-array)
+bnndw| [Register width reduction ](#register-width-reduction)
+bnndsat| [Accumulator saturation ](#accumulator-saturation)
+bnnrolx| [Single adder tree sequential evaluation](#single-adder-tree-sequential-evaluation)
+bnnrolin| [Deconstructing input negation](#deconstructing-input-negation)
+bnnrospine| [Shifting registers for timekeeping ](#shifting-registers-for-timekeeping)
+bnnrobus| [Tristate weight memory ](#tristate-weight-memory)
+tnnparsign| [Ternary weight networks](#ternary-weight-networks)
+
+\newpage
+
+## Combinatorial designs area comparisons
+
+![](./pararea.svg)
+
+|             |   Har |   cardio |   gasId |   pendigits |   winered |   winewhite |
+|:------------|------:|---------:|--------:|------------:|----------:|------------:|
+| bnnpaar     | 17.42 |    38.74 |  281.55 |       35.43 |     18.55 |       18.01 |
+| bnnparw     | 24.25 |    33.21 |  171.37 |       33.97 |     21.87 |       20.36 |
+| bnnpar      | 29.4  |    46.71 |  269.76 |       42.95 |     27.82 |       26.01 |
+| bnnparsign  | 24.52 |    33.27 |  175.09 |       33.38 |     22.45 |       20.47 |
+| tnnparsign  | 13.4  |    19.21 |  101.65 |       29.43 |     11.78 |        9.53 |
+| bnnparstepw | 23.16 |    39.29 |  326.98 |       37.09 |     22.78 |       20    |
+| bnnparce    | 24.99 |    34.84 |  181.82 |       35.74 |     20.76 |       20.48 |
+| bnnpaarter  | 18.73 |    35.97 |  261.38 |       32.22 |     17.47 |       16.65 |
+
+## Combinatorial designs power comparisons
+
+![](./parpower.svg)
+
+|             |   Har |   cardio |   gasId |   pendigits |   winered |   winewhite |
+|:------------|------:|---------:|--------:|------------:|----------:|------------:|
+| bnnpaar     |  57.2 |    124.1 |   807.6 |       114.6 |      62.6 |        59.8 |
+| bnnparw     |  77.6 |    105.4 |   486.9 |       109.6 |      72.3 |        66.7 |
+| bnnpar      |  92.1 |    145.3 |   767.7 |       136.8 |      90.7 |        84.6 |
+| bnnparsign  |  78.8 |    106.2 |   499.1 |       108.9 |      74.6 |        68   |
+| tnnparsign  |  42.7 |     62.4 |   297.1 |        95.8 |      40   |        32.8 |
+| bnnparstepw |  73.7 |    125.5 |   935.2 |       120.3 |      75.3 |        65.8 |
+| bnnparce    |  79   |    110.5 |   516.1 |       115.5 |      67.7 |        65.8 |
+| bnnpaarter  |  60.8 |    116   |   759.7 |       107.3 |      59.6 |        55.9 |
+
+## Sequential designs power comparisons
+
+![](./seqarea.svg)
+
+|            |   Har |   cardio |   gasId |   pendigits |   winered |   winewhite |
+|:-----------|------:|---------:|--------:|------------:|----------:|------------:|
+| bnndsat    | 24.02 |    24.77 |   81.05 |       29.79 |     23.02 |       22.43 |
+| bnndirect  | 27.63 |    30.5  |   88.62 |       32.93 |     27.11 |       27.31 |
+| bnnrobus   |  9.97 |    12.44 |   55.39 |       11.93 |      9.66 |        9.56 |
+| bnnrolx    |  9.14 |    11.1  |   42.12 |       10.69 |      8.85 |        8.65 |
+| bnnrospine |  7.82 |     9.3  |   37.31 |        9.08 |      7.61 |        7.49 |
+| bnndw      | 25.39 |    26.26 |   81.87 |       29.9  |     24.51 |       23.98 |
+| bnnrolin   |  8.29 |    10.85 |   38.54 |       10.37 |      8.04 |        8    |
+| bnnseq     | 29.55 |    31.47 |   47.67 |       34.71 |     29.57 |       29.75 |
+
+## Sequential designs power comparisons
+
+![](./seqpower.svg)
+
+|            |   Har |   cardio |   gasId |   pendigits |   winered |   winewhite |
+|:-----------|------:|---------:|--------:|------------:|----------:|------------:|
+| bnndsat    | 109.2 |    118.7 |   318.9 |       121.6 |     104.5 |        98.5 |
+| bnndirect  | 128.8 |    150.8 |   364.5 |       135.7 |     125.7 |       122.6 |
+| bnnrobus   |  26.1 |     29.4 |    97.9 |        29.7 |      25.7 |        25.2 |
+| bnnrolx    |  39   |     45.5 |   142.4 |        43.5 |      38.9 |        37.5 |
+| bnnrospine |  31.7 |     36   |   124.4 |        35.1 |      30.9 |        30.9 |
+| bnndw      | 116.4 |    124.9 |   325.6 |       123.1 |     112.1 |       106.2 |
+| bnnrolin   |  36.3 |     45.6 |   131.3 |        42.6 |      35.7 |        34.9 |
+| bnnseq     | 132.7 |    143.1 |   216.8 |       139   |     131.7 |       128.6 |
+
+
+\newpage
+
+## Ananytic comparisons
+
+![bnnpar_bnnparsign](figs2/bnnpar_bnnparsign.svg)
+
+|           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
+|:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
+| Har       |              29.4  |                  24.52 | -16.6%        |               92.1 |                   78.8 | -14.4%         |
+| cardio    |              46.71 |                  33.27 | -28.8%        |              145.3 |                  106.2 | -26.9%         |
+| gasId     |             269.76 |                 175.09 | -35.1%        |              767.7 |                  499.1 | -35.0%         |
+| pendigits |              42.95 |                  33.38 | -22.3%        |              136.8 |                  108.9 | -20.4%         |
+| winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
+| winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
+
+![bnnparsign_bnnparw](figs2/bnnparsign_bnnparw.svg)
+
+|           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               24.25 | -1.1%         |                   78.8 |                77.6 | -1.5%          |
+| cardio    |                  33.27 |               33.21 | -0.2%         |                  106.2 |               105.4 | -0.8%          |
+| gasId     |                 175.09 |              171.37 | -2.1%         |                  499.1 |               486.9 | -2.4%          |
+| pendigits |                  33.38 |               33.97 | +1.8%         |                  108.9 |               109.6 | +0.6%          |
+| winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
+| winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
+
+![bnnparw_bnnparce](figs2/bnnparw_bnnparce.svg)
+
+|           |   bnnparw area(cm²) |   bnnparce area(cm²) | area change   |   bnnparw power(mW) |   bnnparce power(mW) | power change   |
+|:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
+| Har       |               24.25 |                24.99 | +3.1%         |                77.6 |                 79   | +1.8%          |
+| cardio    |               33.21 |                34.84 | +4.9%         |               105.4 |                110.5 | +4.8%          |
+| gasId     |              171.37 |               181.82 | +6.1%         |               486.9 |                516.1 | +6.0%          |
+| pendigits |               33.97 |                35.74 | +5.2%         |               109.6 |                115.5 | +5.4%          |
+| winered   |               21.87 |                20.76 | -5.1%         |                72.3 |                 67.7 | -6.4%          |
+| winewhite |               20.36 |                20.48 | +0.6%         |                66.7 |                 65.8 | -1.3%          |
+
+![bnnparw_bnnparstepw](figs2/bnnparw_bnnparstepw.svg)
+
+|           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
+|:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
+| Har       |               24.25 |                   23.16 | -4.5%         |                77.6 |                    73.7 | -5.0%          |
+| cardio    |               33.21 |                   39.29 | +18.3%        |               105.4 |                   125.5 | +19.1%         |
+| gasId     |              171.37 |                  326.98 | +90.8%        |               486.9 |                   935.2 | +92.1%         |
+| pendigits |               33.97 |                   37.09 | +9.2%         |               109.6 |                   120.3 | +9.8%          |
+| winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
+| winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
+
+![bnnparsign_bnnpaar](figs2/bnnparsign_bnnpaar.svg)
+
+|           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               17.42 | -29.0%        |                   78.8 |                57.2 | -27.4%         |
+| cardio    |                  33.27 |               38.74 | +16.4%        |                  106.2 |               124.1 | +16.9%         |
+| gasId     |                 175.09 |              281.55 | +60.8%        |                  499.1 |               807.6 | +61.8%         |
+| pendigits |                  33.38 |               35.43 | +6.1%         |                  108.9 |               114.6 | +5.2%          |
+| winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
+| winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
+
+![bnnpaar_bnnpaarter](figs2/bnnpaar_bnnpaarter.svg)
+
+|           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               17.42 |                  18.73 | +7.5%         |                57.2 |                   60.8 | +6.3%          |
+| cardio    |               38.74 |                  35.97 | -7.2%         |               124.1 |                  116   | -6.5%          |
+| gasId     |              281.55 |                 261.38 | -7.2%         |               807.6 |                  759.7 | -5.9%          |
+| pendigits |               35.43 |                  32.22 | -9.1%         |               114.6 |                  107.3 | -6.4%          |
+| winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
+| winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
+
+![bnnseq_bnndirect](figs2/bnnseq_bnndirect.svg)
+
+|           |   bnnseq area(cm²) |   bnndirect area(cm²) | area change   |   bnnseq power(mW) |   bnndirect power(mW) | power change   |
+|:----------|-------------------:|----------------------:|:--------------|-------------------:|----------------------:|:---------------|
+| Har       |              29.55 |                 27.63 | -6.5%         |              132.7 |                 128.8 | -2.9%          |
+| cardio    |              31.47 |                 30.5  | -3.1%         |              143.1 |                 150.8 | +5.4%          |
+| gasId     |              47.67 |                 88.62 | +85.9%        |              216.8 |                 364.5 | +68.1%         |
+| pendigits |              34.71 |                 32.93 | -5.1%         |              139   |                 135.7 | -2.4%          |
+| winered   |              29.57 |                 27.11 | -8.3%         |              131.7 |                 125.7 | -4.6%          |
+| winewhite |              29.75 |                 27.31 | -8.2%         |              128.6 |                 122.6 | -4.7%          |
+
+![bnndirect_bnndw](figs2/bnndirect_bnndw.svg)
+
+|           |   bnndirect area(cm²) |   bnndw area(cm²) | area change   |   bnndirect power(mW) |   bnndw power(mW) | power change   |
+|:----------|----------------------:|------------------:|:--------------|----------------------:|------------------:|:---------------|
+| Har       |                 27.63 |             25.39 | -8.1%         |                 128.8 |             116.4 | -9.6%          |
+| cardio    |                 30.5  |             26.26 | -13.9%        |                 150.8 |             124.9 | -17.2%         |
+| gasId     |                 88.62 |             81.87 | -7.6%         |                 364.5 |             325.6 | -10.7%         |
+| pendigits |                 32.93 |             29.9  | -9.2%         |                 135.7 |             123.1 | -9.3%          |
+| winered   |                 27.11 |             24.51 | -9.6%         |                 125.7 |             112.1 | -10.8%         |
+| winewhite |                 27.31 |             23.98 | -12.2%        |                 122.6 |             106.2 | -13.4%         |
+
+![bnndw_bnndsat](figs2/bnndw_bnndsat.svg)
+
+|           |   bnndw area(cm²) |   bnndsat area(cm²) | area change   |   bnndw power(mW) |   bnndsat power(mW) | power change   |
+|:----------|------------------:|--------------------:|:--------------|------------------:|--------------------:|:---------------|
+| Har       |             25.39 |               24.02 | -5.4%         |             116.4 |               109.2 | -6.2%          |
+| cardio    |             26.26 |               24.77 | -5.7%         |             124.9 |               118.7 | -5.0%          |
+| gasId     |             81.87 |               81.05 | -1.0%         |             325.6 |               318.9 | -2.1%          |
+| pendigits |             29.9  |               29.79 | -0.4%         |             123.1 |               121.6 | -1.2%          |
+| winered   |             24.51 |               23.02 | -6.1%         |             112.1 |               104.5 | -6.8%          |
+| winewhite |             23.98 |               22.43 | -6.5%         |             106.2 |                98.5 | -7.3%          |
+
+![bnnrolx_bnnrolin](figs2/bnnrolx_bnnrolin.svg)
+
+|           |   bnnrolx area(cm²) |   bnnrolin area(cm²) | area change   |   bnnrolx power(mW) |   bnnrolin power(mW) | power change   |
+|:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
+| Har       |                9.14 |                 8.29 | -9.3%         |                39   |                 36.3 | -6.9%          |
+| cardio    |               11.1  |                10.85 | -2.3%         |                45.5 |                 45.6 | +0.2%          |
+| gasId     |               42.12 |                38.54 | -8.5%         |               142.4 |                131.3 | -7.8%          |
+| pendigits |               10.69 |                10.37 | -3.0%         |                43.5 |                 42.6 | -2.1%          |
+| winered   |                8.85 |                 8.04 | -9.2%         |                38.9 |                 35.7 | -8.2%          |
+| winewhite |                8.65 |                 8    | -7.5%         |                37.5 |                 34.9 | -6.9%          |
+
+![bnnrolin_bnnrospine](figs2/bnnrolin_bnnrospine.svg)
+
+|           |   bnnrolin area(cm²) |   bnnrospine area(cm²) | area change   |   bnnrolin power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|---------------------:|-----------------------:|:--------------|---------------------:|-----------------------:|:---------------|
+| Har       |                 8.29 |                   7.82 | -5.7%         |                 36.3 |                   31.7 | -12.7%         |
+| cardio    |                10.85 |                   9.3  | -14.3%        |                 45.6 |                   36   | -21.1%         |
+| gasId     |                38.54 |                  37.31 | -3.2%         |                131.3 |                  124.4 | -5.3%          |
+| pendigits |                10.37 |                   9.08 | -12.4%        |                 42.6 |                   35.1 | -17.6%         |
+| winered   |                 8.04 |                   7.61 | -5.3%         |                 35.7 |                   30.9 | -13.4%         |
+| winewhite |                 8    |                   7.49 | -6.4%         |                 34.9 |                   30.9 | -11.5%         |
+
+![bnnrospine_bnnrobus](figs2/bnnrospine_bnnrobus.svg)
+
+|           |   bnnrospine area(cm²) |   bnnrobus area(cm²) | area change   |   bnnrospine power(mW) |   bnnrobus power(mW) | power change   |
+|:----------|-----------------------:|---------------------:|:--------------|-----------------------:|---------------------:|:---------------|
+| Har       |                   7.82 |                 9.97 | +27.5%        |                   31.7 |                 26.1 | -17.7%         |
+| cardio    |                   9.3  |                12.44 | +33.8%        |                   36   |                 29.4 | -18.3%         |
+| gasId     |                  37.31 |                55.39 | +48.5%        |                  124.4 |                 97.9 | -21.3%         |
+| pendigits |                   9.08 |                11.93 | +31.4%        |                   35.1 |                 29.7 | -15.4%         |
+| winered   |                   7.61 |                 9.66 | +26.9%        |                   30.9 |                 25.7 | -16.8%         |
+| winewhite |                   7.49 |                 9.56 | +27.6%        |                   30.9 |                 25.2 | -18.4%         |
+
+![bnnparw_bnnrospine](figs2/bnnparw_bnnrospine.svg)
+
+|           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                   7.82 | -67.8%        |                77.6 |                   31.7 | -59.1%         |
+| cardio    |               33.21 |                   9.3  | -72.0%        |               105.4 |                   36   | -65.8%         |
+| gasId     |              171.37 |                  37.31 | -78.2%        |               486.9 |                  124.4 | -74.5%         |
+| pendigits |               33.97 |                   9.08 | -73.3%        |               109.6 |                   35.1 | -68.0%         |
+| winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
+| winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
+
+![bnnparw_tnnparsign](figs2/bnnparw_tnnparsign.svg)
+
+|           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                  13.4  | -44.7%        |                77.6 |                   42.7 | -45.0%         |
+| cardio    |               33.21 |                  19.21 | -42.2%        |               105.4 |                   62.4 | -40.8%         |
+| gasId     |              171.37 |                 101.65 | -40.7%        |               486.9 |                  297.1 | -39.0%         |
+| pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
+| winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
+| winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
+

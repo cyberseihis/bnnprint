@@ -22,17 +22,15 @@ def data_in(fname):
         dset, _, design = dname.split("_")
         ars.append((dset, design, area))
         prs.append((dset, design, power))
-    return ars, prs
+    return build_dataframe(ars)/10**8, build_dataframe(prs)*10**3
 
 
 def plot_compare(fname):
     ars, prs = data_in(fname)
-    ars = build_dataframe(ars)
-    prs = build_dataframe(prs)
     ax = ars.plot(kind="bar")
     px = prs.plot(kind="bar")
-    ax.set_ylabel('Area')
-    px.set_ylabel('Power')
+    ax.set_ylabel('Area (cm²)')
+    px.set_ylabel('Power (mW)')
     ax.set_title("Area comparison")
     px.set_title("Power comparison")
     plt.show()
@@ -41,8 +39,6 @@ def plot_compare(fname):
 
 def scatter_comp(fname, designs):
     ars, prs = data_in(fname)
-    ars = build_dataframe(ars)
-    prs = build_dataframe(prs)
     ars = ars.loc[:, designs]
     prs = prs.loc[:, designs]
 
@@ -80,24 +76,50 @@ def scatter_comp(fname, designs):
     plt.title(f"{designs[0]} vs {designs[1]}")
 
     desmerg = '_'.join(designs)
-    plt.savefig(f"{desmerg}.svg")
+    plt.savefig(f"figs2/{desmerg}.svg")
     plt.clf()
+    return f"![{desmerg}](figs2/{desmerg}.svg)"
 
 
 def tablecomp(fn, designs):
     ars, prs = data_in(fn)
-    ars = build_dataframe(ars)/10**8
-    prs = build_dataframe(prs)*10**3
     ars = ars.loc[:, designs].astype("float").round(2)
     prs = prs.loc[:, designs].astype("float").round(2)
-    ars = ars.add_suffix(" area")
-    prs = prs.add_suffix(" power")
+    ars = ars.add_suffix(" area(cm²)")
+    prs = prs.add_suffix(" power(mW)")
     da = 100*(ars.iloc[:, 1] - ars.iloc[:, 0])/ars.iloc[:, 0]
     dp = 100*(prs.iloc[:, 1] - prs.iloc[:, 0])/prs.iloc[:, 0]
     ars["area change"] = ["{:+.1f}%".format(val) for val in da]
     prs["power change"] = ["{:+.1f}%".format(val) for val in dp]
     res = pd.concat([ars, prs], axis=1).to_markdown()
-    desmerg = '_'.join(designs)
-    with open(f"{desmerg}tab.md", "w") as f:
-        f.write(res)
-    print(res)
+    # desmerg = '_'.join(designs)
+    #    with open(f"{desmerg}tab.md", "w") as f:
+    #    f.write(res)
+    # print(res)
+    return res
+
+
+def adhox(fn):
+    deck = [
+        ["bnnpar", "bnnparsign"],
+        ["bnnparsign", "bnnparw"],
+        ["bnnparw", "bnnparce"],
+        ["bnnparw", "bnnparstepw"],
+        ["bnnparsign", "bnnpaar"],
+        ["bnnpaar", "bnnpaarter"],
+        ["bnnseq", "bnndirect"],
+        ["bnndirect", "bnndw"],
+        ["bnndw", "bnndsat"],
+        ["bnnrolx", "bnnrolin"],
+        ["bnnrolin", "bnnrospine"],
+        ["bnnrospine", "bnnrobus"],
+        ["bnnparw", "bnnrospine"],
+        ["bnnparw", "tnnparsign"]]
+    with open("grefs.md", "a") as f:
+        for pair in deck:
+            g = scatter_comp(fn, pair)
+            t = tablecomp(fn, pair)
+            f.write(g)
+            f.write("\n\n")
+            f.write(t)
+            f.write("\n\n")
