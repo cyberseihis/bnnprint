@@ -1500,9 +1500,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 
 \newpage
 
-## Ananytic comparisons
+## Table comparisons
 
-![bnnpar_bnnparsign](figs2/bnnpar_bnnparsign.svg)
+### Comparison of single signed sum to double unsigned sums approaches
 
 |           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
 |:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
@@ -1513,7 +1513,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
 | winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
 
-![bnnparsign_bnnparw](figs2/bnnparsign_bnnparw.svg)
+### Results of restricting neuron bitwidths
 
 |           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
 |:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
@@ -1524,7 +1524,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
 | winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
 
-![bnnparw_bnnparce](figs2/bnnparw_bnnparce.svg)
+### Results of range centering
 
 |           |   bnnparw area(cm²) |   bnnparce area(cm²) | area change   |   bnnparw power(mW) |   bnnparce power(mW) | power change   |
 |:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
@@ -1535,7 +1535,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |               21.87 |                20.76 | -5.1%         |                72.3 |                 67.7 | -6.4%          |
 | winewhite |               20.36 |                20.48 | +0.6%         |                66.7 |                 65.8 | -1.3%          |
 
-![bnnparw_bnnparstepw](figs2/bnnparw_bnnparstepw.svg)
+\newpage
+
+### Results of shrinking intermediate results naively
 
 |           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
 |:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
@@ -1546,7 +1548,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
 | winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
 
-![bnnparsign_bnnpaar](figs2/bnnparsign_bnnpaar.svg)
+### Effect of preemptive arithmetic optimization with Paar's heuristic
 
 |           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
 |:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
@@ -1557,7 +1559,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
 | winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
 
-![bnnpaar_bnnpaarter](figs2/bnnpaar_bnnpaarter.svg)
+### Comparison of the modified Paar heuristic to the original
 
 |           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
 |:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
@@ -1568,7 +1570,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
 | winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
 
-![bnnseq_bnndirect](figs2/bnnseq_bnndirect.svg)
+\newpage
+
+### Effect of using a custom multiplexer per neuron in the first layer
 
 |           |   bnnseq area(cm²) |   bnndirect area(cm²) | area change   |   bnnseq power(mW) |   bnndirect power(mW) | power change   |
 |:----------|-------------------:|----------------------:|:--------------|-------------------:|----------------------:|:---------------|
@@ -1579,7 +1583,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |              29.57 |                 27.11 | -8.3%         |              131.7 |                 125.7 | -4.6%          |
 | winewhite |              29.75 |                 27.31 | -8.2%         |              128.6 |                 122.6 | -4.7%          |
 
-![bnndirect_bnndw](figs2/bnndirect_bnndw.svg)
+### Effect of reducing the width of the first layer's registers
 
 |           |   bnndirect area(cm²) |   bnndw area(cm²) | area change   |   bnndirect power(mW) |   bnndw power(mW) | power change   |
 |:----------|----------------------:|------------------:|:--------------|----------------------:|------------------:|:---------------|
@@ -1590,7 +1594,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 27.11 |             24.51 | -9.6%         |                 125.7 |             112.1 | -10.8%         |
 | winewhite |                 27.31 |             23.98 | -12.2%        |                 122.6 |             106.2 | -13.4%         |
 
-![bnndw_bnndsat](figs2/bnndw_bnndsat.svg)
+### Effect of applying saturation to the first layer's registers
 
 |           |   bnndw area(cm²) |   bnndsat area(cm²) | area change   |   bnndw power(mW) |   bnndsat power(mW) | power change   |
 |:----------|------------------:|--------------------:|:--------------|------------------:|--------------------:|:---------------|
@@ -1601,7 +1605,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |             24.51 |               23.02 | -6.1%         |             112.1 |               104.5 | -6.8%          |
 | winewhite |             23.98 |               22.43 | -6.5%         |             106.2 |                98.5 | -7.3%          |
 
-![bnnrolx_bnnrolin](figs2/bnnrolx_bnnrolin.svg)
+\newpage
+
+### Effect of deconstructing negation
 
 |           |   bnnrolx area(cm²) |   bnnrolin area(cm²) | area change   |   bnnrolx power(mW) |   bnnrolin power(mW) | power change   |
 |:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
@@ -1612,7 +1618,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                8.85 |                 8.04 | -9.2%         |                38.9 |                 35.7 | -8.2%          |
 | winewhite |                8.65 |                 8    | -7.5%         |                37.5 |                 34.9 | -6.9%          |
 
-![bnnrolin_bnnrospine](figs2/bnnrolin_bnnrospine.svg)
+### Effect of replacing the cycle counter with shifting registers
 
 |           |   bnnrolin area(cm²) |   bnnrospine area(cm²) | area change   |   bnnrolin power(mW) |   bnnrospine power(mW) | power change   |
 |:----------|---------------------:|-----------------------:|:--------------|---------------------:|-----------------------:|:---------------|
@@ -1623,7 +1629,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 8.04 |                   7.61 | -5.3%         |                 35.7 |                   30.9 | -13.4%         |
 | winewhite |                 8    |                   7.49 | -6.4%         |                 34.9 |                   30.9 | -11.5%         |
 
-![bnnrospine_bnnrobus](figs2/bnnrospine_bnnrobus.svg)
+### Effect of using tristate buffers for the weight memory
 
 |           |   bnnrospine area(cm²) |   bnnrobus area(cm²) | area change   |   bnnrospine power(mW) |   bnnrobus power(mW) | power change   |
 |:----------|-----------------------:|---------------------:|:--------------|-----------------------:|---------------------:|:---------------|
@@ -1634,7 +1640,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                   7.61 |                 9.66 | +26.9%        |                   30.9 |                 25.7 | -16.8%         |
 | winewhite |                   7.49 |                 9.56 | +27.6%        |                   30.9 |                 25.2 | -18.4%         |
 
-![bnnparw_bnnrospine](figs2/bnnparw_bnnrospine.svg)
+\newpage
+
+### Comparison of the final sequential designs to the final combinatorial designs
 
 |           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
 |:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
@@ -1645,7 +1653,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
 | winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
 
-![bnnparw_tnnparsign](figs2/bnnparw_tnnparsign.svg)
+### Performance of the ternary weight combinatorial implementation compared to the binary combinatorial
 
 |           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
 |:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
@@ -1655,4 +1663,38 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
 | winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
 | winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
+
+\newpage
+
+## Graph comparisons
+
+The following graphs show the area and power measurements of the models reified via the second design normalised on the equivalent metrics from the first design type.
+
+![Comparison of single signed sum to double unsigned sums approaches](figs2/bnnpar_bnnparsign.svg)
+
+![Results of restricting neuron bitwidths](figs2/bnnparsign_bnnparw.svg)
+
+![Results of range centering](figs2/bnnparw_bnnparce.svg)
+
+![Results of shrinking intermediate results naively](figs2/bnnparw_bnnparstepw.svg)
+
+![Effect of preemptive arithmetic optimization with Paar's heuristic](figs2/bnnparsign_bnnpaar.svg)
+
+![Comparison of the modified Paar heuristic to the original](figs2/bnnpaar_bnnpaarter.svg)
+
+![Effect of using a custom multiplexer per neuron in the first layer](figs2/bnnseq_bnndirect.svg)
+
+![Effect of reducing the width of the first layer's registers](figs2/bnndirect_bnndw.svg)
+
+![Effect of applying saturation to the first layer's registers](figs2/bnndw_bnndsat.svg)
+
+![Effect of deconstructing negation](figs2/bnnrolx_bnnrolin.svg)
+
+![Effect of replacing the cycle counter with shifting registers](figs2/bnnrolin_bnnrospine.svg)
+
+![Effect of using tristate buffers for the weight memory](figs2/bnnrospine_bnnrobus.svg)
+
+![Comparison of the final sequential designs to the final combinatorial designs](figs2/bnnparw_bnnrospine.svg)
+
+![Performance of the ternary weight combinatorial implementation compared to the binary combinatorial](figs2/bnnparw_tnnparsign.svg)
 
