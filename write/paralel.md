@@ -241,7 +241,7 @@ additional hardware.
 
 # Minimum range bit-width reduction
 
-![title here](./parw_points.svg)
+![Pre-activation values for a hidden neuron for each sample of the dataset and comparison of the default and minimum bitrange that supports all values.](./parw_points.svg)
 
 The reasoning goes that if the bitwidth that is demanded for the total
 sum of the features is reduced, the bitwidth that partial sums it
@@ -297,7 +297,7 @@ have not found a method to work around this limitation at this point.
 
 # Range centering
 
-![title here](./parce_points.svg)
+![Pre-activation values for a hidden neuron for each sample of the dataset, the same values after the range has been centered on zero and the minimal bitrange that supports each.](./parce_points.svg)
 
 ## Rationale
 
@@ -352,7 +352,7 @@ the "unbalanced" range. For the rest there is no reason to incur the
 overhead for no benefit so they are declared the same as they are using
 minimum range bit-width reduction.
 
-![lorem ipsum](tikz1/bnnparce.png)
+![Combinatorial signed sum implementation with reduced sum bitwidths and occasional range centering.](tikz1/bnnparce.png)
 
 ## Discussion
 The results show that the hardware requirements of the additional
@@ -459,7 +459,7 @@ work around it shall be searched for.
 
 # Preemptive arithmetic optimization
 
-![placeholder](./tikz1/tbpaar.png)
+![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz1/tbpaar.png)
 
 ## Rationale
 Based on the results from above I attempt to get the arithmetic
@@ -926,7 +926,7 @@ as $r+1$, saturating the values is not allowing the flip-flops of the
 accumulator to decrease and there is no benefit to incur the extra logic
 of implementing saturation for this neuron.
 
-![loremipsum](tikz1/bnndsat.png)
+![Implementation of saturation on the first layer of a sequential design.](tikz1/bnndsat.png)
 
 ## Discussion
 
@@ -1042,7 +1042,7 @@ tested to confirm that it was an improvement for both of them.
 
 # Deconstructing input negation
 
-![lorem ](tikz1/bnnromem.png)
+![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz1/bnnromem.png)
 
 Negating each input involves a 4 bit increment-by-1 circuit per feature. 
 Although it does not sound very alarming it is still an expense that
@@ -1067,7 +1067,7 @@ $$ h_i = \sum_{j=0}^{N-1} x_j \oplus \neg bin(W1_{i,j}) + b_i $$
 
 # Shifting registers for timekeeping
 
-![lol lmao](tikz1/bnnrospine.png)
+![Replacement of cycle counter by shifting registers for the hidden activations.](tikz1/bnnrospine.png)
 
 Instead of having a decoder from the cycle counter's current value $i$
 select the register to which the binary post-activation output $s_i$ of
@@ -1177,7 +1177,7 @@ arithmetic in the subsequent layer.
 
 ## Fully combinatorial implementation
 
-![AAAA](tikz1/tnnparsign.png)
+![Sparce combinatorial single signed sum implementation.](tikz1/tnnparsign.png)
 
 After training the same datasets with the same parameter counts using
 ternary instead of binary weights the equivalent weight matrices $W1 \in
