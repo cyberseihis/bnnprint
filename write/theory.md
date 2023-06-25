@@ -1,4 +1,14 @@
-# Intro to printing
+---
+header-includes:
+ - \usepackage{fvextra}
+ - \usepackage{mathtools}
+ - \usepackage{amsmath}
+ - \usepackage{tikz}
+ - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+# Introduction
+
+## Intro to printed electronics
 
 Printed electronics refers to very thin electronic devices and circuits
 that are produced by the application of inks with desired electric
@@ -21,25 +31,136 @@ harvesters and antennas can be implemented with them. They are thought
 to be an emerging market with considerable potential to broaden the role
 of computation in everyday living. They can help the pervasiveness of
 the Internet-of-Things reach far deeper, and thus synergize well with
-other advances in the sector. A recent report by IDTechEx[money]
+other advances in the sector. A recent report by IDTechEx[25]
 forecasts the global market for printed flexible electronics, excluding
 OLEDs, to reach 12 billion dollars by 2033.
 
 ![](../../../Downloads/processcomparison.png){width=50%}
 ![](../../../Downloads/moneyprinters.jpg){width=50%}
 
-# Uses of printed electronics
+## Related work in machine learning for printed circuits
+
+- Tahoori et al[14] demonstrates an analog two input neuron, and shows how it could be
+expanded to fully printed analog neural networks with MAC and activation
+operations.
+- Douthwaite et al[15] Uses time domain encoding of signals, representing magnitude as
+  pulse width and encoding weights with current mirrors. Accumulation is
+  done by linearly charging a capacitor with the mirrored pulses.
+- Gkoupidenis et al [16] mimick biologically inspired synaptic
+  functions with electrolyte-gated transistors and show how they could
+  be used for a single layer perceptron.
+- Ozer et al [17] envision what an automatic process for creating 
+bespoke processors for a variety of ML architectures in printed
+electronics could look like, but don't go beyond the vision stage.
+- Bleier et al [18] present a printed microprocessor with an instruction set customised to the program at hand.
+- Weller et al [19] leverage stochastic computing to reduce the
+  requirements of mixed analog - digital neural networks but with heavy
+  accuracy cost.
+- Mubarik et al [20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
+- Armeniakos et al [21] expand to more demanding SVMs and Multi Layer
+  Perceptrons, and provide a method to shift the weight coefficients of the networks to more hardware friendly values and apply circuit level netlist pruning to reduce area and power to more acceptable values.
+
+\newpage
+
+## Introduction to ubiquitous computing and thesis statement
+
+Technology in general and more specifically computation plays an ever
+increasing part in our lives and there are no signs of the trend slowing
+down any time soon. There still however exists a relatively rigid real
+world - computational domain gap, meaning most of of our interactions of
+the world around us don't involve any computation taking place. It is
+not hard to imagine countless examples where computational elements
+would add value to everyday activities such as grocery shopping or
+reduce required labour in production processes such as manufacturing if
+those elements had close to zero cost and greater embedability
+associated with them. Although almost everyone in developed countries
+carries and interacts with powerful computers everywhere they happen to
+be, the form of interaction cannot easily adapt to the surrounding
+context they are in. One cannot simply ask the bananas they got if they
+are ripe enough, call out to their keys to find where they left them,
+check with their shoes on how many more steps they got in them.
+Furthermore it is clear that uncountable processes are horribly
+unoptimised compared to what could be achieved if a continuous stream of
+detailed information from each of of it's constituents and access to
+fine grained control over the minutia of them was in place. Think for
+example a farm where every individual fruit on any tree has it's growth
+progress tracked.
+Essentially taking the ideas of the Internet-of-Things(IoT) and pushing
+them to their logical limit, ubiquitous computing is an aspirational
+ideal to a future where every product is a smart device, every
+observable anyone would reasonably care for is accessible. Self driving
+cars will be able to safely navigate without access to vision by
+querying the positions of nearby devices, since whatever is not a
+device directly at least has one or more attached.
+
+Printed electronics are positioned to play a major role in at the very
+least the early stages of such a transformation. Printing is currently
+the only manufacturing method that can provide sub-cent computational
+elements, and cost is the greatest bottleneck to how pervasive they can
+become. Additionally the non-toxicity is crucial to make adding them to
+fast moving consumer goods that are disposable at these scales. The
+flexibility also helps with embedding more easily.  Even relatively
+"modest" compared to the complete vision applications that we can expect
+to come eventually, such as RFID tags replacing barcodes and enabling
+stores to track every individual item of stock or printed food quality
+sensors making best-before dates obsolete have great potential to
+disrupt a wide range of industries.
+
+Machine learning can accelerate the process by many orders of magnitude
+compared to how long it would take for specialised people in multiple fields to
+design a computational model to interpret and process the sensor data. In many
+cases the upfront engineering cost would be enough to stop the adoption of the
+paradigm altogether. If all it takes is for some sensor data to be collected
+and labeled that can easily be handled by any employee. We also depend on
+autoML being good enough for most of these small scale data applications, since
+otherwise we would just run into the same bottleneck with needing a data
+scientist for every little thing. Methods to lighten the resources demanded of
+the printed system that implements the model, such as quantization and
+binarization can clearly expand the scope of how complex the classification
+supported can be.
+
+The concept of this thesis is taking place in such a scenario. I have
+insured that the entire process from dataset to netlist that can be passed to
+the printer requires no manual intervention. Anyone can pass their
+sensor data in one end and receive measurements for the model accuracy,
+circuit area and power requirements on the other, without special
+knowledge on any domain being required of them. This is specifically
+done utilising bespoke implementations of binary neural networks, in order
+to evaluate their efficacy in providing a backbone for this process.
+
+Imagine if you will the scenario of a coffee shop owner. They decide
+they would like the glasses they serve their coffee in to indicate the
+amount of sugar or other sweeteners used in the contained beverage.
+This would prevent people from grabbing the wrong coffee from the table
+because they all look indistinguishable. After searching on an online
+repository for what sensor would be of any use here, they order a few
+sample sheets of these printed sensors and a small gadget that clips on
+the sheet and records the measurements of the sensors. After dipping
+them on a dozen coffees with different mixtures of sweeteners inside,
+they plug the gadget to their computer and get a spreadsheet of sensor
+values for each dipping session. They simply append the label they
+decided each sweetener level corresponds to and pass the spreadsheet to
+the system. They decide that the reported accuracy and area are
+manageable order the resulting circuit to be printed on a batch of
+flexible patches they can stick to the inside of the glasses.
+
+\newpage
+
+# Background information - Prerequisites
+
+## Uses of printed electronics
+
 The usage of printed electronics most people may be familiar with
 in their everyday lives is the membrane used to detect key presses in most
 non-mechanical keyboards, or perhaps windshield defrosters.
-![imageofkeyboard]()
+
 Other usages include:
 
 - Sensors: flexible, biodegradable and stretchable sensing elements
 enable the efficient monitoring of many processes. A variety of
 properties of the world can be measured by printed sensors, including
 temperature, touch, strain, gasses, humidity, light levels and
-presence of certain chemicals.[CHEMICALS] The flexibility and
+presence of certain chemicals. The flexibility and
 non-toxicity is especially relevant for medical monitoring, so
 biosensors have received a lot of attention, with some (for example
 ,printed seizure detecting patches) already commercially available.
@@ -87,8 +208,6 @@ day be printed if printing accuracy keeps increasing.
   features of today's smartwatches, or health monitoring, with printed
   patches for seizure detection already on the market. One can also
   imagine they would be of interest to the fashion industry.
-- Transistors:
-[WHY IS EGFET NMOS HOW DOES IT COMPARE]
 
 ![](../../../Downloads/printednfc.jpg){width=50%}
 ![](../../../Downloads/membranekeyboard.jpeg){width=50%}
@@ -97,7 +216,7 @@ day be printed if printing accuracy keeps increasing.
 
 \newpage
 
-# Manufacturing methods
+## Manufacturing methods
 
 Printed electronics are manufactured using techniques from the graphic
 print industry. They are split into contact or R2R printing techniques
@@ -162,7 +281,7 @@ printing methods and thus less relevant.
 
 \newpage
 
-# Inks
+## Inks
 In order to implement functional circuits inks with conducting,
 semiconducting and dielectric properties are needed. They usually
 consist of nanoparticles of materials with these properties mixed with
@@ -196,154 +315,8 @@ used as the active ingredient.
 
 \newpage
 
-# Machine learning in printed circuits
 
-- Tahoori et al[x14] demonstrates an analog two input neuron, and shows how it could be
-expanded to fully printed analog neural networks with MAC and activation
-operations.
-- Douthwaite et al[x15] Uses time domain encoding of signals, representing magnitude as
-  pulse width and encoding weights with current mirrors. Accumulation is
-  done by linearly charging a capacitor with the mirrored pulses.
-- Gkoupidenis et al [x16] mimick biologically inspired synaptic
-  functions with electrolyte-gated transistors and show how they could
-  be used for a single layer perceptron.
-- Ozer et al [x17] envision what an automatic process for creating 
-bespoke processors for a variety of ML architectures in printed
-electronics could look like, but don't go beyond the vision stage.
-- Bleier et al [x18] present a printed microprocessor with an instruction set customised to the program at hand.
-- Weller et al [x19] leverage stochastic computing to reduce the
-  requirements of mixed analog - digital neural networks but with heavy
-  accuracy cost.
-- Mubarik et al [x20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
-- Armeniakos et al [x21] expand to more demanding SVMs and Multi Layer
-  Perceptrons, and provide a method to shift the weight coefficients of the networks to more hardware friendly values and apply circuit level netlist pruning to reduce area and power to more acceptable values.
-
-\newpage
-
-# Ubiquitous computing; Mission statement
-
-Technology in general and more specifically computation plays an ever
-increasing part in our lives and there are no signs of the trend slowing
-down any time soon. There still however exists a relatively rigid real
-world - computational domain gap, meaning most of of our interactions of
-the world around us don't involve any computation taking place. It is
-not hard to imagine countless examples where computational elements
-would add value to everyday activities such as grocery shopping or
-reduce required labour in production processes such as manufacturing if
-those elements had close to zero cost and greater embedability
-associated with them. Although almost everyone in developed countries
-carries and interacts with powerful computers everywhere they happen to
-be, the form of interaction cannot easily adapt to the surrounding
-context they are in. One cannot simply ask the bananas they got if they
-are ripe enough, call out to their keys to find where they left them,
-check with their shoes on how many more steps they got in them.
-Furthermore it is clear that uncountable processes are horribly
-unoptimised compared to what could be achieved if a continuous stream of
-detailed information from each of of it's constituents and access to
-fine grained control over the minutia of them was in place. Think for
-example a farm where every individual fruit on any tree has it's growth
-progress tracked.
-Essentially taking the ideas of the Internet-of-Things(IoT) and pushing
-them to their logical limit, ubiquitous computing is an aspirational
-ideal to a future where every product is a smart device, every
-observable anyone would reasonably care for is accessible. Self driving
-cars will be able to safely navigate without access to vision by
-querying the positions of nearby devices, since whatever is not a
-device directly at least has one or more attached.
-
-Printed electronics are positioned to play a major role in at the very
-least the early stages of such a transformation. Printing is currently
-the only manufacturing method that can provide sub-cent computational
-elements, and cost is the greatest bottleneck to how pervasive they can
-become. Additionally the non-toxicity is crucial to make adding them to
-fast moving consumer goods that are disposable at these scales. The
-flexibility also helps with embedding more easily.  Even relatively
-"modest" compared to the complete vision applications that we can expect
-to come eventually, such as RFID tags replacing barcodes and enabling
-stores to track every individual item of stock or printed food quality
-sensors making best-before dates obsolete have great potential to
-disrupt a wide range of industries.
-
-Machine learning can accelerate the process by many orders of magnitude
-compared to how long it would take for specialised people in multiple
-fields to design a computational model to interpret and process the sensor data. In many cases the upfront engineering cost would be enough to stop the adoption of the paradigm altogether. If all it takes is for some sensor data to be collected and labeled that can easily be handled by any employee. We also depend on autoML being good enough for most of these small scale data applications, since otherwise we would just run into the same bottleneck with needing a data scientist for every little thing.
-Methods to lighten the resources demanded of the printed system that
-implements the model, such as quantization and binarization can clearly
-expand the scope of how complex the classification supported can be.
-
-The concept of this thesis is taking place in such a scenario. I have
-insured that the entire process from dataset to netlist you can pass to
-the printer requires no manual intervention. Anyone can pass their
-sensor data in one end and receive measurements for the model accuracy,
-circuit area and power requirements on the other, without special
-knowledge on any domain being required of them. 
-
-Imagine if you will the scenario of a coffee shop owner. They decide
-they would like the glasses they serve their coffee in to indicate the
-amount of sugar or other sweeteners used in the contained beverage.
-This would prevent people from grabbing the wrong coffee from the table
-because they all look indistinguishable. After searching on an online
-repository for what sensor would be of any use here, they order a few
-sample sheets of these printed sensors and a small gadget that clips on
-the sheet and records the measurements of the sensors. After dipping
-them on a dozen coffees with different mixtures of sweeteners inside,
-they plug the gadget to their computer and get a spreadsheet of sensor
-values for each dipping session. They simply append the label they
-decided each sweetener level corresponds to and pass the spreadsheet to
-the system. They decide that the reported accuracy and area are
-manageable order the resulting circuit to be printed on a batch of
-flexible patches they can stick to the inside of the glasses.
-
-\newpage
-
-# Datasets
-The datasets chosen to train models for and implement are the ones used
-by [x20] and [prof]. That way results for model accuracy and area
-/ power requirements can be compared with other approaches in the
-literature. Like in those papers, categorical features were removed from
-the datasets, leaving only inputs from sensors, since they are all the
-actual printed system would have access to (this assumption may be
-circumvented, but this is beyond the current scope). Note that the
-feature selection may not be the same as the prior papers, since the
-pieces of data they kept were not documented. All of them were taken
-from the UCI machine learning repository[x7].
-A short description of the datasets:
-
-- Arrythmia[x8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
-  recordings.
-- Cardiotocography[x9]: Diagnosing problems in the heartrate of unborn
-  infants.
-- Pendigits[x10]: Classification of written digit from a series of 8
-  pressure signals from touch sensors.
-- Human activity recognition(HAR)[x11]: Classification of the type of
-  movement a person is making(standing, climbing stairs etc) using accelerometers from cellphones on
-  their waists.
-- Gas Identification[x12]: Classification of gas presence using chemical
-  sensors.
-- Wine Quality(White wines)[x13]: Estimating the percieved enjoyment of
-  various white wines based on acidity and mineral traces.
-- Wine Quality(Red wines)[x13]: Equivelant to the above for red wines.
-
-The datasets use inputs from sensors that at least approximately
-correspond to ones that have been demonstrated possible to manufacture
-by printing. The complete system including both sensors, classifier and
-power supply could thus somewhat realistically be physically
-implemented, and not be very far from an actual usecase of the
-technology.
-
-Sensor | Dataset
----|---
-Electrocardiography sensor on paper[x1] | Arrythmia
-Electrocardiography sensor on paper[x1] | Cardio
-Printed movement sensor | Human activity recognition
-Printed gas sensor[x6] | Gas identification
-Printed piezoelectric sensor[x4] | Pendigits
-Printed pH sensor[x2], Inkjet mineral sensor[x3] | Wine Quality(White)
-Printed pH sensor[x2], Inkjet mineral sensor[x3] | Wine Quality(Red)
-
-\newpage
-
-# TinyML
+## TinyML
 Edge computing enables applications where data processing is location
 sensitive. It provides greater security, privacy and availability
 guarantees to the end users. It is a fundamental component of the IoT
@@ -374,7 +347,7 @@ giving rise to the field of TinyML-as-a-Service or TinyMaaS. Special
 precausions must be taken at every intermediate step to lead to a
 runtime model lightweight enough.  
 
-Algorithmic approaches to the problem include:
+Some approaches to the problem include:
 
 - An alternative to common ML models that can function at lower energy
 budgets is Hyperdimensional computing (HDC). In this paradigm. It
@@ -388,12 +361,6 @@ requirements. It can handle noisy and/or incomplete data, which is a big
 plus. Unfortunately the count of dimensions needed for many problems are
 so large we cannot make savings by this method. 
 \newpage
-- Another promising alternative machine learning technique is the recently
-proposed swapping. The layers of the neural network are split into
-so-called tiles, that can be computed individually. Each is mapped to a
-chunk of memory and those are swapped so the main memory only needs to
-hold the tile currently computed. Carefully orchestrated parrallelism is
-needed to mask the overhead of the memory accesses.  
 
 - One of the most ubiquitous methods in the field is constrained neural
 architecture search (NAS). Neural architecture search examines a search
@@ -487,76 +454,195 @@ distilled into it and subsequently distills them to the student.
 
 - Quantization is the process of reducing the numerical precision of
   values in the model. Networks are typically using 32 bit floating
-  point numbers during training[x22]. The most common quantization
+  point numbers during training[22]. The most common quantization
   targets for those are either 8-bit or 4-bit integers. In many cases
   the network does not utilise this level of precision to it's full
   extend. Reducing the precision in these cases can relieve the
   computational burden associated with negligible accuracy sacrifices.
-  It has been in use since the early 90s. At first reducing the memory
-  requirements of weights was done by clustering their values and
-  sharing them. Quantization-aware training, in which the full precision
-  network is finetuned of retrained into the reduced form succeeded
-  quantizing the network only after the training process is completed. 
+  Quantization-aware training is a process in which the full precision
+  network is fine-tuned of retrained into the reduced form. It succeeded
+  quantizing the network only after the training process is completed.
+  When the method is pushed to the limit, precision is reduced down to 1
+  bit. Networks with a single bit of precision are called Binary Neural
+  Networks(BNNs).
 
 
 \newpage
 
-[x1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
+## Binary Neural Networks
+
+BNN is the term for neural networks that have both activations and
+weights in 1 bit precision in all hidden layers. Input layers ought to
+have higher precision inputs so the network can receive sufficient
+information for classification to be possible, and output layers of
+classifiers have their activations compared to each other to decide on
+the predicted class, so they cannot be binarized. The most common domain
+for BNNs are Convolutional Neural Networks(CNNs). They were
+independently presented in 2016 by [23] and [24].
+
+Beyond reducing the storage size required for the weights $32\times$
+compared to a full precision 32-bit network of the same architecture,
+computation costs are significantly dropped too since the
+multiply-accumulate(MAC) operations can be carried out by XNOR and
+popcount operations. This can lead to up to a $58\times$ improvement in
+speed.
+
+During training, higher precision underlying weights are used to make learning more robust. In the forward propagation phase these more precise weights, $W$, and the activations from the previous layer $I$ are binarized using the sign function:
+
+$$ 
+sign(x) = \begin{dcases}
+    +1, & \text{if } x \geq 0\\
+    -1,              & \text{if } x < 0
+\end{dcases}
+$$
+
+The binary operations $({-1,1},*)$ and $({0,1},\odot) are isomorphic, so
+the multiplication of weights with activations is done using the XNOR
+operation when the binary values {-1,1} are encoded into the logic
+values {0,1} to be stored in a bit.
+
+This mapping can be represented by the linear transformation $f(x) =
+\frac{x+1}{2}$, since $f(-1) = 0$ and $f(1)=1$. The accumulation and
+subsequent binarization of the activation-weight products $sign(I)*sign(W)$ can be calculated by performing a popcount operation, which returns the count of bits in a given collection that are 1, and comparing the result with a threshold to binarize it.
+
+During backward propagation, an approximation of the activation function
+$sign$ needs to be used since $sign$ has a derivative of 0. The most
+common method is known as straight-through estimation(STE). In STE the
+sign function is approximated by:
+
+$$ 
+STEsign(x) = \begin{dcases}
+    +1, & \text{if } x \geq 1\\
+    x, & \text{if } 1 \geq x \geq -1\\
+    -1,              & \text{if } x \leq -1
+\end{dcases}
+$$
+
+which has a derivative of:
+
+$$ 
+\frac{dSTEsign}{dx} = \begin{dcases}
+    1, & \text{if } 1 \geq x \geq -1\\
+    0,              & elsewhere
+\end{dcases}
+$$
+
+Updates are made to the underlying higher precision weights, and their
+binarizations are used for the forward pass.
+
+\newpage
+
+## Datasets
+
+The datasets chosen to train models for and implement are the ones used
+by [20]. That way results for model accuracy and area
+/ power requirements can be compared with other approaches in the
+literature. Like in those papers, categorical features were removed from
+the datasets, leaving only inputs from sensors, since they are all the
+actual printed system would have access to (this assumption may be
+circumvented, but this is beyond the current scope). Note that the
+feature selection may not be the same as the prior papers, since the
+pieces of data they kept were not documented. All of them were taken
+from the UCI machine learning repository[7].
+
+A short description of the datasets:
+
+- Arrythmia[8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
+  recordings.
+- Cardiotocography[9]: Diagnosing problems in the heartrate of unborn
+  infants.
+- Pendigits[10]: Classification of written digit from a series of 8
+  pressure signals from touch sensors.
+- Human activity recognition(HAR)[11]: Classification of the type of
+  movement a person is making(standing, climbing stairs etc) using accelerometers from cellphones on
+  their waists.
+- Gas Identification[12]: Classification of gas presence using chemical
+  sensors.
+- Wine Quality(White wines)[13]: Estimating the percieved enjoyment of
+  various white wines based on acidity and mineral traces.
+- Wine Quality(Red wines)[13]: Equivelant to the above for red wines.
+
+The datasets use inputs from sensors that at least approximately
+correspond to ones that have been demonstrated possible to manufacture
+by printing. The complete system including both sensors, classifier and
+power supply could thus somewhat realistically be physically
+implemented, and not be very far from an actual usecase of the
+technology.
+
+Sensor | Dataset
+---|---
+Electrocardiography sensor on paper[1] | Arrythmia
+Electrocardiography sensor on paper[1] | Cardio
+Printed movement sensor | Human activity recognition
+Printed gas sensor[6] | Gas identification
+Printed piezoelectric sensor[4] | Pendigits
+Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(White)
+Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(Red)
+
+\newpage
+
+[1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
 Jozina B. De Graaf, George G. Malliaras, Inkjet-Printed PEDOT:PSS
 Electrodes on Paper for Electrocardiography, Advanced Healthcare
 Materials Volume 6, Issue 6
 
-[x2] Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087.
+[2] Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087.
 
-[x3] Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356.
+[3] Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356.
 
-[x4] Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE.
+[4] Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE.
 
-[x5] Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473.
+[5] Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473.
 
-[x6] Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789.
+[6] Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789.
 
-[x7] D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml 
+[7] D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml 
 
-[x8] Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE.
+[8] Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE.
 
-[x9] D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000. 
+[9] D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000. 
 
-[x10] F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996. 
+[10] F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996. 
 
-[x11] D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013. 
+[11] D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013. 
 
-[x12] S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019. 
+[12] S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019. 
 
-[x13] P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009. 
+[13] P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009. 
 
-[x14] D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann,
+[14] D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann,
 and M. Beigl, “Programmable neuromorphic circuit based on
 printed electrolyte-gated transistors,” in 2020 25th Asia and South
 Pacific Design Automation Conference (ASP-DAC), 2020, pp. 446–451
 
-[x15] Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE.
+[15] Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE.
 
-[x16] H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020. 
+[16] H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020. 
 
-[x17] Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE.
+[17] Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE.
 
-[x18] Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE.
+[18] Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE.
 
-[x19] D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann,
+[19] D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann,
 M. Beigl, R. Kumar, and M. B. Tahoori, “Printed stochastic com-
 puting neural networks,” in Design, Automation Test in Europe
 Conference Exhibition (DATE), 2021, pp. 914–919.
 
-[x20] M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi-
+[20] M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi-
 Hagmann, M. B. Tahoori, and R. Kumar, “Printed machine learn-
 ing classifiers,” in Annu. Int. Symp. Microarchitecture (MICRO),
 2020, pp. 73–87
 
-[x21] G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and
+[21] G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and
 J. Henkel, “Cross-Layer Approximation For Printed Machine
 Learning Circuits,” in Design, Automation Test in Europe Conference
 & Exhibition (DATE), 2022, [Online]. Available: https://arxiv.org/
 abs/2203.05915
 
-[x22] Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
+[22] Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
+
+[23] Courbariaux, M., Hubara, I., Soudry, D., El-Yaniv, R., Bengio, Y.: 2016, Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1. arXiv preprint arXiv:1602.02830. Darabi, S., Belbahri, M., Courbariaux, M., Nia, V.P.: 2018, Regularized binary network training. arXiv preprint
+
+[24] Kim, M., Smaragdis, P.: 2016, Bitwise neural networks. arXiv preprint arXiv:1601.06071.
+
+[25] IDTechEx, Flexible & Printed Electronics 2023-2033: Forecasts, Technologies, Markets. 2023
