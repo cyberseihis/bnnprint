@@ -1,4 +1,6 @@
 ---
+title: Binary neural networks in printed electronics
+author: Panagiotis Papanikolaou
 header-includes:
  - \usepackage{fvextra}
  - \usepackage{mathtools}
@@ -421,7 +423,7 @@ patterns. This controller is often also a trained machine learning
 model. Criteria for which elements to prune include brute-force pruning,
 where the entire model is searched element by element to find ones that
 don't affect the outcome. Norms of weight vectors may be used to prune
-neurons, in particular the popular l₁ norm in the LASSO method. Optimal
+neurons, in particular the popular L1 norm in the LASSO method. Optimal
 Brain Damage uses the second derivative or Hessian matrix of the loss
 function to locate unneeded weights and was succeeded by the similar
 Optimal Brain Surgeon. Calculating these derivatives is too
@@ -497,8 +499,8 @@ sign(x) = \begin{dcases}
 \end{dcases}
 $$
 
-The binary operations $({-1,1},*)$ and $({0,1},\odot) are isomorphic, so
-the multiplication of weights with activations is done using the XNOR
+The binary operations $({-1,1},*)$ and $({0,1},\odot)$ are isomorphic,
+so the multiplication of weights with activations is done using the XNOR
 operation when the binary values {-1,1} are encoded into the logic
 values {0,1} to be stored in a bit.
 
