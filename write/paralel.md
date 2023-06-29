@@ -888,6 +888,19 @@ considerably cheaper than $C$ separate ones.
 
 ## Results and analysis
 
+|           |   bnnparw area(cm²) |   bnnseq area(cm²) | area change   |   bnnparw power(mW) |   bnnseq power(mW) | power change   |
+|:----------|--------------------:|-------------------:|:--------------|--------------------:|-------------------:|:---------------|
+| Har       |               24.25 |              29.55 | +21.9%        |                77.6 |              132.7 | +71.0%         |
+| cardio    |               33.21 |              31.47 | -5.2%         |               105.4 |              143.1 | +35.8%         |
+| gasId     |              171.37 |              47.67 | -72.2%        |               486.9 |              216.8 | -55.5%         |
+| pendigits |               33.97 |              34.71 | +2.2%         |               109.6 |              139   | +26.8%         |
+| winered   |               21.87 |              29.57 | +35.2%        |                72.3 |              131.7 | +82.2%         |
+| winewhite |               20.36 |              29.75 | +46.1%        |                66.7 |              128.6 | +92.8%         |
+
+Table: The first attempt at a sequential implementation compared to the combinatorial one
+
+![The first attempt at a sequential implementation compared to the combinatorial one](figs2/bnnparw_bnnseq.svg)
+
 The cost of the adder graph in the fully parallel designs scales
 superlinearly with the count of input elements of the layer, at a faster
 rate than multiplexers and decoders used in these sequential designs,
@@ -1015,6 +1028,19 @@ of implementing saturation for this neuron.
 
 ## Results and analysis
 
+|           |   bnnseq area(cm²) |   bnndsat area(cm²) | area change   |   bnnseq power(mW) |   bnndsat power(mW) | power change   |
+|:----------|-------------------:|--------------------:|:--------------|-------------------:|--------------------:|:---------------|
+| Har       |              29.55 |               24.02 | -18.7%        |              132.7 |               109.2 | -17.7%         |
+| cardio    |              31.47 |               24.77 | -21.3%        |              143.1 |               118.7 | -17.1%         |
+| gasId     |              47.67 |               81.05 | +70.0%        |              216.8 |               318.9 | +47.1%         |
+| pendigits |              34.71 |               29.79 | -14.2%        |              139   |               121.6 | -12.5%         |
+| winered   |              29.57 |               23.02 | -22.2%        |              131.7 |               104.5 | -20.7%         |
+| winewhite |              29.75 |               22.43 | -24.6%        |              128.6 |                98.5 | -23.4%         |
+
+Table: Effect of the mentioned improvements to the sequential design
+
+![Effect of the mentioned improvements to the sequential design](figs2/bnnseq_bnndsat.svg)
+
 After these improvements, 4 out of the 6 networks demand less area in
 the sequential design than in the parallel one. But the impovement is
 not substancial enough to justify evaluation taking up many more cycles,
@@ -1106,6 +1132,19 @@ prediction. The full inference therefore takes up $M+C$ clock cycles.
 Again a reset signal must be given between successive inferences.
 
 ## Results and analysis 
+
+|           |   bnnparw area(cm²) |   bnnrolx area(cm²) | area change   |   bnnparw power(mW) |   bnnrolx power(mW) | power change   |
+|:----------|--------------------:|--------------------:|:--------------|--------------------:|--------------------:|:---------------|
+| Har       |               24.25 |                9.14 | -62.3%        |                77.6 |                39   | -49.7%         |
+| cardio    |               33.21 |               11.1  | -66.6%        |               105.4 |                45.5 | -56.8%         |
+| gasId     |              171.37 |               42.12 | -75.4%        |               486.9 |               142.4 | -70.8%         |
+| pendigits |               33.97 |               10.69 | -68.5%        |               109.6 |                43.5 | -60.3%         |
+| winered   |               21.87 |                8.85 | -59.5%        |                72.3 |                38.9 | -46.2%         |
+| winewhite |               20.36 |                8.65 | -57.5%        |                66.7 |                37.5 | -43.8%         |
+
+Table: Comparison of single adder tree sequential designs with equivalent combinatorial designs.
+
+![Comparison of single adder tree sequential designs with equivalent combinatorial designs.](figs2/bnnparw_bnnrolx.svg)
 
 A large improvement on the previous sequential design method, using a
 single adder tree gets us 60 - 75% smaller footprints than the fully
