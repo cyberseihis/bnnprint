@@ -4,6 +4,7 @@ header-includes:
  - \usepackage{mathtools}
  - \usepackage{amsmath}
  - \usepackage{tikz}
+ - \usetikzlibrary{patterns}
  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
  - \usepackage{float}
  - \floatplacement{figure}{H}
@@ -152,7 +153,7 @@ unchanged.
 
 ## Positive-Negative Sum
 
-![Implementation with positive and negative sums split](./tikz1/tbpar.png)
+![Implementation with positive and negative sums split](./tikz2/bnnpar.pdf)
 
 For each neuron in the first layer two sums are calculated. $\Sigma^+_i$
 is the sum of the input features for which the connection with the i_th_
@@ -195,7 +196,7 @@ assign scores[0*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden[1] + hidden[2] + ..
 
 ## Signed sum
 
-![Implementation a single sum per neuron](./tikz1/tbparsign.png)
+![Implementation a single sum per neuron](./tikz2/bnnparsign.pdf)
 
 In this version a single sum is calculated for each neuron. If the
 connection between input feature $x_j$ and hidden neuron $h_i$ has
@@ -384,7 +385,7 @@ the "unbalanced" range. For the rest there is no reason to incur the
 overhead for no benefit so they are declared the same as they are using
 minimum range bit-width reduction.
 
-![Combinatorial signed sum implementation with reduced sum bitwidths and occasional range centering.](tikz1/bnnparce.png)
+![Combinatorial signed sum implementation with reduced sum bitwidths and occasional range centering.](tikz2/bnnparce.pdf)
 
 ## Results and analysis
 
@@ -518,7 +519,7 @@ work around it shall be searched for.
 
 # Preemptive arithmetic optimization
 
-![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz1/tbpaar.png)
+![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz2/bnnpaar.pdf)
 
 ## Rationale
 Based on the results from above I attempt to get the arithmetic
@@ -808,7 +809,7 @@ the network.
 
 ### First layer
 
-![The first layer of a sequentially evaluated BNN](tikz1/tbseq.png)
+![The first layer of a sequentially evaluated BNN](tikz2/bnnseq.pdf)
 
 In the first layer each neuron is implemented by an accumulator that
 holds a running total of the weighted sum of the input features seem
@@ -930,7 +931,7 @@ lower than a threshold, so it would not be an issue.
 ## Removing the weight array
 
 ![The first layer of a sequential design with the required
-subtractions hardcoded](tikz1/tbdirect.png)
+subtractions hardcoded](tikz2/bnndirect.pdf)
 
 The process used in the second layer in the previous part, where each
 neuron gets its own multiplexer over normal and inverted input hidden
@@ -1024,7 +1025,7 @@ as $r+1$, saturating the values is not allowing the flip-flops of the
 accumulator to decrease and there is no benefit to incur the extra logic
 of implementing saturation for this neuron.
 
-![Implementation of saturation on the first layer of a sequential design.](tikz1/bnndsat.png)
+![Implementation of saturation on the first layer of a sequential design.](tikz2/bnndsat.pdf)
 
 ## Results and analysis
 
@@ -1072,7 +1073,7 @@ hard-coded into the circuit.
 
 ## Implementation
 
-![A single-adder sequential BNN implementation](tikz1/bnnrolx.png)
+![A single-adder sequential BNN implementation](tikz2/bnnrolx.pdf)
 
 The multiplexing that was described in the previous sequential design 
 is rearranged here in the sense that the $M$ multiplexers with $N$ data
@@ -1166,7 +1167,7 @@ tested to confirm that it was an improvement for both of them.
 
 # Deconstructing input negation
 
-![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz1/bnnromem.png)
+![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz2/bnnromem.pdf)
 
 Negating each input involves a 4 bit increment-by-1 circuit per feature. 
 Although it does not sound very alarming it is still an expense that
@@ -1191,7 +1192,7 @@ $$ h_i = \sum_{j=0}^{N-1} x_j \oplus \neg bin(W1_{i,j}) + b_i $$
 
 # Shifting registers for timekeeping
 
-![Replacement of cycle counter by shifting registers for the hidden activations.](tikz1/bnnrospine.png)
+![Replacement of cycle counter by shifting registers for the hidden activations.](tikz2/bnnrospine.pdf)
 
 Instead of having a decoder from the cycle counter's current value $i$
 select the register to which the binary post-activation output $s_i$ of
@@ -1224,7 +1225,7 @@ functionality.
 ## Tristate weight memory
 
 ![Implementing the one-hot indexed weight memory using an open bus per
-input feature](tikz1/bnnrobus.png)
+input feature](tikz2/bnnrobus.pdf)
 
 Every input feature gets the current weight bit from an open bus to
 which a tristate buffer for each entry in the feature’s column in
@@ -1267,13 +1268,16 @@ application.
 All in all compared to the fully parallel designs requirements are
 reduced $3-5\times$. This opens up the space of implementable applications. The relative savings would get considerably better for larger networks given the scaling observed.
 
+\begin{figure}
+  \centering
 \begin{tikzpicture}
-    \draw (0, 0) rectangle (5.8, 5.8);
-    \draw (7, 0) rectangle ++(2.9, 2.9);
+    \filldraw[pattern=north west lines] (0, 0) rectangle (5.8, 5.8);
+    \filldraw[pattern=north west lines] (7, 0) rectangle ++(2.9, 2.9);
 \end{tikzpicture}
-
-Actual size comparison of the estimated area of the printed designs for
-the pendigits dataset's model. Parallel on left, sequential on right.
+\caption{Actual size comparison of the estimated area of the printed designs for the
+pendigits dataset's model. Parallel on left, sequential on right.}
+  \label{fig:your-label}
+\end{figure}
 
 \newpage
 
@@ -1314,7 +1318,7 @@ arithmetic in the subsequent layer.
 
 ## Fully combinatorial implementation
 
-![Sparce combinatorial single signed sum implementation.](tikz1/tnnparsign.png)
+![Sparce combinatorial single signed sum implementation.](tikz2/tnnparsign.pdf)
 
 After training the same datasets with the same parameter counts using
 ternary instead of binary weights the equivalent weight matrices $W1 \in
@@ -1559,7 +1563,7 @@ the required power.
 Graphs and tables are presented here that show the area and power
 requirements for the various versions of hardware implementation for the
 6 datasets and their trained models. Comparisons for the effect of the
-various design decisions outlined above are also made.
+various design decisions outlined above that are not already displayed are also made.
 
 The designs will be referred to by nicknames in the following graphs and
 tables. Here is which explanation of each design corresponds to each

@@ -1,0 +1,4 @@
+ cardio_x_MLPC,   2000000000,  0.062
+ pendigits_x_MLPC,   4800000000, 0.143
+ redwine_x_MLPC,   930000000, 0.030
+ whitewine_x_MLPC,    2400000000,  0.073
