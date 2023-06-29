@@ -5,11 +5,16 @@ header-includes:
  - \usepackage{amsmath}
  - \usepackage{tikz}
  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \makeatletter
+ - \def\fps@figure{H}
+ - \makeatother
 ---
 
 # Proposed framework
 
-![Proposed framework](./masterplan.png)
+![Proposed framework](../../../Downloads/xx.pdf)
 
 As outlined in the ubiquitous computing section, the deliverable of this
 thesis is meant to be a framework that allows a labeled set of sensor
@@ -218,7 +223,21 @@ assign hidden[0] = intra_0 >= 0;
 The second layer's implementation is not changed from how it is
 described above.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
+|:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
+| Har       |              29.4  |                  24.52 | -16.6%        |               92.1 |                   78.8 | -14.4%         |
+| cardio    |              46.71 |                  33.27 | -28.8%        |              145.3 |                  106.2 | -26.9%         |
+| gasId     |             269.76 |                 175.09 | -35.1%        |              767.7 |                  499.1 | -35.0%         |
+| pendigits |              42.95 |                  33.38 | -22.3%        |              136.8 |                  108.9 | -20.4%         |
+| winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
+| winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
+
+Table: Comparison of single signed sum to double unsigned sums approaches
+
+![Comparison of single signed sum to double unsigned sums approaches](figs2/bnnpar_bnnparsign.svg)
+
 My prior expectation was that splitting the features into two sums to
 avoid subtractions would lead to better results than keeping all the
 operations for a neuron to a single expression by the reasoning
@@ -279,7 +298,20 @@ $$h_{i max} = \max\limits_{j=0}^{S-1} H^i_j$$
 $$h_{i min} = \min\limits_{j=0}^{S-1} H^i_j$$
 $$ wh_i = \lceil \log_2(\max(h_{i max},\lvert h_{i min}\rvert -1)) \rceil+1 $$
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               24.25 | -1.1%         |                   78.8 |                77.6 | -1.5%          |
+| cardio    |                  33.27 |               33.21 | -0.2%         |                  106.2 |               105.4 | -0.8%          |
+| gasId     |                 175.09 |              171.37 | -2.1%         |                  499.1 |               486.9 | -2.4%          |
+| pendigits |                  33.38 |               33.97 | +1.8%         |                  108.9 |               109.6 | +0.6%          |
+| winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
+| winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
+
+Table: Results of restricting neuron bitwidths
+
+![Results of restricting neuron bitwidths](figs2/bnnparsign_bnnparw.svg)
 
 The results are negligible, in the 1-3% range, and in the
 case of pendigits they even deteriorate a bit. This deterioration
@@ -354,7 +386,21 @@ minimum range bit-width reduction.
 
 ![Combinatorial signed sum implementation with reduced sum bitwidths and occasional range centering.](tikz1/bnnparce.png)
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnparce area(cm²) | area change   |   bnnparw power(mW) |   bnnparce power(mW) | power change   |
+|:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
+| Har       |               24.25 |                24.99 | +3.1%         |                77.6 |                 79   | +1.8%          |
+| cardio    |               33.21 |                34.84 | +4.9%         |               105.4 |                110.5 | +4.8%          |
+| gasId     |              171.37 |               181.82 | +6.1%         |               486.9 |                516.1 | +6.0%          |
+| pendigits |               33.97 |                35.74 | +5.2%         |               109.6 |                115.5 | +5.4%          |
+| winered   |               21.87 |                20.76 | -5.1%         |                72.3 |                 67.7 | -6.4%          |
+| winewhite |               20.36 |                20.48 | +0.6%         |                66.7 |                 65.8 | -1.3%          |
+
+Table: Results of range centering
+
+![Results of range centering](figs2/bnnparw_bnnparce.svg)
+
 The results show that the hardware requirements of the additional
 operations were not covered by the reduced bitwidths and area and power
 demands considerably increased. Given the actual results of how much
@@ -440,7 +486,20 @@ together and expressed in verilog as a single sum. I have not confirmed
 if this does in fact affect the result of synthesis at all but it seems
 to conform closer to the recommendations of the best practices guide.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
+|:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
+| Har       |               24.25 |                   23.16 | -4.5%         |                77.6 |                    73.7 | -5.0%          |
+| cardio    |               33.21 |                   39.29 | +18.3%        |               105.4 |                   125.5 | +19.1%         |
+| gasId     |              171.37 |                  326.98 | +90.8%        |               486.9 |                   935.2 | +92.1%         |
+| pendigits |               33.97 |                   37.09 | +9.2%         |               109.6 |                   120.3 | +9.8%          |
+| winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
+| winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
+
+Table: Results of shrinking intermediate results naively
+
+![Results of shrinking intermediate results naively](figs2/bnnparw_bnnparstepw.svg)
 
 The results were positive for two of the models with the smallest count
 of input features $N$, which means that this method performed better
@@ -640,7 +699,33 @@ Finding these two counts for all pairs of columns can still be done with
 a matrix multiplication like before so the new approach is not much
 slower.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               17.42 | -29.0%        |                   78.8 |                57.2 | -27.4%         |
+| cardio    |                  33.27 |               38.74 | +16.4%        |                  106.2 |               124.1 | +16.9%         |
+| gasId     |                 175.09 |              281.55 | +60.8%        |                  499.1 |               807.6 | +61.8%         |
+| pendigits |                  33.38 |               35.43 | +6.1%         |                  108.9 |               114.6 | +5.2%          |
+| winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
+| winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
+
+Table: Effect of preemptive arithmetic optimization with Paar's heuristic
+
+|           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               17.42 |                  18.73 | +7.5%         |                57.2 |                   60.8 | +6.3%          |
+| cardio    |               38.74 |                  35.97 | -7.2%         |               124.1 |                  116   | -6.5%          |
+| gasId     |              281.55 |                 261.38 | -7.2%         |               807.6 |                  759.7 | -5.9%          |
+| pendigits |               35.43 |                  32.22 | -9.1%         |               114.6 |                  107.3 | -6.4%          |
+| winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
+| winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
+
+Table: Comparison of the modified Paar heuristic to the original
+
+![Effect of preemptive arithmetic optimization with Paar's heuristic](figs2/bnnparsign_bnnpaar.svg)
+
+![Comparison of the modified Paar heuristic to the original](figs2/bnnpaar_bnnpaarter.svg)
 
 I expected that either:
 
@@ -801,7 +886,7 @@ These multiplexers share their input data lines with a lot of the other
 multiplexers, so the hardware cost of their implementation is
 considerably cheaper than $C$ separate ones.
 
-## Discussion
+## Results and analysis
 
 The cost of the adder graph in the fully parallel designs scales
 superlinearly with the count of input elements of the layer, at a faster
@@ -928,7 +1013,7 @@ of implementing saturation for this neuron.
 
 ![Implementation of saturation on the first layer of a sequential design.](tikz1/bnndsat.png)
 
-## Discussion
+## Results and analysis
 
 After these improvements, 4 out of the 6 networks demand less area in
 the sequential design than in the parallel one. But the impovement is
@@ -1020,7 +1105,7 @@ The second layer takes as many cycles as classes to be examined for
 prediction. The full inference therefore takes up $M+C$ clock cycles.
 Again a reset signal must be given between successive inferences.
 
-## Discussion 
+## Results and analysis 
 
 A large improvement on the previous sequential design method, using a
 single adder tree gets us 60 - 75% smaller footprints than the fully
@@ -1114,7 +1199,20 @@ The goal of this is to avoid the nested OR gates that are used to reduce
 the selected value of the column into one bit in the standard look up
 table implementation.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                   7.82 | -67.8%        |                77.6 |                   31.7 | -59.1%         |
+| cardio    |               33.21 |                   9.3  | -72.0%        |               105.4 |                   36   | -65.8%         |
+| gasId     |              171.37 |                  37.31 | -78.2%        |               486.9 |                  124.4 | -74.5%         |
+| pendigits |               33.97 |                   9.08 | -73.3%        |               109.6 |                   35.1 | -68.0%         |
+| winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
+| winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
+
+Table: Comparison of the final sequential designs to the final combinatorial designs
+
+![Comparison of the final sequential designs to the final combinatorial designs](figs2/bnnparw_bnnrospine.svg)
 
 These changes give a 10-20% decrease in area and power requirements
 compared to the initial single adder tree implementation. With the use
@@ -1258,7 +1356,20 @@ was not the final one the correction term $\lceil \frac{z_i -
 \min\limits_{j=0}^{M-1} z_j}{2} \rceil$ would instead be used as the
 threshold for binarization of the neuron's output instead of 0.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                  13.4  | -44.7%        |                77.6 |                   42.7 | -45.0%         |
+| cardio    |               33.21 |                  19.21 | -42.2%        |               105.4 |                   62.4 | -40.8%         |
+| gasId     |              171.37 |                 101.65 | -40.7%        |               486.9 |                  297.1 | -39.0%         |
+| pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
+| winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
+| winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
+
+Table: Performance of the ternary weight combinatorial implementation compared to the binary combinatorial
+
+![Performance of the ternary weight combinatorial implementation compared to the binary combinatorial](figs2/bnnparw_tnnparsign.svg)
 
 Thanks to the removal of terms from the arithmetic operations that
 define the design of the layers the area and power requirements were
@@ -1452,6 +1563,8 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnparce    | 24.99 |    34.84 |  181.82 |       35.74 |     20.76 |       20.48 |
 | bnnpaarter  | 18.73 |    35.97 |  261.38 |       32.22 |     17.47 |       16.65 |
 
+Table: What
+
 ## Combinatorial designs power comparisons
 
 ![](./parpower.svg)
@@ -1467,7 +1580,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnparce    |  79   |    110.5 |   516.1 |       115.5 |      67.7 |        65.8 |
 | bnnpaarter  |  60.8 |    116   |   759.7 |       107.3 |      59.6 |        55.9 |
 
-## Sequential designs power comparisons
+## Sequential designs area comparisons
 
 ![](./seqarea.svg)
 
@@ -1500,79 +1613,8 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 
 \newpage
 
-## Table comparisons
+## Additional table comparisons
 
-### Comparison of single signed sum to double unsigned sums approaches
-
-|           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
-|:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
-| Har       |              29.4  |                  24.52 | -16.6%        |               92.1 |                   78.8 | -14.4%         |
-| cardio    |              46.71 |                  33.27 | -28.8%        |              145.3 |                  106.2 | -26.9%         |
-| gasId     |             269.76 |                 175.09 | -35.1%        |              767.7 |                  499.1 | -35.0%         |
-| pendigits |              42.95 |                  33.38 | -22.3%        |              136.8 |                  108.9 | -20.4%         |
-| winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
-| winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
-
-### Results of restricting neuron bitwidths
-
-|           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
-|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
-| Har       |                  24.52 |               24.25 | -1.1%         |                   78.8 |                77.6 | -1.5%          |
-| cardio    |                  33.27 |               33.21 | -0.2%         |                  106.2 |               105.4 | -0.8%          |
-| gasId     |                 175.09 |              171.37 | -2.1%         |                  499.1 |               486.9 | -2.4%          |
-| pendigits |                  33.38 |               33.97 | +1.8%         |                  108.9 |               109.6 | +0.6%          |
-| winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
-| winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
-
-### Results of range centering
-
-|           |   bnnparw area(cm²) |   bnnparce area(cm²) | area change   |   bnnparw power(mW) |   bnnparce power(mW) | power change   |
-|:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
-| Har       |               24.25 |                24.99 | +3.1%         |                77.6 |                 79   | +1.8%          |
-| cardio    |               33.21 |                34.84 | +4.9%         |               105.4 |                110.5 | +4.8%          |
-| gasId     |              171.37 |               181.82 | +6.1%         |               486.9 |                516.1 | +6.0%          |
-| pendigits |               33.97 |                35.74 | +5.2%         |               109.6 |                115.5 | +5.4%          |
-| winered   |               21.87 |                20.76 | -5.1%         |                72.3 |                 67.7 | -6.4%          |
-| winewhite |               20.36 |                20.48 | +0.6%         |                66.7 |                 65.8 | -1.3%          |
-
-\newpage
-
-### Results of shrinking intermediate results naively
-
-|           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
-|:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
-| Har       |               24.25 |                   23.16 | -4.5%         |                77.6 |                    73.7 | -5.0%          |
-| cardio    |               33.21 |                   39.29 | +18.3%        |               105.4 |                   125.5 | +19.1%         |
-| gasId     |              171.37 |                  326.98 | +90.8%        |               486.9 |                   935.2 | +92.1%         |
-| pendigits |               33.97 |                   37.09 | +9.2%         |               109.6 |                   120.3 | +9.8%          |
-| winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
-| winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
-
-### Effect of preemptive arithmetic optimization with Paar's heuristic
-
-|           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
-|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
-| Har       |                  24.52 |               17.42 | -29.0%        |                   78.8 |                57.2 | -27.4%         |
-| cardio    |                  33.27 |               38.74 | +16.4%        |                  106.2 |               124.1 | +16.9%         |
-| gasId     |                 175.09 |              281.55 | +60.8%        |                  499.1 |               807.6 | +61.8%         |
-| pendigits |                  33.38 |               35.43 | +6.1%         |                  108.9 |               114.6 | +5.2%          |
-| winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
-| winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
-
-### Comparison of the modified Paar heuristic to the original
-
-|           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               17.42 |                  18.73 | +7.5%         |                57.2 |                   60.8 | +6.3%          |
-| cardio    |               38.74 |                  35.97 | -7.2%         |               124.1 |                  116   | -6.5%          |
-| gasId     |              281.55 |                 261.38 | -7.2%         |               807.6 |                  759.7 | -5.9%          |
-| pendigits |               35.43 |                  32.22 | -9.1%         |               114.6 |                  107.3 | -6.4%          |
-| winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
-| winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
-
-\newpage
-
-### Effect of using a custom multiplexer per neuron in the first layer
 
 |           |   bnnseq area(cm²) |   bnndirect area(cm²) | area change   |   bnnseq power(mW) |   bnndirect power(mW) | power change   |
 |:----------|-------------------:|----------------------:|:--------------|-------------------:|----------------------:|:---------------|
@@ -1583,7 +1625,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |              29.57 |                 27.11 | -8.3%         |              131.7 |                 125.7 | -4.6%          |
 | winewhite |              29.75 |                 27.31 | -8.2%         |              128.6 |                 122.6 | -4.7%          |
 
-### Effect of reducing the width of the first layer's registers
+Table: Effect of using a custom multiplexer per neuron in the first layer
 
 |           |   bnndirect area(cm²) |   bnndw area(cm²) | area change   |   bnndirect power(mW) |   bnndw power(mW) | power change   |
 |:----------|----------------------:|------------------:|:--------------|----------------------:|------------------:|:---------------|
@@ -1594,7 +1636,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 27.11 |             24.51 | -9.6%         |                 125.7 |             112.1 | -10.8%         |
 | winewhite |                 27.31 |             23.98 | -12.2%        |                 122.6 |             106.2 | -13.4%         |
 
-### Effect of applying saturation to the first layer's registers
+Table: Effect of reducing the width of the first layer's registers
 
 |           |   bnndw area(cm²) |   bnndsat area(cm²) | area change   |   bnndw power(mW) |   bnndsat power(mW) | power change   |
 |:----------|------------------:|--------------------:|:--------------|------------------:|--------------------:|:---------------|
@@ -1605,9 +1647,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |             24.51 |               23.02 | -6.1%         |             112.1 |               104.5 | -6.8%          |
 | winewhite |             23.98 |               22.43 | -6.5%         |             106.2 |                98.5 | -7.3%          |
 
-\newpage
+Table: Effect of applying saturation to the first layer's registers
 
-### Effect of deconstructing negation
+\newpage
 
 |           |   bnnrolx area(cm²) |   bnnrolin area(cm²) | area change   |   bnnrolx power(mW) |   bnnrolin power(mW) | power change   |
 |:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
@@ -1618,7 +1660,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                8.85 |                 8.04 | -9.2%         |                38.9 |                 35.7 | -8.2%          |
 | winewhite |                8.65 |                 8    | -7.5%         |                37.5 |                 34.9 | -6.9%          |
 
-### Effect of replacing the cycle counter with shifting registers
+Table: Effect of deconstructing negation
 
 |           |   bnnrolin area(cm²) |   bnnrospine area(cm²) | area change   |   bnnrolin power(mW) |   bnnrospine power(mW) | power change   |
 |:----------|---------------------:|-----------------------:|:--------------|---------------------:|-----------------------:|:---------------|
@@ -1629,7 +1671,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 8.04 |                   7.61 | -5.3%         |                 35.7 |                   30.9 | -13.4%         |
 | winewhite |                 8    |                   7.49 | -6.4%         |                 34.9 |                   30.9 | -11.5%         |
 
-### Effect of using tristate buffers for the weight memory
+Table: Effect of replacing the cycle counter with shifting registers
 
 |           |   bnnrospine area(cm²) |   bnnrobus area(cm²) | area change   |   bnnrospine power(mW) |   bnnrobus power(mW) | power change   |
 |:----------|-----------------------:|---------------------:|:--------------|-----------------------:|---------------------:|:---------------|
@@ -1640,47 +1682,11 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                   7.61 |                 9.66 | +26.9%        |                   30.9 |                 25.7 | -16.8%         |
 | winewhite |                   7.49 |                 9.56 | +27.6%        |                   30.9 |                 25.2 | -18.4%         |
 
-\newpage
+Table: Effect of using tristate buffers for the weight memory
 
-### Comparison of the final sequential designs to the final combinatorial designs
-
-|           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               24.25 |                   7.82 | -67.8%        |                77.6 |                   31.7 | -59.1%         |
-| cardio    |               33.21 |                   9.3  | -72.0%        |               105.4 |                   36   | -65.8%         |
-| gasId     |              171.37 |                  37.31 | -78.2%        |               486.9 |                  124.4 | -74.5%         |
-| pendigits |               33.97 |                   9.08 | -73.3%        |               109.6 |                   35.1 | -68.0%         |
-| winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
-| winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
-
-### Performance of the ternary weight combinatorial implementation compared to the binary combinatorial
-
-|           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               24.25 |                  13.4  | -44.7%        |                77.6 |                   42.7 | -45.0%         |
-| cardio    |               33.21 |                  19.21 | -42.2%        |               105.4 |                   62.4 | -40.8%         |
-| gasId     |              171.37 |                 101.65 | -40.7%        |               486.9 |                  297.1 | -39.0%         |
-| pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
-| winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
-| winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
-
-\newpage
-
-## Graph comparisons
+## Additional graph comparisons
 
 The following graphs show the area and power measurements of the models reified via the second design normalised on the equivalent metrics from the first design type.
-
-![Comparison of single signed sum to double unsigned sums approaches](figs2/bnnpar_bnnparsign.svg)
-
-![Results of restricting neuron bitwidths](figs2/bnnparsign_bnnparw.svg)
-
-![Results of range centering](figs2/bnnparw_bnnparce.svg)
-
-![Results of shrinking intermediate results naively](figs2/bnnparw_bnnparstepw.svg)
-
-![Effect of preemptive arithmetic optimization with Paar's heuristic](figs2/bnnparsign_bnnpaar.svg)
-
-![Comparison of the modified Paar heuristic to the original](figs2/bnnpaar_bnnpaarter.svg)
 
 ![Effect of using a custom multiplexer per neuron in the first layer](figs2/bnnseq_bnndirect.svg)
 
@@ -1693,8 +1699,4 @@ The following graphs show the area and power measurements of the models reified 
 ![Effect of replacing the cycle counter with shifting registers](figs2/bnnrolin_bnnrospine.svg)
 
 ![Effect of using tristate buffers for the weight memory](figs2/bnnrospine_bnnrobus.svg)
-
-![Comparison of the final sequential designs to the final combinatorial designs](figs2/bnnparw_bnnrospine.svg)
-
-![Performance of the ternary weight combinatorial implementation compared to the binary combinatorial](figs2/bnnparw_tnnparsign.svg)
 
