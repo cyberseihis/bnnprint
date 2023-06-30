@@ -1,4 +1,5 @@
 ---
+numbersections: true
 header-includes:
  - \usepackage{fvextra}
  - \usepackage{mathtools}
@@ -121,21 +122,21 @@ my following talk of HDL implementations to be comprehensible are:
 
 \newpage
 
-# Symbol definitions
+## Symbol definitions
 - $N$ = the number of input features,  
 - $M$ = the number of hidden neurons (in our case it is always 40),  
 - $C$ = the number of output neurons/ number of classes  
 - $S$ be the number of samples in the dataset,
 - $x_i$ be the ith input feature,  
-- $x_i$ be the i^*th*^ input feature,  
-- $D^i$ be the i-th sample of the dataset,
-- $D^i_j$ be the value the j_th_ input feature takes on the i_th_ sample
+- $x_i$ be the $i$-th input feature,  
+- $D^i$ be the $i$-th sample of the dataset,
+- $D^i_j$ be the value the $j$-th input feature takes on the $i$-th sample
   of the dataset,
-- $h_i$ be the i_th_ hidden neuron, also used to denote it's output value
+- $h_i$ be the $i$-th hidden neuron, also used to denote it's output value
 before binarization,  
-- $s_i$ be the i_th_ hidden neuron's output after binarization, so $s_i =
+- $s_i$ be the $i$-th hidden neuron's output after binarization, so $s_i =
 h_i \ge 0$,  
-- $y_i$ be the i_th output neuron, also used to denote it's output value,  
+- $y_i$ be the $i$-th output neuron, also used to denote it's output value,  
 - $W1$ = the weight matrix of the first layer,  
 - $W2$ = the weight matrix of the second layer,  
 
@@ -145,7 +146,7 @@ connection between the input feature $x_j$ and the neuron $h_i$.
 
 \newpage
 
-# Combinatorial fully connected implementations
+# Fully combinatorial fully connected implementations
 Two initial approaches for implementing the fully connected BNNs
 in a fully combinatorial single-cycle datapath are compared.
 Only the first layer differs between them, the second layer stays
@@ -156,7 +157,8 @@ unchanged.
 ![Implementation with positive and negative sums split](./tikz2/bnnpar.pdf)
 
 For each neuron in the first layer two sums are calculated. $\Sigma^+_i$
-is the sum of the input features for which the connection with the i_th_
+is the sum of the input features for which the connection with the
+$i$-th
 hidden neuron has a positive weight , whereas $\Sigma^-_i$ the sum of
 those that have a negative weight associated. The two sums are then
 compared and if the positive sum is greater than or equal to the
@@ -224,7 +226,7 @@ assign hidden[0] = intra_0 >= 0;
 The second layer's implementation is not changed from how it is
 described above.
 
-## Results and analysis
+### Results and analysis
 
 |           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
 |:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
@@ -259,7 +261,7 @@ additional hardware.
 
 \newpage
 
-# Minimum range bit-width reduction
+## Minimum range bit-width reduction
 
 ![Pre-activation values for a hidden neuron for each sample of the dataset and comparison of the default and minimum bitrange that supports all values.](./parw_points.svg)
 
@@ -292,14 +294,14 @@ sample in the dataset. I get the minimum and maximum of these values.
 Since all values for the total sum to take are contained in the range
 between those two, the arithmetic operations need not accomodate any
 range larger than that.  Let $H^i_j$ be the value of $h_i$ when
-evaluating the j_th_ sample of the dataset, and $wh_i$ be the bitwidth
-of the i_th_ hidden neuron.
+evaluating the $i$-th sample of the dataset, and $wh_i$ be the bitwidth
+of the $i$-th hidden neuron.
 
 $$h_{i max} = \max\limits_{j=0}^{S-1} H^i_j$$
 $$h_{i min} = \min\limits_{j=0}^{S-1} H^i_j$$
 $$ wh_i = \lceil \log_2(\max(h_{i max},\lvert h_{i min}\rvert -1)) \rceil+1 $$
 
-## Results and analysis
+### Results and analysis
 
 |           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
 |:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
@@ -328,8 +330,8 @@ have not found a method to work around this limitation at this point.
 
 \newpage
 
-# Naively reducing bitwidths of intermediate results
-## Rationale
+## Naively reducing bitwidths of intermediate results
+### Rationale
 
 Given the eventual goal of applying approximate computation techniques to
 the adder graph of the designs a problem, mentioned previously, comes
@@ -350,7 +352,7 @@ will cause resource sharing to break. Given how large the negative
 effect is I can check if this is a problem than ought to be fixed before 
 approximation can confidently be applied.
 
-## Implementation
+### Implementation
 
 ![The intermediate sums of the sequential calculation of hidden neuron
 28 for all of the Har dataset and the bit range needed to support each
@@ -392,7 +394,7 @@ together and expressed in verilog as a single sum. I have not confirmed
 if this does in fact affect the result of synthesis at all but it seems
 to conform closer to the recommendations of the best practices guide.
 
-## Results and analysis
+### Results and analysis
 
 |           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
 |:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
@@ -422,11 +424,11 @@ work around it shall be searched for.
 
 \newpage
 
-# Preemptive arithmetic optimization
+## Preemptive arithmetic optimization
 
 ![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz2/bnnpaar.pdf)
 
-## Rationale
+### Rationale
 Based on the results from above I attempt to get the arithmetic
 expression that the design computes after synthesis, with the intent
 of fitting later approximation techniques to it rather than having the
@@ -489,7 +491,7 @@ to the same.
 ![An example of a datapath block's extraction report. An intermediate
 value that is reused multiple times is highlighted.](./pics/extraction_report.png)
 
-## Implementation
+### Implementation
 
 A formulation of the problem is the following:  Given a list of
 expressions of the general form $y_i = x_0 + x_1 - x_2 - ... + x_n$ in
@@ -527,7 +529,7 @@ place of parity.
 
 \newpage
 
-## Paar's algorithm
+### Paar's algorithm
 
 It is essentially a greedy algorithm that picks the two elements that
 are common in the largest number of expressions each time and adds the
@@ -580,7 +582,7 @@ From this process a list $L$ of successive indices such that $L_n =
 (i,j) \iff x_n = x_i + x_j$ is acquired, and the additions implied by
 them are hardcoded in the verilog description of the designs.
 
-## Extension to support subtractions
+### Extension to support subtractions
 
 I try a slight modification to the original procedure so it can be
 compatible with expressions including subtractions. The way I
@@ -605,7 +607,7 @@ Finding these two counts for all pairs of columns can still be done with
 a matrix multiplication like before so the new approach is not much
 slower.
 
-## Results and analysis
+### Results and analysis
 
 |           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
 |:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
@@ -684,9 +686,11 @@ raise the network size threshold for which results can be improved.
 
 \newpage
 
-# Sequential evaluation
+# Sequential Evaluation of Layer Neurons
 
-## Rationale
+## Single Input, Per-Cycle Update
+
+### Rationale
 
 The classifications considered here are mostly not time critical and do
 not require high throughput. Evaluating the quality of a wine every
@@ -710,9 +714,9 @@ Layers get evaluated successively, so the entire inference will take a
 cycle count equal to the sum of all the inputs and hidden features of
 the network.
 
-## Implementation
+### Implementation
 
-### First layer
+#### First layer
 
 ![The first layer of a sequentially evaluated BNN](tikz2/bnnseq.pdf)
 
@@ -763,7 +767,7 @@ tested. The memory elements are very expensive in this technology so
 this version ended up underperforming the previous by a large margin due
 to the required registers.
 
-### Second layer
+#### Second layer
 
 The second layer starts after receiving an enable signal from the first
 layers halting flag. Because of the linear transformation described in
@@ -792,7 +796,7 @@ These multiplexers share their input data lines with a lot of the other
 multiplexers, so the hardware cost of their implementation is
 considerably cheaper than $C$ separate ones.
 
-## Results and analysis
+### Results and analysis
 
 |           |   bnnparw area(cm²) |   bnnseq area(cm²) | area change   |   bnnparw power(mW) |   bnnseq power(mW) | power change   |
 |:----------|--------------------:|-------------------:|:--------------|--------------------:|-------------------:|:---------------|
@@ -957,9 +961,9 @@ constructed from the ground up.
 
 \newpage
 
-# Single adder tree sequential evaluation
+## Single adder tree sequential evaluation
 
-## Rationale
+### Rationale
 
 Since the previous attempt where all neurons update in parallel
 on a single input feature each cycle did not pan out, the clear next
@@ -976,7 +980,7 @@ the encoding of weighting the features appropriately before their
 accumulation than must now be done since the operations are not simply
 hard-coded into the circuit.
 
-## Implementation
+### Implementation
 
 ![A single-adder sequential BNN implementation](tikz2/bnnrolx.pdf)
 
@@ -1037,7 +1041,7 @@ The second layer takes as many cycles as classes to be examined for
 prediction. The full inference therefore takes up $M+C$ clock cycles.
 Again a reset signal must be given between successive inferences.
 
-## Results and analysis 
+### Results and analysis 
 
 |           |   bnnparw area(cm²) |   bnnrolx area(cm²) | area change   |   bnnparw power(mW) |   bnnrolx power(mW) | power change   |
 |:----------|--------------------:|--------------------:|:--------------|--------------------:|--------------------:|:---------------|
@@ -1070,7 +1074,7 @@ tested to confirm that it was an improvement for both of them.
 
 \newpage
 
-# Deconstructing input negation
+## Deconstructing input negation
 
 ![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz2/bnnromem.pdf)
 
@@ -1095,7 +1099,7 @@ $$ h_i = \sum_{j=0}^{N-1} x_j \oplus \neg bin(W1_{i,j}) + b_i $$
 
 \newpage
 
-# Shifting registers for timekeeping
+## Shifting registers for timekeeping
 
 ![Replacement of cycle counter by shifting registers for the hidden activations.](tikz2/bnnrospine.pdf)
 
@@ -1169,6 +1173,12 @@ considerable switching power consumption from the intermediate nets that
 connect nested OR gates is removed. This trade-off allows to optimise
 for whichever of area and power is the largest bottleneck to the desired
 application.
+
+Importantly for our purposes, none of the models could be powered by a
+30mW BlueSpark using a conventional LUT for the weights. After
+implementing the LUT using tristate buffers, 5 out of the 6 can be
+powered by it. Although not coming cheaply in terms of area, the power
+savings were critical for overcoming this barrier.
 
 All in all compared to the fully parallel designs requirements are
 reduced $3-5\times$. This opens up the space of implementable applications. The relative savings would get considerably better for larger networks given the scaling observed.
@@ -1395,8 +1405,6 @@ the first layer's neurons are compared to in order to produce their
 binarized output to be always zero. So this discrepancy was another
 point for the preference of Qkeras over Larq.
 
-### Dataset accuracies table graphs
-
 ## Parameter optimization and encoding
 
 The models resulting from the above process are stored in a
@@ -1495,6 +1503,8 @@ bnnrobus| [Tristate weight memory ](#tristate-weight-memory)
 tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 
 \newpage
+
+## Dataset accuracies table graphs
 
 ## Combinatorial designs area comparisons
 
