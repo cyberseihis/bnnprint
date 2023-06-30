@@ -1,11 +1,21 @@
 ---
+numbersections: true
 header-includes:
  - \usepackage{fvextra}
  - \usepackage{mathtools}
  - \usepackage{amsmath}
  - \usepackage{tikz}
- - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage[margin=1.5in]{geometry}
+ - \usetikzlibrary{patterns} \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \makeatletter
+ - \def\fps@figure{H}
+ - \makeatother
 ---
+
+\newpage
+
 # Introduction
 
 ## Intro to printed electronics
@@ -31,38 +41,39 @@ harvesters and antennas can be implemented with them. They are thought
 to be an emerging market with considerable potential to broaden the role
 of computation in everyday living. They can help the pervasiveness of
 the Internet-of-Things reach far deeper, and thus synergize well with
-other advances in the sector. A recent report by IDTechEx[25]
+other advances in the sector. A recent report by IDTechEx[@fn25]
 forecasts the global market for printed flexible electronics, excluding
 OLEDs, to reach 12 billion dollars by 2033.
 
-![](../../../Downloads/processcomparison.png){width=50%}
-![](../../../Downloads/moneyprinters.jpg){width=50%}
+![Source: https://doi.org/10.1109/ISCAS.2017.8050614](../../../Downloads/picdump/additivemanufacturing.png)
+
+![Source: Precedence Research](../../../Downloads/moneyprinters.jpg)
 
 ## Related work in machine learning for printed circuits
 
-- Tahoori et al[14] demonstrates an analog two input neuron, and shows how it could be
+- Tahoori et al[@fn14] demonstrates an analog two input neuron, and shows how it could be
 expanded to fully printed analog neural networks with MAC and activation
 operations.
-- Douthwaite et al[15] Uses time domain encoding of signals, representing magnitude as
+- Douthwaite et al[@fn15] Uses time domain encoding of signals, representing magnitude as
   pulse width and encoding weights with current mirrors. Accumulation is
   done by linearly charging a capacitor with the mirrored pulses.
-- Gkoupidenis et al [16] mimick biologically inspired synaptic
+- Gkoupidenis et al [@fn16] mimick biologically inspired synaptic
   functions with electrolyte-gated transistors and show how they could
   be used for a single layer perceptron.
-- Ozer et al [17] envision what an automatic process for creating 
+- Ozer et al [@fn17] envision what an automatic process for creating 
 bespoke processors for a variety of ML architectures in printed
 electronics could look like, but don't go beyond the vision stage.
-- Bleier et al [18] present a printed microprocessor with an instruction set customised to the program at hand.
-- Weller et al [19] leverage stochastic computing to reduce the
+- Bleier et al [@fn18] present a printed microprocessor with an instruction set customised to the program at hand.
+- Weller et al [@fn19] leverage stochastic computing to reduce the
   requirements of mixed analog - digital neural networks but with heavy
   accuracy cost.
-- Mubarik et al [20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
-- Armeniakos et al [21] expand to more demanding SVMs and Multi Layer
+- Mubarik et al [@fn20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
+- Armeniakos et al [@fn21] expand to more demanding SVMs and Multi Layer
   Perceptrons, and provide a method to shift the weight coefficients of the networks to more hardware friendly values and apply circuit level netlist pruning to reduce area and power to more acceptable values.
 
 \newpage
 
-## Introduction to ubiquitous computing and thesis statement
+# Introduction to ubiquitous computing and thesis statement
 
 Technology in general and more specifically computation plays an ever
 increasing part in our lives and there are no signs of the trend slowing
@@ -209,10 +220,9 @@ day be printed if printing accuracy keeps increasing.
   patches for seizure detection already on the market. One can also
   imagine they would be of interest to the fashion industry.
 
-![](../../../Downloads/printednfc.jpg){width=50%}
-![](../../../Downloads/membranekeyboard.jpeg){width=50%}
-![](../../../Downloads/smartskis.jpg){width=50%}
-![](../../../Downloads/fingerstrainsensor.png){width=50%}
+![Printed NFC demontration. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printednfc.jpg)
+
+![Printed circuit on the membrane of a common keyboard. Source: Paulo Maluf](../../../Downloads/membranekeyboard.jpeg)
 
 \newpage
 
@@ -276,8 +286,9 @@ and although they can achieve smaller feature sizes they require
 specialised equipment and are not as cost friendly as the traditional
 printing methods and thus less relevant.
 
-![](../../../Downloads/printer.png){width=50%}
-![](../../../Downloads/printingroll.jpg){width=50%}
+![Dimatix DMP-2850 Materials Printer. Source: FUJIFILM](../../../Downloads/printer.png)
+
+![Long sheet of circuits printed on a Roll-to-Roll system. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printingroll.jpg)
 
 \newpage
 
@@ -309,9 +320,10 @@ conducting and semiconducting layers in order for charge not to leak
 through it. Substrate materials, ceramic oxides and polymers can be
 used as the active ingredient.
 
-![](../../../Downloads/semiconductingink.jpeg){width=33%}
-![](../../../Downloads/conductivepen.jpeg){width=33%}
-![](../../../Downloads/conductivepen2.jpg){width=33%}
+<!-- ![](../../../Downloads/semiconductingink.jpeg) -->
+
+<!-- ![](../../../Downloads/conductivepen.jpeg){width=33%} -->
+<!-- ![](../../../Downloads/conductivepen2.jpg){width=33%} -->
 
 \newpage
 
@@ -389,8 +401,8 @@ larger model without the need for training. A recent progressive
 shrinking algorithm (PSA) reduces depth and width of layers while
 retaining a higher final accuracy than equivalent general pruning.
 
-![](../../../Downloads/tinymldiagram.jpeg){width=50%}
-![](../../../Downloads/iotl.png){width=50%}
+<!-- ![](../../../Downloads/tinymldiagram.jpeg){width=50%} -->
+<!-- ![](../../../Downloads/iotl.png){width=50%} -->
 
 \newpage
 
@@ -438,8 +450,8 @@ performance. Knowledge distillation with the original network as the
 teacher and the pruned network as student can be used to recover lost
 accuracy.
 
-![](../../../Downloads/distillcartoon.png)
-![](../../../Downloads/pruninpng.png)
+<!-- ![](../../../Downloads/distillcartoon.png) -->
+<!-- ![](../../../Downloads/pruninpng.png) -->
 
 - Knowledge distillation is a process of training a smaller, shallower
 student network to much the output logits of a larger, more capable
@@ -454,7 +466,7 @@ distilled into it and subsequently distills them to the student.
 
 - Quantization is the process of reducing the numerical precision of
   values in the model. Networks are typically using 32 bit floating
-  point numbers during training[22]. The most common quantization
+  point numbers during training[@fn22]. The most common quantization
   targets for those are either 8-bit or 4-bit integers. In many cases
   the network does not utilise this level of precision to it's full
   extend. Reducing the precision in these cases can relieve the
@@ -478,7 +490,7 @@ information for classification to be possible, and output layers of
 classifiers have their activations compared to each other to decide on
 the predicted class, so they cannot be binarized. The most common domain
 for BNNs are Convolutional Neural Networks(CNNs). They were
-independently presented in 2016 by [23] and [24].
+independently presented in 2016 by [@fn23] and [@fn24].
 
 Beyond reducing the storage size required for the weights $32\times$
 compared to a full precision 32-bit network of the same architecture,
@@ -535,7 +547,7 @@ binarizations are used for the forward pass.
 ## Datasets
 
 The datasets chosen to train models for and implement are the ones used
-by [20]. That way results for model accuracy and area
+by [@fn20]. That way results for model accuracy and area
 / power requirements can be compared with other approaches in the
 literature. Like in those papers, categorical features were removed from
 the datasets, leaving only inputs from sensors, since they are all the
@@ -543,24 +555,24 @@ actual printed system would have access to (this assumption may be
 circumvented, but this is beyond the current scope). Note that the
 feature selection may not be the same as the prior papers, since the
 pieces of data they kept were not documented. All of them were taken
-from the UCI machine learning repository[7].
+from the UCI machine learning repository[@fn7].
 
 A short description of the datasets:
 
-- Arrythmia[8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
+- Arrythmia[@fn8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
   recordings.
-- Cardiotocography[9]: Diagnosing problems in the heartrate of unborn
+- Cardiotocography[@fn9]: Diagnosing problems in the heartrate of unborn
   infants.
-- Pendigits[10]: Classification of written digit from a series of 8
+- Pendigits[@fn10]: Classification of written digit from a series of 8
   pressure signals from touch sensors.
-- Human activity recognition(HAR)[11]: Classification of the type of
+- Human activity recognition(HAR)[@fn11]: Classification of the type of
   movement a person is making(standing, climbing stairs etc) using accelerometers from cellphones on
   their waists.
-- Gas Identification[12]: Classification of gas presence using chemical
+- Gas Identification[@fn12]: Classification of gas presence using chemical
   sensors.
-- Wine Quality(White wines)[13]: Estimating the percieved enjoyment of
+- Wine Quality(White wines)[@fn13]: Estimating the percieved enjoyment of
   various white wines based on acidity and mineral traces.
-- Wine Quality(Red wines)[13]: Equivelant to the above for red wines.
+- Wine Quality(Red wines)[@fn13]: Equivelant to the above for red wines.
 
 The datasets use inputs from sensors that at least approximately
 correspond to ones that have been demonstrated possible to manufacture
@@ -571,78 +583,78 @@ technology.
 
 Sensor | Dataset
 ---|---
-Electrocardiography sensor on paper[1] | Arrythmia
-Electrocardiography sensor on paper[1] | Cardio
+Electrocardiography sensor on paper[@fn1] | Arrythmia
+Electrocardiography sensor on paper[@fn1] | Cardio
 Printed movement sensor | Human activity recognition
-Printed gas sensor[6] | Gas identification
-Printed piezoelectric sensor[4] | Pendigits
-Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(White)
-Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(Red)
+Printed gas sensor[@fn6] | Gas identification
+Printed piezoelectric sensor[@fn4] | Pendigits
+Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(White)
+Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(Red)
 
 \newpage
 
-[1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
+[@fn1]: Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
 Jozina B. De Graaf, George G. Malliaras, Inkjet-Printed PEDOT:PSS
 Electrodes on Paper for Electrocardiography, Advanced Healthcare
 Materials Volume 6, Issue 6
 
-[2] Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087.
+[@fn2]: Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087.
 
-[3] Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356.
+[@fn3]: Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356.
 
-[4] Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE.
+[@fn4]: Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE.
 
-[5] Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473.
+[@fn5]: Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473.
 
-[6] Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789.
+[@fn6]: Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789.
 
-[7] D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml 
+[@fn7]: D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml 
 
-[8] Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE.
+[@fn8]: Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE.
 
-[9] D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000. 
+[@fn9]: D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000. 
 
-[10] F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996. 
+[@fn10]: F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996. 
 
-[11] D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013. 
+[@fn11]: D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013. 
 
-[12] S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019. 
+[@fn12]: S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019. 
 
-[13] P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009. 
+[@fn13]: P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009. 
 
-[14] D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann,
+[@fn14]: D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann,
 and M. Beigl, “Programmable neuromorphic circuit based on
 printed electrolyte-gated transistors,” in 2020 25th Asia and South
 Pacific Design Automation Conference (ASP-DAC), 2020, pp. 446–451
 
-[15] Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE.
+[@fn15]: Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE.
 
-[16] H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020. 
+[@fn16]: H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020. 
 
-[17] Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE.
+[@fn17]: Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE.
 
-[18] Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE.
+[@fn18]: Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE.
 
-[19] D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann,
+[@fn19]: D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann,
 M. Beigl, R. Kumar, and M. B. Tahoori, “Printed stochastic com-
 puting neural networks,” in Design, Automation Test in Europe
 Conference Exhibition (DATE), 2021, pp. 914–919.
 
-[20] M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi-
+[@fn20]: M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi-
 Hagmann, M. B. Tahoori, and R. Kumar, “Printed machine learn-
 ing classifiers,” in Annu. Int. Symp. Microarchitecture (MICRO),
 2020, pp. 73–87
 
-[21] G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and
+[@fn21]: G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and
 J. Henkel, “Cross-Layer Approximation For Printed Machine
 Learning Circuits,” in Design, Automation Test in Europe Conference
-& Exhibition (DATE), 2022, [Online]. Available: https://arxiv.org/
+& Exhibition (DATE), 2022, [Online]:. Available: https://arxiv.org/
 abs/2203.05915
 
-[22] Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
+[@fn22]: Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
 
-[23] Courbariaux, M., Hubara, I., Soudry, D., El-Yaniv, R., Bengio, Y.: 2016, Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1. arXiv preprint arXiv:1602.02830. Darabi, S., Belbahri, M., Courbariaux, M., Nia, V.P.: 2018, Regularized binary network training. arXiv preprint
+[@fn23]: Courbariaux, M., Hubara, I., Soudry, D., El-Yaniv, R., Bengio, Y.: 2016, Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1. arXiv preprint arXiv:1602.02830. Darabi, S., Belbahri, M., Courbariaux, M., Nia, V.P.: 2018, Regularized binary network training. arXiv preprint
 
-[24] Kim, M., Smaragdis, P.: 2016, Bitwise neural networks. arXiv preprint arXiv:1601.06071.
+[@fn24]: Kim, M., Smaragdis, P.: 2016, Bitwise neural networks. arXiv preprint arXiv:1601.06071.
 
-[25] IDTechEx, Flexible & Printed Electronics 2023-2033: Forecasts, Technologies, Markets. 2023
+[@fn25]: IDTechEx, Flexible & Printed Electronics 2023-2033: Forecasts, Technologies, Markets. 2023
