@@ -4,8 +4,8 @@ header-includes:
  - \usepackage{mathtools}
  - \usepackage{amsmath}
  - \usepackage{tikz}
- - \usetikzlibrary{patterns}
- - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage[margin=1.5in]{geometry}
+ - \usetikzlibrary{patterns} \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
  - \usepackage{float}
  - \floatplacement{figure}{H}
  - \makeatletter
@@ -22,7 +22,7 @@ thesis is meant to be a framework that allows a labeled set of sensor
 data to produce a fully functional printed circuit that implements a
 classifier for this dataset. Due to lack of access to equipment the
 actual printing is not viable in this context and the scope will be
-restricted to the dataset \to netlist part of the process.
+restricted to the dataset to netlist part of the process.
 
 The classifier architecture will in particular be a Binary Neural
 Network(BNN), explained in the preliminaries. It may not necessarily be
