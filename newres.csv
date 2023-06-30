@@ -214,3 +214,7 @@ winewhite_bnn1_bnnrospinor,    747786913,  0.0306
      winewhite_tnn1_tnnseq,   2444806704,  0.1155
      winewhite_tnn1_tnnzeq,   2208415369,  0.1089
      winewhite_tnn1_tnnzew,   1849566031,  0.0891
+ cardio_x_mlpc, 1700000000,  0.054
+ pendigits_x_mlpc, 4600000000, 0.153
+ winered_x_mlpc, 800000000, 0.027
+ winewhite_x_mlpc,  1300000000,  0.042

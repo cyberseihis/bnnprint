@@ -1506,6 +1506,26 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 
 ## Dataset accuracies table graphs
 
+## Against cross-layer
+
+|           |   mlpc area(cm²) |   tnnparsign area(cm²) | area change   |   mlpc power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                  19.21 | +13.0%        |               54 |                   62.4 | +15.6%         |
+| pendigits |               46 |                  29.43 | -36.0%        |              153 |                   95.8 | -37.4%         |
+| winered   |                8 |                  11.78 | +47.2%        |               27 |                   40   | +48.1%         |
+| winewhite |               13 |                   9.53 | -26.7%        |               42 |                   32.8 | -21.9%         |
+
+![mlpc_tnnparsign](figs2/mlpc_tnnparsign.svg)
+
+|           |   mlpc area(cm²) |   bnnrospine area(cm²) | area change   |   mlpc power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                   9.3  | -45.3%        |               54 |                   36   | -33.3%         |
+| pendigits |               46 |                   9.08 | -80.3%        |              153 |                   35.1 | -77.1%         |
+| winered   |                8 |                   7.61 | -4.9%         |               27 |                   30.9 | +14.4%         |
+| winewhite |               13 |                   7.49 | -42.4%        |               42 |                   30.9 | -26.4%         |
+
+![mlpc_bnnrospine](figs2/mlpc_bnnrospine.svg)
+
 ## Combinatorial designs area comparisons
 
 ![](./pararea.svg)

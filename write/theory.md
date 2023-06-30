@@ -1,4 +1,5 @@
 ---
+link-citations: true
 numbersections: true
 header-includes:
  - \usepackage{fvextra}
@@ -432,7 +433,7 @@ patterns. This controller is often also a trained machine learning
 model. Criteria for which elements to prune include brute-force pruning,
 where the entire model is searched element by element to find ones that
 don't affect the outcome. Norms of weight vectors may be used to prune
-neurons, in particular the popular l₁ norm in the LASSO method. Optimal
+neurons, in particular the popular L1 norm in the LASSO method. Optimal
 Brain Damage uses the second derivative or Hessian matrix of the loss
 function to locate unneeded weights and was succeeded by the similar
 Optimal Brain Surgeon. Calculating these derivatives is too
@@ -508,7 +509,7 @@ sign(x) = \begin{dcases}
 \end{dcases}
 $$
 
-The binary operations $({-1,1},*)$ and $({0,1},\odot) are isomorphic, so
+The binary operations $({-1,1},*)$ and $({0,1},\odot)$ are isomorphic, so
 the multiplication of weights with activations is done using the XNOR
 operation when the binary values {-1,1} are encoded into the logic
 values {0,1} to be stored in a bit.
@@ -592,69 +593,3 @@ Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(White)
 Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(Red)
 
 \newpage
-
-<!-- [@fn1]: Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé, -->
-<!-- Jozina B. De Graaf, George G. Malliaras, Inkjet-Printed PEDOT:PSS -->
-<!-- Electrodes on Paper for Electrocardiography, Advanced Healthcare -->
-<!-- Materials Volume 6, Issue 6 -->
-<!---->
-<!-- [@fn2]: Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087. -->
-<!---->
-<!-- [@fn3]: Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356. -->
-<!---->
-<!-- [@fn4]: Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE. -->
-<!---->
-<!-- [@fn5]: Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473. -->
-<!---->
-<!-- [@fn6]: Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789. -->
-<!---->
-<!-- [@fn7]: D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml  -->
-<!---->
-<!-- [@fn8]: Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE. -->
-<!---->
-<!-- [@fn9]: D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000.  -->
-<!---->
-<!-- [@fn10]: F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996.  -->
-<!---->
-<!-- [@fn11]: D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013.  -->
-<!---->
-<!-- [@fn12]: S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019.  -->
-<!---->
-<!-- [@fn13]: P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009.  -->
-<!---->
-<!-- [@fn14]: D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann, -->
-<!-- and M. Beigl, “Programmable neuromorphic circuit based on -->
-<!-- printed electrolyte-gated transistors,” in 2020 25th Asia and South -->
-<!-- Pacific Design Automation Conference (ASP-DAC), 2020, pp. 446–451 -->
-<!---->
-<!-- [@fn15]: Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE. -->
-<!---->
-<!-- [@fn16]: H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020.  -->
-<!---->
-<!-- [@fn17]: Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE. -->
-<!---->
-<!-- [@fn18]: Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE. -->
-<!---->
-<!-- [@fn19]: D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann, -->
-<!-- M. Beigl, R. Kumar, and M. B. Tahoori, “Printed stochastic com- -->
-<!-- puting neural networks,” in Design, Automation Test in Europe -->
-<!-- Conference Exhibition (DATE), 2021, pp. 914–919. -->
-<!---->
-<!-- [@fn20]: M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi- -->
-<!-- Hagmann, M. B. Tahoori, and R. Kumar, “Printed machine learn- -->
-<!-- ing classifiers,” in Annu. Int. Symp. Microarchitecture (MICRO), -->
-<!-- 2020, pp. 73–87 -->
-<!---->
-<!-- [@fn21]: G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and -->
-<!-- J. Henkel, “Cross-Layer Approximation For Printed Machine -->
-<!-- Learning Circuits,” in Design, Automation Test in Europe Conference -->
-<!-- & Exhibition (DATE), 2022, [Online]:. Available: https://arxiv.org/ -->
-<!-- abs/2203.05915 -->
-<!---->
-<!-- [@fn22]: Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329. -->
-<!---->
-<!-- [@fn23]: Courbariaux, M., Hubara, I., Soudry, D., El-Yaniv, R., Bengio, Y.: 2016, Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1. arXiv preprint arXiv:1602.02830. Darabi, S., Belbahri, M., Courbariaux, M., Nia, V.P.: 2018, Regularized binary network training. arXiv preprint -->
-<!---->
-<!-- [@fn24]: Kim, M., Smaragdis, P.: 2016, Bitwise neural networks. arXiv preprint arXiv:1601.06071. -->
-<!---->
-<!-- [@fn25]: IDTechEx, Flexible & Printed Electronics 2023-2033: Forecasts, Technologies, Markets. 2023 -->
