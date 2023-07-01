@@ -1,0 +1,7 @@
+Dataset  , full precision, bnn, tnn, mlpc
+cardio   , 92            , 88 , 90 , 88
+gasId    , 90            , 81 , 88 , -
+Har      , 74            , 51 , 52 , -
+pendigits, 99            , 87 , 92 , 94
+redwine  , 60            , 54 , 58 , 56
+whitewine, 57            , 51 , 50 , 54

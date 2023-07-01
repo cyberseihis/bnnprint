@@ -1,0 +1,7 @@
+dataset, combinatorial delay(ms), sequential delay(ms), sequential cycles, total sequential delay(ms)
+    cardio,  142,  147, 43, 6321
+     gasId,  260,  181, 46, 8326
+       Har,  165,  135, 46, 6210
+ pendigits,  309,  147, 50, 7350
+   winered,  160,  138, 46, 6348
+ winewhite,  143,  129, 47, 6063

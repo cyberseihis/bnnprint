@@ -50,27 +50,108 @@ OLEDs, to reach 12 billion dollars by 2033.
 
 ![Source: Precedence Research](../../../Downloads/moneyprinters.jpg)
 
-## Related work in machine learning for printed circuits
+\newpage
 
-- Tahoori et al[@fn14] demonstrates an analog two input neuron, and shows how it could be
-expanded to fully printed analog neural networks with MAC and activation
-operations.
-- Douthwaite et al[@fn15] Uses time domain encoding of signals, representing magnitude as
-  pulse width and encoding weights with current mirrors. Accumulation is
-  done by linearly charging a capacitor with the mirrored pulses.
-- Gkoupidenis et al [@fn16] mimick biologically inspired synaptic
-  functions with electrolyte-gated transistors and show how they could
-  be used for a single layer perceptron.
-- Ozer et al [@fn17] envision what an automatic process for creating 
-bespoke processors for a variety of ML architectures in printed
+# Related works in machine learning for printed circuits
+
+Since the printed computing technology reached the point where Machine
+Learning models could be supported for inference, work has been made in
+bringing them to fruition.
+Tahoori et al[@fn14] demonstrates an analog two input neuron, and shows
+how it could be expanded to fully printed analog neural networks with
+MAC and activation operations. Douthwaite et al[@fn15] Uses time domain
+encoding of signals, representing magnitude as pulse width and encoding
+weights with current mirrors. Accumulation is done by linearly charging
+a capacitor with the mirrored pulses. Gkoupidenis et al [@fn16] mimick
+biologically inspired synaptic functions with electrolyte-gated
+transistors and show how they could be used for a single layer
+perceptron. Ozer et al [@fn17] envision what an automatic process for
+creating bespoke processors for a variety of ML architectures in printed
 electronics could look like, but don't go beyond the vision stage.
-- Bleier et al [@fn18] present a printed microprocessor with an instruction set customised to the program at hand.
-- Weller et al [@fn19] leverage stochastic computing to reduce the
-  requirements of mixed analog - digital neural networks but with heavy
-  accuracy cost.
-- Mubarik et al [@fn20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
-- Armeniakos et al [@fn21] expand to more demanding SVMs and Multi Layer
-  Perceptrons, and provide a method to shift the weight coefficients of the networks to more hardware friendly values and apply circuit level netlist pruning to reduce area and power to more acceptable values.
+Bleier et al [@fn18] present a printed microprocessor with an
+instruction set customised to the program at hand. Weller et al [@fn19]
+leverage stochastic computing to reduce the requirements of mixed
+analog-digital neural networks but with heavy accuracy cost.
+
+Mubarik et al [@fn20] evaluate small machine learning architectures
+(decision trees, random forests and support vector machines) in digital,
+lookup table based and analog architectures in bespoke printed circuits.
+They also consider MLPs, but decide they are too costly to evaluate. The
+main results are about the decision trees(DTs), where they examine the
+demands of printed implementations for depths of 1 to 8, in both
+conventional and bespoke circuits. They show that bespoke circuits, that
+are uniquely suited to printed electronics due to low non-recurring
+engineering(NRE) and manufacturing costs, can be implemented with about
+two orders of magnitude lower requirements than circuits that can
+support a wider range of DTs and not just one. This thesis is directly
+inspired by this work in using bespoke design to lower the demands of
+model implementations and mainly applies their insights to the domain of
+BNNs.
+
+Armeniakos et al [@fn21] expand to more demanding SVMs and Multi Layer
+Perceptrons. In order to enable their implementation, they leverage
+approximate computing in two ways. First they notice that there is high
+variance in the area demands of a constant multiplier based on the
+coefficient it multiplies by. For example, multiplying by a power of two
+takes no hardware at all since it is a constant shift. They approximate
+weight coefficients of the MLPs and SVMs to take advantage of this
+observation. Secondly, they apply post-synthesis pruning at the gate
+level on the netlist of the designs. They target gates that have close
+to constant outputs and only influence less significant bits of the
+results and replace them with the constant value they mostly output.
+Together these approximations result in area and power reductions of
+about a factor of 2 in most cases. This work is the direct inspiration
+of this thesis, where the weight coefficients are set in the training
+phase to be exclusively values that don't require multipliers to be
+implemented, as is the case in BNNs. The results achieved here are thus
+compared with the ones from this work as a baseline. This comparison is
+provided in the [Results section](#results).
+
+In the follow up paper [@haware] they additionally apply neural
+minimization techniques such as quantization, pruning and weight
+clustering and combine them utilising genetic algorithms to reduce area
+requirements by up to 8x.
+
+In [@modelcircuit], in addition to the aforementioned hardware-friendly
+coefficients and netlist pruning, voltage overscaling(VOS) is applied to
+further reduce the power demands of classifier circuits. A genetic
+algorithm is then applied to minimize area and maximise accuracy for a
+given power constraint. This enables many designs to be powered by
+printed batteries sacrificing less that 1% in accuracy.
+
+[@codesign] retrains MLPs with a scoring function that takes the
+hardware cost associated with multiplying with each weight's coefficient
+into account. Coefficients are sorted into clusters based on their
+hardware cost and retraining allows increasingly more expensive values
+to be used for weights until the accuracy threshold is met. Additionally
+the products are summed using approximate addition by discarding the
+least significant bits of products that contribute less to the MAC's
+result. Together these improvements lead to 6x area and power savings
+for 1% accuracy loss and 20x for 5%. Because often their networks use
+only powers of 2 as weights and thus no hardware is used to perform
+multiplication, this edge of using BNNs is not present here. However
+different neurons use different weights for the same input, leading in
+less intermediate sums being shareable across neurons. This is an edge
+BNNs can exploit, albeit paying a price in representational
+capabilities.
+
+[@axxdtrees] extends the idea of hardware-friendly coefficients to the
+threshold values of comparators in decision trees. Beyond the threshold
+value the precision of the comparison can also be configured at a
+per-comparator basis in order increase efficiency. They deploy a genetic
+algorithm to find optimal configurations of hardware-friendly thresholds
+close to the original values and reduced comparison precisions without
+sacrificing more than 1% accuracy. As a result area and power are
+reduced 3-4x. This leads some of the smaller designs they examine to
+sub-cm$^2$ area and sub-mW power draw.
+
+Iordanou et al [@tinyclass] have an interesting approach in which they
+use graph-based genetic programming to search the space of boolean logic
+expressions for ones that predict the class of tabular data with high
+accuracy and transpiling those logic gates into a netlist. The result is
+a sea of logic gates, unlike the structured circuits of other
+approaches. Needless to say this is removed from the paradigm of
+traditional ML architectures this work is placed in.
 
 \newpage
 

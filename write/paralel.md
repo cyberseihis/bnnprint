@@ -769,6 +769,8 @@ to the required registers.
 
 #### Second layer
 
+![The second layer of a sequentially evaluated BNN](tikz2/bnnseq2.pdf)
+
 The second layer starts after receiving an enable signal from the first
 layers halting flag. Because of the linear transformation described in
 the start in this layer instead of subtracting one from the running
@@ -1505,6 +1507,31 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 \newpage
 
 ## Dataset accuracies table graphs
+
+| Dataset     |    full precision |    BNN |    TNN |  MLPC   |
+|:------------|------------------:|-------:|-------:|:--------|
+| cardio      |                92 |     88 |     90 | 88      |
+| gasId       |                90 |     81 |     88 | -       |
+| Har         |                74 |     51 |     52 | -       |
+| pendigits   |                99 |     87 |     92 | 94      |
+| redwine     |                60 |     54 |     58 | 56      |
+| whitewine   |                57 |     51 |     50 | 54      |
+
+Table: Comparison of test split accuracies between the binary neural network models(BNN), ternary models(TNN),
+equivalant full precision networks and the multilayer perceptron classifiers evaluated in [@fn21](MLPC).
+
+## Timing comparisons
+
+| dataset   |    combinatorial delay(ms) |    sequential delay(ms) |    sequential cycles |    total sequential delay(ms) |
+|:----------|---------------------------:|------------------------:|---------------------:|------------------------------:|
+| cardio    |                        142 |                     147 |                   43 |                          6321 |
+| gasId     |                        260 |                     181 |                   46 |                          8326 |
+| Har       |                        165 |                     135 |                   46 |                          6210 |
+| pendigits |                        309 |                     147 |                   50 |                          7350 |
+| winered   |                        160 |                     138 |                   46 |                          6348 |
+| winewhite |                        143 |                     129 |                   47 |                          6063 |
+
+Table: Comparison of single cycle delay and total inference time between combinatorial and sequential implementations.
 
 ## Against cross-layer
 
