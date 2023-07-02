@@ -1,71 +1,25 @@
 ---
-title: Binary neural networks in printed electronics
-author: Panagiotis Papanikolaou
+link-citations: true
+numbersections: true
 header-includes:
  - \usepackage{fvextra}
  - \usepackage{mathtools}
  - \usepackage{amsmath}
  - \usepackage{tikz}
- - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage[margin=1.5in]{geometry}
+ - \usetikzlibrary{patterns} \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+ - \usepackage{float}
+ - \floatplacement{figure}{H}
+ - \makeatletter
+ - \def\fps@figure{H}
+ - \makeatother
 ---
-
-# Introduction
-
-## Intro to printed electronics
-
-Printed electronics refers to very thin electronic devices and circuits
-that are produced by the application of inks with desired electric
-properties to various substrates. They can be manufactured in volume for
-a much lower cost compared to other electronics with methods common in
-the printing industry. This makes them particularly well-suited for
-applications where the benefits of electronic functionality alone do not
-outweigh the associated expenses. Additionally they can offer flexible
-form factors and the ability of large area coverage. Another benefit
-that may come from their spread is to lessen the impact of e-waste,
-since printed electronics can be much less toxic for the environment and
-more easily recyclable than the rest, or even biodegradable. They cannot
-compete with silicon electronics in performance due to the large
-resistance of conductive inks, the lack of support for high frequency
-and the  high variability in manufacturing. While the ability to cover
-large areas is sometimes desirable, a lot of applications demand
-miniaturization that they cannot offer. A variety of active and passive
-devices, including transistors, resistors, capacitors, sensors,
-harvesters and antennas can be implemented with them. They are thought
-to be an emerging market with considerable potential to broaden the role
-of computation in everyday living. They can help the pervasiveness of
-the Internet-of-Things reach far deeper, and thus synergize well with
-other advances in the sector. A recent report by IDTechEx[25]
-forecasts the global market for printed flexible electronics, excluding
-OLEDs, to reach 12 billion dollars by 2033.
-
-![](../../../Downloads/processcomparison.png){width=50%}
-![](../../../Downloads/moneyprinters.jpg){width=50%}
-
-## Related work in machine learning for printed circuits
-
-- Tahoori et al[14] demonstrates an analog two input neuron, and shows how it could be
-expanded to fully printed analog neural networks with MAC and activation
-operations.
-- Douthwaite et al[15] Uses time domain encoding of signals, representing magnitude as
-  pulse width and encoding weights with current mirrors. Accumulation is
-  done by linearly charging a capacitor with the mirrored pulses.
-- Gkoupidenis et al [16] mimick biologically inspired synaptic
-  functions with electrolyte-gated transistors and show how they could
-  be used for a single layer perceptron.
-- Ozer et al [17] envision what an automatic process for creating 
-bespoke processors for a variety of ML architectures in printed
-electronics could look like, but don't go beyond the vision stage.
-- Bleier et al [18] present a printed microprocessor with an instruction set customised to the program at hand.
-- Weller et al [19] leverage stochastic computing to reduce the
-  requirements of mixed analog - digital neural networks but with heavy
-  accuracy cost.
-- Mubarik et al [20] evaluate small machine learning architectures (decision trees, random forests and support vector machines) in digital, lookup table based and analog architectures in bespoke printed circuits.
-- Armeniakos et al [21] expand to more demanding SVMs and Multi Layer
-  Perceptrons, and provide a method to shift the weight coefficients of the networks to more hardware friendly values and apply circuit level netlist pruning to reduce area and power to more acceptable values.
 
 \newpage
 
-## Introduction to ubiquitous computing and thesis statement
+# Introduction
+
+## Introduction to ubiquitous computing
 
 Technology in general and more specifically computation plays an ever
 increasing part in our lives and there are no signs of the trend slowing
@@ -110,48 +64,55 @@ sensors making best-before dates obsolete have great potential to
 disrupt a wide range of industries.
 
 Machine learning can accelerate the process by many orders of magnitude
-compared to how long it would take for specialised people in multiple fields to
-design a computational model to interpret and process the sensor data. In many
-cases the upfront engineering cost would be enough to stop the adoption of the
-paradigm altogether. If all it takes is for some sensor data to be collected
-and labeled that can easily be handled by any employee. We also depend on
-autoML being good enough for most of these small scale data applications, since
-otherwise we would just run into the same bottleneck with needing a data
-scientist for every little thing. Methods to lighten the resources demanded of
-the printed system that implements the model, such as quantization and
-binarization can clearly expand the scope of how complex the classification
-supported can be.
-
-The concept of this thesis is taking place in such a scenario. I have
-insured that the entire process from dataset to netlist that can be passed to
-the printer requires no manual intervention. Anyone can pass their
-sensor data in one end and receive measurements for the model accuracy,
-circuit area and power requirements on the other, without special
-knowledge on any domain being required of them. This is specifically
-done utilising bespoke implementations of binary neural networks, in order
-to evaluate their efficacy in providing a backbone for this process.
-
-Imagine if you will the scenario of a coffee shop owner. They decide
-they would like the glasses they serve their coffee in to indicate the
-amount of sugar or other sweeteners used in the contained beverage.
-This would prevent people from grabbing the wrong coffee from the table
-because they all look indistinguishable. After searching on an online
-repository for what sensor would be of any use here, they order a few
-sample sheets of these printed sensors and a small gadget that clips on
-the sheet and records the measurements of the sensors. After dipping
-them on a dozen coffees with different mixtures of sweeteners inside,
-they plug the gadget to their computer and get a spreadsheet of sensor
-values for each dipping session. They simply append the label they
-decided each sweetener level corresponds to and pass the spreadsheet to
-the system. They decide that the reported accuracy and area are
-manageable order the resulting circuit to be printed on a batch of
-flexible patches they can stick to the inside of the glasses.
+compared to how long it would take for specialised people in multiple
+fields to design a computational model to interpret and process the
+sensor data. In many cases the upfront engineering cost would be enough
+to stop the adoption of the paradigm altogether. If all it takes is for
+some sensor data to be collected and labeled that can easily be handled
+by any employee. We also depend on autoML being good enough for most of
+these small scale data applications, since otherwise we would just run
+into the same bottleneck with needing a data scientist for every little
+thing. Methods to lighten the resources demanded of the printed system
+that implements the model, such as quantization and binarization can
+clearly expand the scope of how complex the classification supported can
+be.
 
 \newpage
 
-# Background information - Prerequisites
+## Intro to printed electronics
 
-## Uses of printed electronics
+Printed electronics refers to very thin electronic devices and circuits
+that are produced by the application of inks with desired electric
+properties to various substrates. They can be manufactured in volume for
+a much lower cost compared to other electronics with methods common in
+the printing industry. This makes them particularly well-suited for
+applications where the benefits of electronic functionality alone do not
+outweigh the associated expenses. Additionally they can offer flexible
+form factors and the ability of large area coverage. Another benefit
+that may come from their spread is to lessen the impact of e-waste,
+since printed electronics can be much less toxic for the environment and
+more easily recyclable than the rest, or even biodegradable. They cannot
+compete with silicon electronics in performance due to the large
+resistance of conductive inks, the lack of support for high frequency
+and the  high variability in manufacturing. While the ability to cover
+large areas is sometimes desirable, a lot of applications demand
+miniaturization that they cannot offer. Feature sizes in printed
+computational elements are six orders of magnitudes larger than
+conventional electronics. A variety of active and passive devices,
+including transistors, resistors, capacitors, sensors, harvesters and
+antennas can be implemented with them. They are thought to be an
+emerging market with considerable potential to broaden the role of
+computation in everyday living. They can help the pervasiveness of
+computation reach far deeper, and thus synergize well with other
+advances in the sector. A recent report by IDTechEx[@fn25] forecasts the
+global market for printed flexible electronics, excluding OLEDs, to
+reach 12 billion dollars by 2033.
+
+![Comparison of subtractive electronics manufacturing to purely additive fabrication. The cost benefits of the much simpler additive procedure should be clear. Source: https://doi.org/10.1109/ISCAS.2017.8050614](../../../Downloads/picdump/additivemanufacturing.png)
+
+![Projection of printed electronics market size. Source: Precedence Research](../../../Downloads/moneyprinters.jpg)
+
+### Uses of printed electronics
 
 The usage of printed electronics most people may be familiar with
 in their everyday lives is the membrane used to detect key presses in most
@@ -212,14 +173,283 @@ day be printed if printing accuracy keeps increasing.
   patches for seizure detection already on the market. One can also
   imagine they would be of interest to the fashion industry.
 
-![](../../../Downloads/printednfc.jpg){width=50%}
-![](../../../Downloads/membranekeyboard.jpeg){width=50%}
-![](../../../Downloads/smartskis.jpg){width=50%}
-![](../../../Downloads/fingerstrainsensor.png){width=50%}
+![Printed NFC demontration. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printednfc.jpg)
+
+![Printed circuit on the membrane of a common keyboard. Source: Paulo Maluf](../../../Downloads/membranekeyboard.jpeg)
 
 \newpage
 
-## Manufacturing methods
+## TinyML
+Edge computing enables applications where data processing is location
+sensitive. It provides greater security, privacy and availability
+guarantees to the end users. It is a fundamental component of the IoT
+market, that can reduce the dependence on cloud systems. The main
+bottleneck to it's adoption spread are the resource constraints it
+imposes.  
+
+To deal with the demand of running machine learning
+applications on the edge for intelligent devices, traditional
+architectures are too bloated to make the cut. Many models nowadays
+demand computing capabilities out of reach for even the most high-end
+consumer hardware, let alone low power devices. TinyML is the field of
+optimising machine learning architectures to run on ultra resource
+constrained systems, typically no more than a few milliwatts.  
+
+Multidisciplinary work is demanded for this undertaking, as both the ML
+algorithms, the software and the hardware that supports them must
+accommodate these constraints while not compromising the accuracy of the
+models to a significant degree. Roughly the constraints at play are
+energy efficiency, processing capacity, memory space and production and
+engineering costs. It should be emphasised that the concern is with the
+inference step of ML although enabling the training phase on edge
+hardware is also it's own niche endeavor. 
+
+Some approaches to the problem include:
+
+- One of the most ubiquitous methods in the field is constrained neural
+architecture search (NAS). Neural architecture search examines a search
+space of different architectures for different hyperparameters. An
+algorithm tries to locate the best possible architecture to maximise
+model performance on the objective function. An evaluator examines the
+trade-offs between accuracy and efficiency on deployment, given
+declared constraints of memory, energy etc. It may consider one or many
+target models on a single or multiple platforms. Both the search space
+and the search algorithm are hardware-aware. It is a multi-objective
+optimisation problem that is usually implemented as a multi-stage
+single-objective optimisation problem. Running the search is very time
+consuming but results outperform most manually designed networks.
+
+- An obvious approach to handling the memory constraint issue is using
+data compression techniques on the ML model. A key approach that has
+demonstrated 15-40x compression factors are Kronecker Products (KP).
+Large accuracy penalties may occur however, and a method called doped
+Kronecker product (DKP) leverages co-matrix adaptation to try and remedy
+those.
+
+- Over-parameterization is the property of a neural network where
+  redundant neurons do not improve the accuracy of results. This
+  redundancy can often be removed with little or no accuracy loss.
+  Network pruning removes parameters that don't impact accuracy by a
+  large amount. A common case where this can easily be done is when
+  parameters are either zero or sufficiently close to it. It can be
+  applied at any granularity, from individual connections, neurons to
+  entire layers. When a pruning procedure results in the neural network
+  losing it's symmetrical structure it is referred to as unstructured
+  pruning, otherwise it is structured pruning. Unstructured pruning
+  results to sparse weight matrices that general processors do not
+  execute efficiently.  Retraining a network after pruning parameters
+  that weren't contributing enough can allow it to reach higher
+  accuracies than before. Even pruning a randomly initialised network
+  without training it before or after can result to a decent accuracy.
+
+- Knowledge distillation is a process of training a smaller, shallower
+student network to much the output logits of a larger, more capable
+teacher network that has been trained to satisfactory accuracy. More
+advanced variants include ensembles of small networks each trying to
+match the results of the congregated ensemble, or self-distillation in
+which shallower layers of a deep neural network try to learn to match
+the more complicated features of the deeper layers. If the size
+difference between the student and teacher networks is too large an
+intermediate size teacher assistant network gets the teacher's answers
+distilled into it and subsequently distills them to the student.
+
+- Quantization is the process of reducing the numerical precision of
+  values in the model. Networks are typically using 32 bit floating
+  point numbers during training[@fn22]. The most common quantization
+  targets for those are either 8-bit or 4-bit integers. In many cases
+  the network does not utilise this level of precision to it's full
+  extend. Reducing the precision in these cases can relieve the
+  computational burden associated with negligible accuracy sacrifices.
+  Quantization-aware training is a process in which the full precision
+  network is fine-tuned of retrained into the reduced form. It succeeded
+  quantizing the network only after the training process is completed.
+  When the method is pushed to the limit, precision is reduced down to 1
+  bit. Networks with a single bit of precision are called Binary Neural
+  Networks(BNNs).
+
+\newpage
+
+## Printed machine learning
+
+The most clearly desirable applications of computation to printed
+electronics in the domain of ubiquitous computing center around some
+form of classification or another. For every printed circuit that
+includes one or more sensors a system to interpret the outputs of that
+sensor to a useable format is required, barring trivial cases.
+
+Creating hand-designed computational models for every combination of
+sensors and usecase they are included in and designing efficient
+hardware designs to support each one would take a monumental sum of
+man-hours. Machine learning provides a common medium to both create
+models for predicting and architectures to implement in circuits a vast
+array of these applications. There are clear incentives then to provide
+those mediums.
+
+The difficulties in this undertaking all stem from the extreme resource
+constraints given from the feature sizes and energy demands of printed
+electronics. To overcome these barriers the entire process, from
+selecting the right general architectures to only keeping the
+absolutely necessary hardware elements at the resulting circuits must be
+optimised for this aim.
+
+Beyond bringing the area of the circuit to a reasonable size, a big
+factor that prevents the usability of some implementations is that no
+printed battery can support their power draw. We can therefore not get
+them running inference in the wild. The power output of these batteries
+is a hard limit that must be reached or printed ML is purely
+theoretical. In this work the most permissive battery, from Molex, which
+can support circuits with up to 30mW of power, is targeted.
+
+\newpage
+
+## Thesis objective
+
+The concept of this thesis is taking place in a ubiquitous computing
+scenario. I have insured that the entire process from dataset to netlist
+that can be passed to the printer requires no manual intervention.
+Anyone can pass their sensor data in one end and receive measurements
+for the model accuracy, circuit area and power requirements on the
+other, without special knowledge on any domain being required of
+them. This is specifically done utilising bespoke implementations of
+binary neural networks, in order to evaluate their efficacy in
+providing a backbone for this process.
+
+Imagine if you will the scenario of a coffee shop owner. They decide
+they would like the glasses they serve their coffee in to indicate the
+amount of sugar or other sweeteners used in the contained beverage.
+This would prevent people from grabbing the wrong coffee from the table
+because they all look indistinguishable. After searching on an online
+repository for what sensor would be of any use here, they order a few
+sample sheets of these printed sensors and a small gadget that clips on
+the sheet and records the measurements of the sensors. After dipping
+them on a dozen coffees with different mixtures of sweeteners inside,
+they plug the gadget to their computer and get a spreadsheet of sensor
+values for each dipping session. They simply append the label they
+decided each sweetener level corresponds to and pass the spreadsheet to
+the system. They decide that the reported accuracy and area are
+manageable order the resulting circuit to be printed on a batch of
+flexible patches they can stick to the inside of the glasses.
+
+Various architectures have been evaluated for such a framework. This
+work adds Binary Neural Networks(BNNs) to the list of of approaches for
+printed ML inference. BNNs are networks quantised to the absolute limit
+of 1 bit. They are designed specifically to minimise compute resources
+as much as possible and thus are a prime candidate to bring ever more
+classifiers under the implementation threshold of printed electronics.
+The great bulk of this thesis is dedicated to examining efficient
+bespoke hardware implementations for BNNs to fit in the constraints of
+the technology.
+
+\newpage
+
+# Related works in machine learning for printed circuits
+
+Since the printed computing technology reached the point where Machine
+Learning models could be supported for inference, work has been made in
+bringing them to fruition.
+Tahoori et al[@fn14] demonstrates an analog two input neuron, and shows
+how it could be expanded to fully printed analog neural networks with
+MAC and activation operations. Douthwaite et al[@fn15] Uses time domain
+encoding of signals, representing magnitude as pulse width and encoding
+weights with current mirrors. Accumulation is done by linearly charging
+a capacitor with the mirrored pulses. Gkoupidenis et al [@fn16] mimick
+biologically inspired synaptic functions with electrolyte-gated
+transistors and show how they could be used for a single layer
+perceptron. Ozer et al [@fn17] envision what an automatic process for
+creating bespoke processors for a variety of ML architectures in printed
+electronics could look like, but don't go beyond the vision stage.
+Bleier et al [@fn18] present a printed microprocessor with an
+instruction set customised to the program at hand. Weller et al [@fn19]
+leverage stochastic computing to reduce the requirements of mixed
+analog-digital neural networks but with heavy accuracy cost.
+
+Mubarik et al [@fn20] evaluate small machine learning architectures
+(decision trees, random forests and support vector machines) in digital,
+lookup table based and analog architectures in bespoke printed circuits.
+They also consider MLPs, but decide they are too costly to evaluate. The
+main results are about the decision trees(DTs), where they examine the
+demands of printed implementations for depths of 1 to 8, in both
+conventional and bespoke circuits. They show that bespoke circuits, that
+are uniquely suited to printed electronics due to low non-recurring
+engineering(NRE) and manufacturing costs, can be implemented with about
+two orders of magnitude lower requirements than circuits that can
+support a wider range of DTs and not just one. This thesis is directly
+inspired by this work in using bespoke design to lower the demands of
+model implementations and mainly applies their insights to the domain of
+BNNs.
+
+Armeniakos et al [@fn21] expand to more demanding SVMs and Multi Layer
+Perceptrons. In order to enable their implementation, they leverage
+approximate computing in two ways. First they notice that there is high
+variance in the area demands of a constant multiplier based on the
+coefficient it multiplies by. For example, multiplying by a power of two
+takes no hardware at all since it is a constant shift. They approximate
+weight coefficients of the MLPs and SVMs to take advantage of this
+observation. Secondly, they apply post-synthesis pruning at the gate
+level on the netlist of the designs. They target gates that have close
+to constant outputs and only influence less significant bits of the
+results and replace them with the constant value they mostly output.
+Together these approximations result in area and power reductions of
+about a factor of 2 in most cases. This work is the direct inspiration
+of this thesis, where the weight coefficients are set in the training
+phase to be exclusively values that don't require multipliers to be
+implemented, as is the case in BNNs. The results achieved here are thus
+compared with the ones from this work as a baseline. This comparison is
+provided in the [Results section](#results).
+
+In the follow up paper [@haware] they additionally apply neural
+minimization techniques such as quantization, pruning and weight
+clustering and combine them utilising genetic algorithms to reduce area
+requirements by up to 8x.
+
+In [@modelcircuit], in addition to the aforementioned hardware-friendly
+coefficients and netlist pruning, voltage overscaling(VOS) is applied to
+further reduce the power demands of classifier circuits. A genetic
+algorithm is then applied to minimize area and maximise accuracy for a
+given power constraint. This enables many designs to be powered by
+printed batteries sacrificing less that 1% in accuracy.
+
+Following up, [@codesign] retrains MLPs with a scoring function that takes the
+hardware cost associated with multiplying with each weight's coefficient
+into account. Coefficients are sorted into clusters based on their
+hardware cost and retraining allows increasingly more expensive values
+to be used for weights until the accuracy threshold is met. Additionally
+the products are summed using approximate addition by discarding the
+least significant bits of products that contribute less to the MAC's
+result. Together these improvements lead to 6x area and power savings
+for 1% accuracy loss and 20x for 5%. Because often their networks use
+only powers of 2 as weights and thus no hardware is used to perform
+multiplication, this edge of using BNNs is not present here. However
+different neurons use different weights for the same input, leading in
+less intermediate sums being shareable across neurons. This is an edge
+BNNs can exploit, albeit paying a price in representational
+capabilities.
+
+Balaskas et al in [@axxdtrees] extend the idea of hardware-friendly
+coefficients to the threshold values of comparators in decision trees.
+Beyond the threshold value the precision of the comparison can also be
+configured at a per-comparator basis in order increase efficiency. They
+deploy a genetic algorithm to find optimal configurations of
+hardware-friendly thresholds close to the original values and reduced
+comparison precisions without sacrificing more than 1% accuracy. As a
+result area and power are reduced 3-4x. This leads some of the smaller
+designs they examine to sub-cm$^2$ area and sub-mW power draw.
+
+Iordanou et al [@tinyclass] have an interesting approach in which they
+use graph-based genetic programming to search the space of boolean logic
+expressions for ones that predict the class of tabular data with high
+accuracy and transpiling those logic gates into a netlist. The result is
+a sea of logic gates, unlike the structured circuits of other
+approaches. Needless to say this is removed from the paradigm of
+traditional ML architectures this work is placed in.
+
+\newpage
+
+# Background information - Prerequisites
+
+## Printed electronics technical details
+
+### Manufacturing methods for printed electronics
 
 Printed electronics are manufactured using techniques from the graphic
 print industry. They are split into contact or R2R printing techniques
@@ -279,12 +509,13 @@ and although they can achieve smaller feature sizes they require
 specialised equipment and are not as cost friendly as the traditional
 printing methods and thus less relevant.
 
-![](../../../Downloads/printer.png){width=50%}
-![](../../../Downloads/printingroll.jpg){width=50%}
+![Dimatix DMP-2850 Materials Printer. Source: FUJIFILM](../../../Downloads/printer.png)
+
+![Long sheet of circuits printed on a Roll-to-Roll system. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printingroll.jpg)
 
 \newpage
 
-## Inks
+### Materials for printed electronics
 In order to implement functional circuits inks with conducting,
 semiconducting and dielectric properties are needed. They usually
 consist of nanoparticles of materials with these properties mixed with
@@ -312,163 +543,24 @@ conducting and semiconducting layers in order for charge not to leak
 through it. Substrate materials, ceramic oxides and polymers can be
 used as the active ingredient.
 
-![](../../../Downloads/semiconductingink.jpeg){width=33%}
-![](../../../Downloads/conductivepen.jpeg){width=33%}
-![](../../../Downloads/conductivepen2.jpg){width=33%}
+### EGFET
 
-\newpage
+This work is built upon the Process Design Kit(PDK) for
+Electrolyte-Gated oxide Field Effect Transistors(EGFET)[@egfet]. EGFET
+uses solid polymer electrolytes to gate the transistors in place of
+dielectrics. Specifically indium oxide is used for this purpose. They
+can be operated at up to 250 Hz at 1V.
 
-
-## TinyML
-Edge computing enables applications where data processing is location
-sensitive. It provides greater security, privacy and availability
-guarantees to the end users. It is a fundamental component of the IoT
-market, that can reduce the dependance on cloud systems. The main
-bottleneck to it's addoption spread are the resource contstraints it
-imposes.  
-
-To deal with the demand of running machine learning
-applications on the edge for inteligent devices, traditional
-architectures are too bloated to make the cut. Many models nowadays
-demand computing capabilities out of reach for even the most high-end
-consumer hardware, let alone low power devices. TinyML is the field of
-optimising machine learning architectures to run on ultra resource
-constrained systems, typically no more than a few milliwatts.  
-
-Multidisciplinary work is demanded for this undertaking, as both the ML
-algorithms, the software and the hardware that supports them must
-accomodate these constraints while not compromising the accuracy of the
-models to a significant degree. Roughly the constraints at play are
-energy efficiency, processing capacity, memory space and production and
-engineering costs. It should be emphasised that the concern is with the
-inference step of ML although enabling the training phase on edge
-hardware is also it's own niche endeavor. 
-
-Since pretrained ML models cannot be run on these terms by default,
-end to end pipelines are required from data acquisition to inference,
-giving rise to the field of TinyML-as-a-Service or TinyMaaS. Special
-precausions must be taken at every intermediate step to lead to a
-runtime model lightweight enough.  
-
-Some approaches to the problem include:
-
-- An alternative to common ML models that can function at lower energy
-budgets is Hyperdimensional computing (HDC). In this paradigm. It
-leverages the propery of high-dimentional spaces that randomly sampled
-vectors are almost certainly close to orthogonal to each other to
-represent classes and features as ensembles of hypervectors. Samples are
-mapped to querry hypervectors during inference, which are then compared
-to the class encoders and the most similar is declared as the predicted
-class. Vectors usually have binary elements of 1 or -1 to reduce
-requirements. It can handle noisy and/or incomplete data, which is a big
-plus. Unfortunately the count of dimensions needed for many problems are
-so large we cannot make savings by this method. 
-\newpage
-
-- One of the most ubiquitous methods in the field is constrained neural
-architecture search (NAS). Neural architecture search examines a search
-space of different architectures for different hyperparameters. An
-algorithm tries to locate the best possible architecture to maximise
-model performance on the objective function. An evaluator examines the
-trade-offs between accuracy and efficiency on deployement, given
-declared constraints of memory, energy etc. It may consider one or many
-target models on a single or multiple platforms. Both the search space
-and the search algorithm are hardware-aware. It is a multi-objective
-optimisation problem that is usually implemented as a multi-stage
-single-objective optimisation problem. Running the search is very time
-consuming but results outperform most manually designed networks.
-
-- An obvious approach to handling the memory constraint issue is using
-data compression techniques on the ML model. A key approach that has
-demonstrated 15-40x compression factors are Kronecker Products (KP).
-Large accuracy penalties may occur however, and a method called doped
-Kronecker product (DKP) leverages co-matrix adaptation to try and remedy
-those.
-
-- Once-for-all network is the name of a method for decoupling the
-architecture search from model training. OFA can find specialised
-subnetworks that largely maintain the accuracy of the full accuracy
-larger model without the need for training. A recent progressive
-shrinking algorithm (PSA) reduces depth and width of layers while
-retaining a higher final accuracy than equivalent general pruning.
-
-![](../../../Downloads/tinymldiagram.jpeg){width=50%}
-![](../../../Downloads/iotl.png){width=50%}
-
-\newpage
-
-- Over-parameterization is the property of a neural network where
-redundant neurons do not improve the accuracy of results. This
-redundancy can often be removed with little or no accuracy loss. Fully
-connected deep neural networks require N^2 connections between neurons.
-Network pruning removes parameters that don't impact accuracy by a large
-amount. A common case where this can easily be done is when parameters
-are either zero or sufficiently close to it. Similarly when the
-parameter values are redundantly duplicated. It can be applied at any
-granularity, from individual connections, neurons to entire layers. When
-a pruning procedure results in the neural network losing it's
-symmetrical structure it is referred to as unstructured pruning,
-otherwise it is structured pruning. Unstructured pruning results to
-sparse weight matrices that general processors do not execute
-efficiently.  Retraining a network after pruning parameters that weren't
-contributing enough can allow it to reach higher accuracies than before.
-Even pruning a randomly initialised network without training it before
-or after can result to a decent accuracy. Pruning is split into static
-pruning and dynamic pruning. Static pruning removes neurons between the
-training and inference stages, while in dynamic pruning it happens
-during the runtime. Usually all of the model's weights are available in
-runtime and a controller conditionally includes or excludes parts of the
-network from the computation based on detecting certain feature
-patterns. This controller is often also a trained machine learning
-model. Criteria for which elements to prune include brute-force pruning,
-where the entire model is searched element by element to find ones that
-don't affect the outcome. Norms of weight vectors may be used to prune
-neurons, in particular the popular L1 norm in the LASSO method. Optimal
-Brain Damage uses the second derivative or Hessian matrix of the loss
-function to locate unneeded weights and was succeeded by the similar
-Optimal Brain Surgeon. Calculating these derivatives is too
-computationally expensive to be applied to larger networks. Average
-Percentage Of Zeros is a method to judge if the outputs of a neuron are
-usually contibuting to the result. Penalty based pruning introduces
-constraints during training to result to more weights being near zero so
-they can be pruned. Feature selection removes input features of the
-model that are not utilised sufficiently. It prevents overfitting and
-accelerates training. Another method clusters hidden features of a layer
-and removes those that are close enough to be reduntant. Iteratively
-pruning a network then retraining it with only the remaining elements
-allows to remove a much larger percentage of parameters without damaging
-performance. Knowledge distillation with the original network as the
-teacher and the pruned network as student can be used to recover lost
-accuracy.
-
-![](../../../Downloads/distillcartoon.png)
-![](../../../Downloads/pruninpng.png)
-
-- Knowledge distillation is a process of training a smaller, shallower
-student network to much the output logits of a larger, more capable
-teacher network that has been trained to satisfactory accuracy. More
-advanced variants include ensembles of small networks each trying to
-match the results of the congregated ensemble, or self-distillation in
-which shallower layers of a deep neural network try to learn to match
-the more complicated features of the deeper layers. If the size
-difference between the student and teacher networks is too large an
-intermediate size teacher assistant network gets the teacher's answers
-distilled into it and subsequently distills them to the student.
-
-- Quantization is the process of reducing the numerical precision of
-  values in the model. Networks are typically using 32 bit floating
-  point numbers during training[22]. The most common quantization
-  targets for those are either 8-bit or 4-bit integers. In many cases
-  the network does not utilise this level of precision to it's full
-  extend. Reducing the precision in these cases can relieve the
-  computational burden associated with negligible accuracy sacrifices.
-  Quantization-aware training is a process in which the full precision
-  network is fine-tuned of retrained into the reduced form. It succeeded
-  quantizing the network only after the training process is completed.
-  When the method is pushed to the limit, precision is reduced down to 1
-  bit. Networks with a single bit of precision are called Binary Neural
-  Networks(BNNs).
-
+The main advantage of EGFETs compared to organic transistors is that
+they can be driven at very low voltages, down to 0.6V. This is crucial
+for meeting the constraints imposed by the printed batteries available.
+The area they cover is however significantly larger(10-100x) that of
+organic transistors such as CNT-TFT[@cnttft]. As an example a single
+SR-latch based on EGFET takes up 7mm$^2$.
+Another difference of electrolyte-gated transistors with their organic
+counterparts is that in EGFET only n-type transistors are implementable,
+whereas in CNT only p-types are possible. Neither supports both so CMOS
+gates cannot be used in printed circuits.
 
 \newpage
 
@@ -481,7 +573,7 @@ information for classification to be possible, and output layers of
 classifiers have their activations compared to each other to decide on
 the predicted class, so they cannot be binarized. The most common domain
 for BNNs are Convolutional Neural Networks(CNNs). They were
-independently presented in 2016 by [23] and [24].
+independently presented in 2016 by [@fn23] and [@fn24].
 
 Beyond reducing the storage size required for the weights $32\times$
 compared to a full precision 32-bit network of the same architecture,
@@ -489,6 +581,14 @@ computation costs are significantly dropped too since the
 multiply-accumulate(MAC) operations can be carried out by XNOR and
 popcount operations. This can lead to up to a $58\times$ improvement in
 speed.
+
+BNNs can therefore enable the implementation of neural networks in
+resource constrained environments. The trade-off is that both their
+representational capacity and corrigibility to training are inferior to
+higher precision networks, and so often they either cannot provide
+sufficient prediction accuracy or require a much higher count of neurons
+to achieve it, negating the previous gains. As a rule of thump 4
+binarised neurons are needed to match up to a unquantised one.
 
 During training, higher precision underlying weights are used to make learning more robust. In the forward propagation phase these more precise weights, $W$, and the activations from the previous layer $I$ are binarized using the sign function:
 
@@ -499,8 +599,8 @@ sign(x) = \begin{dcases}
 \end{dcases}
 $$
 
-The binary operations $({-1,1},*)$ and $({0,1},\odot)$ are isomorphic,
-so the multiplication of weights with activations is done using the XNOR
+The binary operations $({-1,1},*)$ and $({0,1},\odot)$ are isomorphic, so
+the multiplication of weights with activations is done using the XNOR
 operation when the binary values {-1,1} are encoded into the logic
 values {0,1} to be stored in a bit.
 
@@ -538,7 +638,7 @@ binarizations are used for the forward pass.
 ## Datasets
 
 The datasets chosen to train models for and implement are the ones used
-by [20]. That way results for model accuracy and area
+by [@fn20]. That way results for model accuracy and area
 / power requirements can be compared with other approaches in the
 literature. Like in those papers, categorical features were removed from
 the datasets, leaving only inputs from sensors, since they are all the
@@ -546,24 +646,24 @@ actual printed system would have access to (this assumption may be
 circumvented, but this is beyond the current scope). Note that the
 feature selection may not be the same as the prior papers, since the
 pieces of data they kept were not documented. All of them were taken
-from the UCI machine learning repository[7].
+from the UCI machine learning repository[@fn7].
 
 A short description of the datasets:
 
-- Arrythmia[8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
+- Arrythmia[@fn8]: Diagnosis of cardiac arrhythmia from 12 lead ECG
   recordings.
-- Cardiotocography[9]: Diagnosing problems in the heartrate of unborn
+- Cardiotocography[@fn9]: Diagnosing problems in the heartrate of unborn
   infants.
-- Pendigits[10]: Classification of written digit from a series of 8
+- Pendigits[@fn10]: Classification of written digit from a series of 8
   pressure signals from touch sensors.
-- Human activity recognition(HAR)[11]: Classification of the type of
+- Human activity recognition(HAR)[@fn11]: Classification of the type of
   movement a person is making(standing, climbing stairs etc) using accelerometers from cellphones on
   their waists.
-- Gas Identification[12]: Classification of gas presence using chemical
+- Gas Identification[@fn12]: Classification of gas presence using chemical
   sensors.
-- Wine Quality(White wines)[13]: Estimating the percieved enjoyment of
+- Wine Quality(White wines)[@fn13]: Estimating the percieved enjoyment of
   various white wines based on acidity and mineral traces.
-- Wine Quality(Red wines)[13]: Equivelant to the above for red wines.
+- Wine Quality(Red wines)[@fn13]: Equivelant to the above for red wines.
 
 The datasets use inputs from sensors that at least approximately
 correspond to ones that have been demonstrated possible to manufacture
@@ -574,27 +674,26 @@ technology.
 
 Sensor | Dataset
 ---|---
-Electrocardiography sensor on paper[1] | Arrythmia
-Electrocardiography sensor on paper[1] | Cardio
+Electrocardiography sensor on paper[@fn1] | Arrythmia
+Electrocardiography sensor on paper[@fn1] | Cardio
 Printed movement sensor | Human activity recognition
-Printed gas sensor[6] | Gas identification
-Printed piezoelectric sensor[4] | Pendigits
-Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(White)
-Printed pH sensor[2], Inkjet mineral sensor[3] | Wine Quality(Red)
+Printed gas sensor[@fn6] | Gas identification
+Printed piezoelectric sensor[@fn4] | Pendigits
+Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(White)
+Printed pH sensor[@fn2], Inkjet mineral sensor[@fn3] | Wine Quality(Red)
 
 \newpage
 
-
 # Proposed framework
 
-![Proposed framework](./masterplan.png)
+![Proposed framework](../../../Downloads/xx.pdf)
 
 As outlined in the ubiquitous computing section, the deliverable of this
 thesis is meant to be a framework that allows a labeled set of sensor
 data to produce a fully functional printed circuit that implements a
 classifier for this dataset. Due to lack of access to equipment the
 actual printing is not viable in this context and the scope will be
-restricted to the dataset \to netlist part of the process.
+restricted to the dataset to netlist part of the process.
 
 The classifier architecture will in particular be a Binary Neural
 Network(BNN), explained in the preliminaries. It may not necessarily be
@@ -648,6 +747,15 @@ Parts of the wider procedure out of scope of this framework are:
 - Inclusion of sensor, ADC and output indicator resource consumption in
   reported estimates. 
 
+Additionally, the framework provides a way to quickly test, evaluate and
+compare Verilog implementations of models. Once the template design has
+been written no manual steps are necessary from the designer to apply it
+to each model of interest, verify its functionality and receive feedback
+on how the new approach compares to previous ones. This aspect of the
+framework enabled experimentation in searching for efficient BNN
+implementations to proceed in a pace that would not be achievable if
+these steps were not automated.
+
 The rest of the thesis will almost entirely deal with the design of
 efficient bespoke BNN classifier hardware. This includes parts 3 and 5
 of the process listed above. The rest, although time consuming to
@@ -693,21 +801,21 @@ my following talk of HDL implementations to be comprehensible are:
 
 \newpage
 
-# Symbol definitions
+## Symbol glossary
 - $N$ = the number of input features,  
 - $M$ = the number of hidden neurons (in our case it is always 40),  
 - $C$ = the number of output neurons/ number of classes  
 - $S$ be the number of samples in the dataset,
 - $x_i$ be the ith input feature,  
-- $x_i$ be the i^*th*^ input feature,  
-- $D^i$ be the i-th sample of the dataset,
-- $D^i_j$ be the value the j_th_ input feature takes on the i_th_ sample
+- $x_i$ be the $i$-th input feature,  
+- $D^i$ be the $i$-th sample of the dataset,
+- $D^i_j$ be the value the $j$-th input feature takes on the $i$-th sample
   of the dataset,
-- $h_i$ be the i_th_ hidden neuron, also used to denote it's output value
+- $h_i$ be the $i$-th hidden neuron, also used to denote it's output value
 before binarization,  
-- $s_i$ be the i_th_ hidden neuron's output after binarization, so $s_i =
+- $s_i$ be the $i$-th hidden neuron's output after binarization, so $s_i =
 h_i \ge 0$,  
-- $y_i$ be the i_th output neuron, also used to denote it's output value,  
+- $y_i$ be the $i$-th output neuron, also used to denote it's output value,  
 - $W1$ = the weight matrix of the first layer,  
 - $W2$ = the weight matrix of the second layer,  
 
@@ -717,7 +825,7 @@ connection between the input feature $x_j$ and the neuron $h_i$.
 
 \newpage
 
-# Combinatorial fully connected implementations
+# Fully combinatorial fully connected implementations
 Two initial approaches for implementing the fully connected BNNs
 in a fully combinatorial single-cycle datapath are compared.
 Only the first layer differs between them, the second layer stays
@@ -725,10 +833,11 @@ unchanged.
 
 ## Positive-Negative Sum
 
-![Implementation with positive and negative sums split](./tikz1/tbpar.png)
+![Implementation with positive and negative sums split](./tikz2/bnnpar.pdf)
 
 For each neuron in the first layer two sums are calculated. $\Sigma^+_i$
-is the sum of the input features for which the connection with the i_th_
+is the sum of the input features for which the connection with the
+$i$-th
 hidden neuron has a positive weight , whereas $\Sigma^-_i$ the sum of
 those that have a negative weight associated. The two sums are then
 compared and if the positive sum is greater than or equal to the
@@ -768,7 +877,7 @@ assign scores[0*SUM_BITS+:SUM_BITS] = + hidden_n[0] + hidden[1] + hidden[2] + ..
 
 ## Signed sum
 
-![Implementation a single sum per neuron](./tikz1/tbparsign.png)
+![Implementation a single sum per neuron](./tikz2/bnnparsign.pdf)
 
 In this version a single sum is calculated for each neuron. If the
 connection between input feature $x_j$ and hidden neuron $h_i$ has
@@ -796,7 +905,21 @@ assign hidden[0] = intra_0 >= 0;
 The second layer's implementation is not changed from how it is
 described above.
 
-## Discussion
+### Results and analysis
+
+|           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
+|:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
+| Har       |              29.4  |                  24.52 | -16.6%        |               92.1 |                   78.8 | -14.4%         |
+| cardio    |              46.71 |                  33.27 | -28.8%        |              145.3 |                  106.2 | -26.9%         |
+| gasId     |             269.76 |                 175.09 | -35.1%        |              767.7 |                  499.1 | -35.0%         |
+| pendigits |              42.95 |                  33.38 | -22.3%        |              136.8 |                  108.9 | -20.4%         |
+| winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
+| winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
+
+Table: Comparison of single signed sum to double unsigned sums approaches
+
+![Comparison of single signed sum to double unsigned sums approaches](figs2/bnnpar_bnnparsign.svg)
+
 My prior expectation was that splitting the features into two sums to
 avoid subtractions would lead to better results than keeping all the
 operations for a neuron to a single expression by the reasoning
@@ -817,7 +940,7 @@ additional hardware.
 
 \newpage
 
-# Minimum range bit-width reduction
+### Minimum range bit-width reduction
 
 ![Pre-activation values for a hidden neuron for each sample of the dataset and comparison of the default and minimum bitrange that supports all values.](./parw_points.svg)
 
@@ -850,14 +973,27 @@ sample in the dataset. I get the minimum and maximum of these values.
 Since all values for the total sum to take are contained in the range
 between those two, the arithmetic operations need not accomodate any
 range larger than that.  Let $H^i_j$ be the value of $h_i$ when
-evaluating the j_th_ sample of the dataset, and $wh_i$ be the bitwidth
-of the i_th_ hidden neuron.
+evaluating the $i$-th sample of the dataset, and $wh_i$ be the bitwidth
+of the $i$-th hidden neuron.
 
 $$h_{i max} = \max\limits_{j=0}^{S-1} H^i_j$$
 $$h_{i min} = \min\limits_{j=0}^{S-1} H^i_j$$
 $$ wh_i = \lceil \log_2(\max(h_{i max},\lvert h_{i min}\rvert -1)) \rceil+1 $$
 
-## Discussion
+#### Results and analysis
+
+|           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               24.25 | -1.1%         |                   78.8 |                77.6 | -1.5%          |
+| cardio    |                  33.27 |               33.21 | -0.2%         |                  106.2 |               105.4 | -0.8%          |
+| gasId     |                 175.09 |              171.37 | -2.1%         |                  499.1 |               486.9 | -2.4%          |
+| pendigits |                  33.38 |               33.97 | +1.8%         |                  108.9 |               109.6 | +0.6%          |
+| winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
+| winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
+
+Table: Results of restricting neuron bitwidths
+
+![Results of restricting neuron bitwidths](figs2/bnnparsign_bnnparw.svg)
 
 The results are negligible, in the 1-3% range, and in the
 case of pendigits they even deteriorate a bit. This deterioration
@@ -873,89 +1009,8 @@ have not found a method to work around this limitation at this point.
 
 \newpage
 
-# Range centering
-
-![Pre-activation values for a hidden neuron for each sample of the dataset, the same values after the range has been centered on zero and the minimal bitrange that supports each.](./parce_points.svg)
-
-## Rationale
-
-Unfortunately I make a mistake when initialy evaluating the results of
-limiting the bitwidth of neurons in the previous part. The blunder is
-accidentaly comparing the results with the positive-negative sums full
-width circuit instead of the single signed sum version that the reduced
-width circuits are based on. This causes me to falsely believe that
-reducing the bitwidths of computations is much more effective than in
-reality. Based on this misanderstanding I pursue finding ways to further
-reduce the ranges of values each neuron's total has to support. After
-realising the mistaken assumption I don't think those efforts were
-justified. The first of these is the attempt to "center" the range of
-values so the maximum and minimum values are at an equal distance from
-zero.
-
-The range of values a neuron of the first layer can take can be
-significantly unbalanced. What this means is that if for example the
-feature the hidden neuron tracks occurs infrequently, it will equally
-infrequently take positive values, and this suggests that the negative
-values it takes can get much large in an absolute sense than the
-positive ones get a chance to. If the absolute minimum or maximum value
-is multiple times larger than the other one, let's say $h_{i max} = 10
-h_{i min}$, then the range of values the bitwidth of the neuron must
-support is up to twice as large as the one of the equivalant range
-balanced so it's maximum value is as far from zero as it's minimum.
-
-Therefore by subtracting the value that lies at the middle of the range
-from the result, the bitwidth of the neuron's sum can be further
-reduced. That requires an additional constant subtraction operation for
-the calculation of the sum and an additional comparison operation, since
-the result needs to be compared to the same constant for binarization
-unlike being compared to zero that needs no additional hardware.
-However, the hope is that if the width of enough intermediate results of
-the adder graph and thus the number of full adders is reduced as a
-result it will be enough to more than make up for the cost.
-
-Example: if the highest value the total of the neuron takes
-is 300 and the lowest is -100, we need a 10 bit signed integer to fit
-all values. If we subtract their average(100) the values will be in
-the range -200 to 200, so they fit in a 9 bit signed integer.
-
-$$h_{i max} = \max\limits_{j=0}^{S-1} H^i_j$$
-$$h_{i min} = \min\limits_{j=0}^{S-1} H^i_j$$
-$$h_{i mid} = \lceil \frac{h_{i max} + h_{i min}}{2} \rceil $$
-$$ h'_i = h_i - h_{i mid} $$
-$$ wh'_i = \lceil \log_2(\lceil \frac{h_{i max} - h_{i min}}{2} \rceil) \rceil+1 $$
-
-The additional operations are only included in the design for neurons
-that this method decreases the bitwidth compared the one calculated from
-the "unbalanced" range. For the rest there is no reason to incur the
-overhead for no benefit so they are declared the same as they are using
-minimum range bit-width reduction.
-
-![Combinatorial signed sum implementation with reduced sum bitwidths and occasional range centering.](tikz1/bnnparce.png)
-
-## Discussion
-The results show that the hardware requirements of the additional
-operations were not covered by the reduced bitwidths and area and power
-demands considerably increased. Given the actual results of how much
-reducing bitwidths helps from above this is not surprising. In fact it
-seems counter-intuitive that for the winered dataset's model it lead to a
-6% improvement.
-
-Notably, this was the model that had the most benefit
-from the previous bitwidth reduction as well. I estimate this model's
-operations in the first layer lend themslves less to arithmetic
-optimizations compared to the rest, and thus hindering that optimization
-process is not as rough a sacrifice.
-
-It also seems probable that subtracting a simpler constant than the
-actual value at the middle of the range $h_{i mid}$, for example the
-nearest power of two, would lessen the computational burden of the
-additional subtraction and comparison, but not enough to be worth
-implementing.
-
-\newpage
-
-# Naively reducing bitwidths of intermediate results
-## Rationale
+### Naively reducing bitwidths of intermediate results
+#### Rationale
 
 Given the eventual goal of applying approximate computation techniques to
 the adder graph of the designs a problem, mentioned previously, comes
@@ -976,7 +1031,7 @@ will cause resource sharing to break. Given how large the negative
 effect is I can check if this is a problem than ought to be fixed before 
 approximation can confidently be applied.
 
-## Implementation
+#### Implementation
 
 ![The intermediate sums of the sequential calculation of hidden neuron
 28 for all of the Har dataset and the bit range needed to support each
@@ -1018,7 +1073,20 @@ together and expressed in verilog as a single sum. I have not confirmed
 if this does in fact affect the result of synthesis at all but it seems
 to conform closer to the recommendations of the best practices guide.
 
-## Discussion
+#### Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
+|:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
+| Har       |               24.25 |                   23.16 | -4.5%         |                77.6 |                    73.7 | -5.0%          |
+| cardio    |               33.21 |                   39.29 | +18.3%        |               105.4 |                   125.5 | +19.1%         |
+| gasId     |              171.37 |                  326.98 | +90.8%        |               486.9 |                   935.2 | +92.1%         |
+| pendigits |               33.97 |                   37.09 | +9.2%         |               109.6 |                   120.3 | +9.8%          |
+| winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
+| winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
+
+Table: Results of shrinking intermediate results naively
+
+![Results of shrinking intermediate results naively](figs2/bnnparw_bnnparstepw.svg)
 
 The results were positive for two of the models with the smallest count
 of input features $N$, which means that this method performed better
@@ -1035,11 +1103,11 @@ work around it shall be searched for.
 
 \newpage
 
-# Preemptive arithmetic optimization
+### Preemptive arithmetic optimization
 
-![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz1/tbpaar.png)
+![Implementation of a binary weight layer with a preconfigured order of additions.](./tikz2/bnnpaar.pdf)
 
-## Rationale
+#### Rationale
 Based on the results from above I attempt to get the arithmetic
 expression that the design computes after synthesis, with the intent
 of fitting later approximation techniques to it rather than having the
@@ -1102,7 +1170,7 @@ to the same.
 ![An example of a datapath block's extraction report. An intermediate
 value that is reused multiple times is highlighted.](./pics/extraction_report.png)
 
-## Implementation
+#### Implementation
 
 A formulation of the problem is the following:  Given a list of
 expressions of the general form $y_i = x_0 + x_1 - x_2 - ... + x_n$ in
@@ -1114,7 +1182,7 @@ The problem turns out considerable less well-studied than initially
 expected. While the deceptively simple description suggests a
 straightforward way to answer it, it is NP-Complete difficult, more
 specifically in the MaxSNP family of optimization problems. As a direct
-result only approximate solutions are attempted. [guy] searches for
+result only approximate solutions are attempted. [@guy] searches for
 exact solutions by leveraging SAT solvers, but only manages to get this
 to work for very small matrix sizes up to 8 x 8. Not much is else found
 on the exact scenario above, but a close-enough problem having to do
@@ -1124,7 +1192,7 @@ operations is actively worked on thanks to some applications in the
 field of cryptographic accelerators. Both belong to the shortest linear
 program family of problems.
 
-I choose to try utilising Paar's factoring algorithm [paar] first. It is
+I choose to try utilising Paar's factoring algorithm [@paar] first. It is
 older than most heuristics that have been applied to the XOR factoring
 problem, but has the advantage of not exploiting term cancellation.
 Thanks to the property $x \oplus x = 0$ some optimal solutions to the
@@ -1140,7 +1208,7 @@ place of parity.
 
 \newpage
 
-## Paar's algorithm
+#### Paar's algorithm
 
 It is essentially a greedy algorithm that picks the two elements that
 are common in the largest number of expressions each time and adds the
@@ -1193,7 +1261,7 @@ From this process a list $L$ of successive indices such that $L_n =
 (i,j) \iff x_n = x_i + x_j$ is acquired, and the additions implied by
 them are hardcoded in the verilog description of the designs.
 
-## Extension to support subtractions
+#### Extension to support subtractions
 
 I try a slight modification to the original procedure so it can be
 compatible with expressions including subtractions. The way I
@@ -1218,7 +1286,33 @@ Finding these two counts for all pairs of columns can still be done with
 a matrix multiplication like before so the new approach is not much
 slower.
 
-## Discussion
+#### Results and analysis
+
+|           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
+|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
+| Har       |                  24.52 |               17.42 | -29.0%        |                   78.8 |                57.2 | -27.4%         |
+| cardio    |                  33.27 |               38.74 | +16.4%        |                  106.2 |               124.1 | +16.9%         |
+| gasId     |                 175.09 |              281.55 | +60.8%        |                  499.1 |               807.6 | +61.8%         |
+| pendigits |                  33.38 |               35.43 | +6.1%         |                  108.9 |               114.6 | +5.2%          |
+| winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
+| winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
+
+Table: Effect of preemptive arithmetic optimization with Paar's heuristic
+
+|           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               17.42 |                  18.73 | +7.5%         |                57.2 |                   60.8 | +6.3%          |
+| cardio    |               38.74 |                  35.97 | -7.2%         |               124.1 |                  116   | -6.5%          |
+| gasId     |              281.55 |                 261.38 | -7.2%         |               807.6 |                  759.7 | -5.9%          |
+| pendigits |               35.43 |                  32.22 | -9.1%         |               114.6 |                  107.3 | -6.4%          |
+| winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
+| winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
+
+Table: Comparison of the modified Paar heuristic to the original
+
+![Effect of preemptive arithmetic optimization with Paar's heuristic](figs2/bnnparsign_bnnpaar.svg)
+
+![Comparison of the modified Paar heuristic to the original](figs2/bnnpaar_bnnpaarter.svg)
 
 I expected that either:
 
@@ -1271,9 +1365,11 @@ raise the network size threshold for which results can be improved.
 
 \newpage
 
-# Sequential evaluation
+# Sequential evaluation of layer neurons
 
-## Rationale
+## Single input per-cycle update
+
+### Rationale
 
 The classifications considered here are mostly not time critical and do
 not require high throughput. Evaluating the quality of a wine every
@@ -1297,11 +1393,11 @@ Layers get evaluated successively, so the entire inference will take a
 cycle count equal to the sum of all the inputs and hidden features of
 the network.
 
-## Implementation
+### Implementation
 
-### First layer
+#### First layer
 
-![The first layer of a sequentially evaluated BNN](tikz1/tbseq.png)
+![The first layer of a sequentially evaluated BNN](tikz2/bnnseq.pdf)
 
 In the first layer each neuron is implemented by an accumulator that
 holds a running total of the weighted sum of the input features seem
@@ -1350,7 +1446,9 @@ tested. The memory elements are very expensive in this technology so
 this version ended up underperforming the previous by a large margin due
 to the required registers.
 
-### Second layer
+#### Second layer
+
+![The second layer of a sequentially evaluated BNN](tikz2/bnnseq2.pdf)
 
 The second layer starts after receiving an enable signal from the first
 layers halting flag. Because of the linear transformation described in
@@ -1379,7 +1477,20 @@ These multiplexers share their input data lines with a lot of the other
 multiplexers, so the hardware cost of their implementation is
 considerably cheaper than $C$ separate ones.
 
-## Discussion
+### Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnseq area(cm²) | area change   |   bnnparw power(mW) |   bnnseq power(mW) | power change   |
+|:----------|--------------------:|-------------------:|:--------------|--------------------:|-------------------:|:---------------|
+| Har       |               24.25 |              29.55 | +21.9%        |                77.6 |              132.7 | +71.0%         |
+| cardio    |               33.21 |              31.47 | -5.2%         |               105.4 |              143.1 | +35.8%         |
+| gasId     |              171.37 |              47.67 | -72.2%        |               486.9 |              216.8 | -55.5%         |
+| pendigits |               33.97 |              34.71 | +2.2%         |               109.6 |              139   | +26.8%         |
+| winered   |               21.87 |              29.57 | +35.2%        |                72.3 |              131.7 | +82.2%         |
+| winewhite |               20.36 |              29.75 | +46.1%        |                66.7 |              128.6 | +92.8%         |
+
+Table: The first attempt at a sequential implementation compared to the combinatorial one
+
+![The first attempt at a sequential implementation compared to the combinatorial one](figs2/bnnparw_bnnseq.svg)
 
 The cost of the adder graph in the fully parallel designs scales
 superlinearly with the count of input elements of the layer, at a faster
@@ -1407,10 +1518,10 @@ lower than a threshold, so it would not be an issue.
 
 \newpage
 
-## Removing the weight array
+### Removing the weight array
 
 ![The first layer of a sequential design with the required
-subtractions hardcoded](tikz1/tbdirect.png)
+subtractions hardcoded](tikz2/bnndirect.pdf)
 
 The process used in the second layer in the previous part, where each
 neuron gets its own multiplexer over normal and inverted input hidden
@@ -1445,7 +1556,7 @@ break even with the parallel version.
 
 \newpage
 
-## Register width reduction
+### Register width reduction
 
 The number of bits the register of the accumulator of each neuron can be
 reduced to the minimum required to support the range of values it
@@ -1457,7 +1568,7 @@ Because the registers take up a significant chunk of the resources, the
 improvement is more pronounced than in the fully parallel equivalent,
 freeing up around 10% of the area and power across the board.
 
-## Accumulator saturation
+### Accumulator saturation
 
 ![Value of a neuron's accumulator over the course of the evaluation,
 with and without saturation of the results](saturationgraph.png)
@@ -1504,9 +1615,22 @@ as $r+1$, saturating the values is not allowing the flip-flops of the
 accumulator to decrease and there is no benefit to incur the extra logic
 of implementing saturation for this neuron.
 
-![Implementation of saturation on the first layer of a sequential design.](tikz1/bnndsat.png)
+![Implementation of saturation on the first layer of a sequential design.](tikz2/bnndsat.pdf)
 
-## Discussion
+### Results and analysis
+
+|           |   bnnseq area(cm²) |   bnndsat area(cm²) | area change   |   bnnseq power(mW) |   bnndsat power(mW) | power change   |
+|:----------|-------------------:|--------------------:|:--------------|-------------------:|--------------------:|:---------------|
+| Har       |              29.55 |               24.02 | -18.7%        |              132.7 |               109.2 | -17.7%         |
+| cardio    |              31.47 |               24.77 | -21.3%        |              143.1 |               118.7 | -17.1%         |
+| gasId     |              47.67 |               81.05 | +70.0%        |              216.8 |               318.9 | +47.1%         |
+| pendigits |              34.71 |               29.79 | -14.2%        |              139   |               121.6 | -12.5%         |
+| winered   |              29.57 |               23.02 | -22.2%        |              131.7 |               104.5 | -20.7%         |
+| winewhite |              29.75 |               22.43 | -24.6%        |              128.6 |                98.5 | -23.4%         |
+
+Table: Effect of the mentioned improvements to the sequential design
+
+![Effect of the mentioned improvements to the sequential design](figs2/bnnseq_bnndsat.svg)
 
 After these improvements, 4 out of the 6 networks demand less area in
 the sequential design than in the parallel one. But the impovement is
@@ -1518,9 +1642,9 @@ constructed from the ground up.
 
 \newpage
 
-# Single adder tree sequential evaluation
+## Single adder tree sequential evaluation
 
-## Rationale
+### Rationale
 
 Since the previous attempt where all neurons update in parallel
 on a single input feature each cycle did not pan out, the clear next
@@ -1537,9 +1661,9 @@ the encoding of weighting the features appropriately before their
 accumulation than must now be done since the operations are not simply
 hard-coded into the circuit.
 
-## Implementation
+### Implementation
 
-![A single-adder sequential BNN implementation](tikz1/bnnrolx.png)
+![A single-adder sequential BNN implementation](tikz2/bnnrolx.pdf)
 
 The multiplexing that was described in the previous sequential design 
 is rearranged here in the sense that the $M$ multiplexers with $N$ data
@@ -1598,7 +1722,20 @@ The second layer takes as many cycles as classes to be examined for
 prediction. The full inference therefore takes up $M+C$ clock cycles.
 Again a reset signal must be given between successive inferences.
 
-## Discussion 
+### Results and analysis 
+
+|           |   bnnparw area(cm²) |   bnnrolx area(cm²) | area change   |   bnnparw power(mW) |   bnnrolx power(mW) | power change   |
+|:----------|--------------------:|--------------------:|:--------------|--------------------:|--------------------:|:---------------|
+| Har       |               24.25 |                9.14 | -62.3%        |                77.6 |                39   | -49.7%         |
+| cardio    |               33.21 |               11.1  | -66.6%        |               105.4 |                45.5 | -56.8%         |
+| gasId     |              171.37 |               42.12 | -75.4%        |               486.9 |               142.4 | -70.8%         |
+| pendigits |               33.97 |               10.69 | -68.5%        |               109.6 |                43.5 | -60.3%         |
+| winered   |               21.87 |                8.85 | -59.5%        |                72.3 |                38.9 | -46.2%         |
+| winewhite |               20.36 |                8.65 | -57.5%        |                66.7 |                37.5 | -43.8%         |
+
+Table: Comparison of single adder tree sequential designs with equivalent combinatorial designs.
+
+![Comparison of single adder tree sequential designs with equivalent combinatorial designs.](figs2/bnnparw_bnnrolx.svg)
 
 A large improvement on the previous sequential design method, using a
 single adder tree gets us 60 - 75% smaller footprints than the fully
@@ -1618,9 +1755,9 @@ tested to confirm that it was an improvement for both of them.
 
 \newpage
 
-# Deconstructing input negation
+### Deconstructing input negation
 
-![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz1/bnnromem.png)
+![Multiplexers replaced by lookup tables for weights and correction terms/biases.](tikz2/bnnromem.pdf)
 
 Negating each input involves a 4 bit increment-by-1 circuit per feature. 
 Although it does not sound very alarming it is still an expense that
@@ -1643,9 +1780,9 @@ $$ h_i = \sum_{j=0}^{N-1} x_j \oplus \neg bin(W1_{i,j}) + b_i $$
 
 \newpage
 
-# Shifting registers for timekeeping
+### Shifting registers for timekeeping
 
-![Replacement of cycle counter by shifting registers for the hidden activations.](tikz1/bnnrospine.png)
+![Replacement of cycle counter by shifting registers for the hidden activations.](tikz2/bnnrospine.pdf)
 
 Instead of having a decoder from the cycle counter's current value $i$
 select the register to which the binary post-activation output $s_i$ of
@@ -1675,10 +1812,10 @@ requiring a decoder from the cycle counter. This lets the counter to be
 retired, without requiring extra state keeping elements to preserve its
 functionality.
 
-## Tristate weight memory
+### Tristate weight memory
 
 ![Implementing the one-hot indexed weight memory using an open bus per
-input feature](tikz1/bnnrobus.png)
+input feature](tikz2/bnnrobus.pdf)
 
 Every input feature gets the current weight bit from an open bus to
 which a tristate buffer for each entry in the feature’s column in
@@ -1692,7 +1829,20 @@ The goal of this is to avoid the nested OR gates that are used to reduce
 the selected value of the column into one bit in the standard look up
 table implementation.
 
-## Discussion
+### Results and analysis
+
+|           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                   7.82 | -67.8%        |                77.6 |                   31.7 | -59.1%         |
+| cardio    |               33.21 |                   9.3  | -72.0%        |               105.4 |                   36   | -65.8%         |
+| gasId     |              171.37 |                  37.31 | -78.2%        |               486.9 |                  124.4 | -74.5%         |
+| pendigits |               33.97 |                   9.08 | -73.3%        |               109.6 |                   35.1 | -68.0%         |
+| winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
+| winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
+
+Table: Comparison of the final sequential designs to the final combinatorial designs
+
+![Comparison of the final sequential designs to the final combinatorial designs](figs2/bnnparw_bnnrospine.svg)
 
 These changes give a 10-20% decrease in area and power requirements
 compared to the initial single adder tree implementation. With the use
@@ -1705,16 +1855,27 @@ connect nested OR gates is removed. This trade-off allows to optimise
 for whichever of area and power is the largest bottleneck to the desired
 application.
 
+Most importantly for our purposes, none of the models could be powered
+by a 30mW Molex battery using a conventional LUT for the weights. After
+implementing the LUT using tristate buffers, 5 out of the 6 can be
+powered by it. Although not coming cheaply in terms of area, the power
+savings were critical for overcoming this barrier.
+
 All in all compared to the fully parallel designs requirements are
-reduced $3-5\times$. This opens up the space of implementable applications. The relative savings would get considerably better for larger networks given the scaling observed.
+reduced $3-5\times$. This opens up the space of implementable
+applications. The relative savings would get considerably better for
+larger networks given the scaling observed.
 
+\begin{figure}
+  \centering
 \begin{tikzpicture}
-    \draw (0, 0) rectangle (5.8, 5.8);
-    \draw (7, 0) rectangle ++(2.9, 2.9);
+    \filldraw[pattern=north west lines] (0, 0) rectangle (5.8, 5.8);
+    \filldraw[pattern=north west lines] (7, 0) rectangle ++(2.9, 2.9);
 \end{tikzpicture}
-
-Actual size comparison of the estimated area of the printed designs for
-the pendigits dataset's model. Parallel on left, sequential on right.
+\caption{Actual size comparison of the estimated area of the printed designs for the
+pendigits dataset's model. Parallel on left, sequential on right.}
+  \label{fig:your-label}
+\end{figure}
 
 \newpage
 
@@ -1755,7 +1916,7 @@ arithmetic in the subsequent layer.
 
 ## Fully combinatorial implementation
 
-![Sparce combinatorial single signed sum implementation.](tikz1/tnnparsign.png)
+![Sparce combinatorial single signed sum implementation.](tikz2/tnnparsign.pdf)
 
 After training the same datasets with the same parameter counts using
 ternary instead of binary weights the equivalent weight matrices $W1 \in
@@ -1836,7 +1997,20 @@ was not the final one the correction term $\lceil \frac{z_i -
 \min\limits_{j=0}^{M-1} z_j}{2} \rceil$ would instead be used as the
 threshold for binarization of the neuron's output instead of 0.
 
-## Discussion
+## Results and analysis
+
+|           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
+| Har       |               24.25 |                  13.4  | -44.7%        |                77.6 |                   42.7 | -45.0%         |
+| cardio    |               33.21 |                  19.21 | -42.2%        |               105.4 |                   62.4 | -40.8%         |
+| gasId     |              171.37 |                 101.65 | -40.7%        |               486.9 |                  297.1 | -39.0%         |
+| pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
+| winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
+| winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
+
+Table: Performance of the ternary weight combinatorial implementation compared to the binary combinatorial
+
+![Performance of the ternary weight combinatorial implementation compared to the binary combinatorial](figs2/bnnparw_tnnparsign.svg)
 
 Thanks to the removal of terms from the arithmetic operations that
 define the design of the layers the area and power requirements were
@@ -1914,8 +2088,6 @@ the first layer's neurons are compared to in order to produce their
 binarized output to be always zero. So this discrepancy was another
 point for the preference of Qkeras over Larq.
 
-### Dataset accuracies table graphs
-
 ## Parameter optimization and encoding
 
 The models resulting from the above process are stored in a
@@ -1987,7 +2159,7 @@ the required power.
 Graphs and tables are presented here that show the area and power
 requirements for the various versions of hardware implementation for the
 6 datasets and their trained models. Comparisons for the effect of the
-various design decisions outlined above are also made.
+various design decisions outlined above that are not already displayed are also made.
 
 The designs will be referred to by nicknames in the following graphs and
 tables. Here is which explanation of each design corresponds to each
@@ -1995,15 +2167,13 @@ nickname:
 
 Design nickname | Link to relevant description
 ---|---
-bnnpar| [Combinatorial fully connected implementations](#combinatorial-fully-connected-implementations)
 bnnpar| [Positive negative sum](#positive-negative-sum)
 bnnparsign| [Signed sum ](#signed-sum)
 bnnparw| [Minimum range bit width reduction](#minimum-range-bit-width-reduction)
-bnnparce| [Range centering](#range-centering)
 bnnparstepw| [Naively reducing bitwidths of intermediate results ](#naively-reducing-bitwidths-of-intermediate-results)
 bnnpaar| [Preemptive arithmetic optimization ](#preemptive-arithmetic-optimization)
 bnnpaarter| [Extension to support subtractions](#extension-to-support-subtractions)
-bnnseq| [Sequential evaluation](#sequential-evaluation)
+bnnseq| [Sequential evaluation](#sequential-evaluation-of-layer-neurons)
 bnndirect| [Removing the weight array](#removing-the-weight-array)
 bnndw| [Register width reduction ](#register-width-reduction)
 bnndsat| [Accumulator saturation ](#accumulator-saturation)
@@ -2013,9 +2183,139 @@ bnnrospine| [Shifting registers for timekeeping ](#shifting-registers-for-timeke
 bnnrobus| [Tristate weight memory ](#tristate-weight-memory)
 tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 
+For comparison with the results of other works *tnnparsign* has been
+selected as the representative of parallel designs and *bnnrospine* as
+the final sequential design. Although it does not hit the power
+requirements of the Molex 30mW battery like *bnnrobus* does using
+tristate buffers, it has a better balance between area and power and
+thus is a better representative.
+
 \newpage
 
-## Combinatorial designs area comparisons
+## Model predictive performance
+
+| Dataset     |    full precision |    BNN |    TNN |  MLPC   |
+|:------------|------------------:|-------:|-------:|:--------|
+| cardio      |                92 |     88 |     90 | 88      |
+| gasId       |                90 |     81 |     88 | -       |
+| Har         |                74 |     51 |     52 | -       |
+| pendigits   |                99 |     87 |     92 | 94      |
+| redwine     |                60 |     54 |     58 | 56      |
+| whitewine   |                57 |     51 |     50 | 54      |
+
+Table: Comparison of test split accuracies between the binary neural network models(BNN), ternary models(TNN),
+equivalant full precision networks and the multilayer perceptron classifiers evaluated in [@fn21](MLPC).
+
+As shown in the table above the binary and ternary networks achieve
+classification accuracies competitive with the ones by higher precision
+networks that have been implemented in printed electronics. This shows
+that the quality of their prediction should be acceptable for the
+applications they support. It should be noted that the number of neurons
+used by the BNNs and TNNs is about 10x the count of neurons of the
+higher precision networks in the comparison.
+
+## Delay of combinatorial and sequential designs
+
+| dataset   |    combinatorial delay(ms) |    sequential delay(ms) |    sequential cycles |    total sequential delay(ms) |
+|:----------|---------------------------:|------------------------:|---------------------:|------------------------------:|
+| cardio    |                        142 |                     147 |                   43 |                          6321 |
+| gasId     |                        260 |                     181 |                   46 |                          8326 |
+| Har       |                        165 |                     135 |                   46 |                          6210 |
+| pendigits |                        309 |                     147 |                   50 |                          7350 |
+| winered   |                        160 |                     138 |                   46 |                          6348 |
+| winewhite |                        143 |                     129 |                   47 |                          6063 |
+
+Table: Comparison of single cycle delay and total inference time between combinatorial and sequential implementations.
+
+As seen in the table above parallel designs can function at 3 to 7 Hz,
+whereas sequential designs can only run inference every 6 seconds or
+more. For certain applications such as wine quality estimation and gas
+identification this is quick enough to get the job done, but for example
+written digit identification has much faster changing inputs and this
+delay is not acceptable. So whether the delay sacrifice to enable area
+and power savings is worth it depends a lot on the specifics of the
+usecase.
+
+## Comparative analysis: Cross-Layer Approximation For Printed Machine Learning Circuits [@fn21]
+
+The area and power demands of the final parallel and sequential designs
+are compared to the results achieved in [@fn21], described in the
+[Related works](#related-works-in-machine-learning-for-printed-circuits)
+section at the start, which is considered the starting point for this
+work.
+
+The edge in metrics is split across the datasets for the fully
+parallel designs. Some models perform better in one and some in the
+other. On average it I will call it a tie.
+
+|           |   mlpc area(cm²) |   tnnparsign area(cm²) | area change   |   mlpc power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                  19.21 | +13.0%        |               54 |                   62.4 | +15.6%         |
+| pendigits |               46 |                  29.43 | -36.0%        |              153 |                   95.8 | -37.4%         |
+| winered   |                8 |                  11.78 | +47.2%        |               27 |                   40   | +48.1%         |
+| winewhite |               13 |                   9.53 | -26.7%        |               42 |                   32.8 | -21.9%         |
+
+Table: Comparison of final parallel designs with the results from [@fn21]
+
+![Comparison of final parallel designs with the results from [@fn21]](figs2/mlpc_tnnparsign.svg)
+
+Sequential designs take a clear lead in area and power, in the case of
+pendigits showing a 5x improvement. Unfortunately the time required to
+perform all the cycles of sequential inference makes the circuit too
+slow to be useable in cases such as pendigits, so this improvement has
+fallen to Goodhart's law.
+
+|           |   mlpc area(cm²) |   bnnrospine area(cm²) | area change   |   mlpc power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                   9.3  | -45.3%        |               54 |                   36   | -33.3%         |
+| pendigits |               46 |                   9.08 | -80.3%        |              153 |                   35.1 | -77.1%         |
+| winered   |                8 |                   7.61 | -4.9%         |               27 |                   30.9 | +14.4%         |
+| winewhite |               13 |                   7.49 | -42.4%        |               42 |                   30.9 | -26.4%         |
+
+Table: Comparison of final sequential designs with the results from [@fn21]
+
+![Comparison of final sequential designs with the results from [@fn21]](figs2/mlpc_bnnrospine.svg)
+
+## Further comparison with relevant literature
+
+Here both the parallel and sequential designs are compared to further
+relevant works on printed networks that were described in 
+[Related works](#related-works-in-machine-learning-for-printed-circuits)
+. This includes both the initial bespoke networks from [@fn20] and
+improvements made to the results of [@fn21] that were compared to in
+greater detail above. This gives a sense of where this work is placed
+compared to the current state of the art.
+
+As it appears even with taking two orders of magnitude longer to
+compute the products of this work are not competitive with the state of
+the art results for the same datasets, in the case of redwine even being
+outdone by almost a factor of 10.
+
+|           |   baseline |   mlpc |   crossax |   retrain |   tnnparsign |   bnnrospine |
+|:----------|-----------:|-------:|----------:|----------:|-------------:|-------------:|
+| cardio    |       33.4 |     17 |      17   |       6.1 |         19.2 |          9.3 |
+| winered   |       17.6 |      8 |       8   |       1.1 |         11.8 |          7.6 |
+| winewhite |       31.2 |     13 |      13.6 |       6.5 |          9.5 |          7.5 |
+
+Table: Area comparison of the final parallel and sequential designs to the SOTA in printed MLPs.
+baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+|           |   baseline |   mlpc |   crossax |   retrain |   tnnparsign |   bnnrospine |
+|:----------|-----------:|-------:|----------:|----------:|-------------:|-------------:|
+| cardio    |      124.2 |     54 |      48.9 |      20.8 |         62.4 |         36   |
+| winered   |       73.5 |     27 |      18.8 |       3.9 |         40   |         30.9 |
+| winewhite |      126.4 |     42 |      43.2 |      21.3 |         32.8 |         30.9 |
+
+Table: Power comparison of the final parallel and sequential designs to the SOTA in printed MLPs.
+baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+![Area comparison to prior work](acom.svg)
+
+![Power comparison to prior work](pcom.svg)
+
+## Supplementary results
+
+### Combinatorial designs area comparisons
 
 ![](./pararea.svg)
 
@@ -2030,7 +2330,10 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnparce    | 24.99 |    34.84 |  181.82 |       35.74 |     20.76 |       20.48 |
 | bnnpaarter  | 18.73 |    35.97 |  261.38 |       32.22 |     17.47 |       16.65 |
 
-## Combinatorial designs power comparisons
+Table: Comparison of area requirements between the discussed fully
+parallel designs.
+
+### Combinatorial designs power comparisons
 
 ![](./parpower.svg)
 
@@ -2045,7 +2348,10 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnparce    |  79   |    110.5 |   516.1 |       115.5 |      67.7 |        65.8 |
 | bnnpaarter  |  60.8 |    116   |   759.7 |       107.3 |      59.6 |        55.9 |
 
-## Sequential designs power comparisons
+Table: Comparison of power requirements between the discussed fully
+parallel designs.
+
+### Sequential designs area comparisons
 
 ![](./seqarea.svg)
 
@@ -2060,7 +2366,10 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnrolin   |  8.29 |    10.85 |   38.54 |       10.37 |      8.04 |        8    |
 | bnnseq     | 29.55 |    31.47 |   47.67 |       34.71 |     29.57 |       29.75 |
 
-## Sequential designs power comparisons
+Table: Comparison of area requirements between the discussed
+sequential designs.
+
+### Sequential designs power comparisons
 
 ![](./seqpower.svg)
 
@@ -2075,82 +2384,13 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | bnnrolin   |  36.3 |     45.6 |   131.3 |        42.6 |      35.7 |        34.9 |
 | bnnseq     | 132.7 |    143.1 |   216.8 |       139   |     131.7 |       128.6 |
 
+Table: Comparison of power requirements between the discussed 
+sequential designs.
 
 \newpage
 
-## Table comparisons
+### Additional table comparisons
 
-### Comparison of single signed sum to double unsigned sums approaches
-
-|           |   bnnpar area(cm²) |   bnnparsign area(cm²) | area change   |   bnnpar power(mW) |   bnnparsign power(mW) | power change   |
-|:----------|-------------------:|-----------------------:|:--------------|-------------------:|-----------------------:|:---------------|
-| Har       |              29.4  |                  24.52 | -16.6%        |               92.1 |                   78.8 | -14.4%         |
-| cardio    |              46.71 |                  33.27 | -28.8%        |              145.3 |                  106.2 | -26.9%         |
-| gasId     |             269.76 |                 175.09 | -35.1%        |              767.7 |                  499.1 | -35.0%         |
-| pendigits |              42.95 |                  33.38 | -22.3%        |              136.8 |                  108.9 | -20.4%         |
-| winered   |              27.82 |                  22.45 | -19.3%        |               90.7 |                   74.6 | -17.8%         |
-| winewhite |              26.01 |                  20.47 | -21.3%        |               84.6 |                   68   | -19.6%         |
-
-### Results of restricting neuron bitwidths
-
-|           |   bnnparsign area(cm²) |   bnnparw area(cm²) | area change   |   bnnparsign power(mW) |   bnnparw power(mW) | power change   |
-|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
-| Har       |                  24.52 |               24.25 | -1.1%         |                   78.8 |                77.6 | -1.5%          |
-| cardio    |                  33.27 |               33.21 | -0.2%         |                  106.2 |               105.4 | -0.8%          |
-| gasId     |                 175.09 |              171.37 | -2.1%         |                  499.1 |               486.9 | -2.4%          |
-| pendigits |                  33.38 |               33.97 | +1.8%         |                  108.9 |               109.6 | +0.6%          |
-| winered   |                  22.45 |               21.87 | -2.6%         |                   74.6 |                72.3 | -3.1%          |
-| winewhite |                  20.47 |               20.36 | -0.5%         |                   68   |                66.7 | -1.9%          |
-
-### Results of range centering
-
-|           |   bnnparw area(cm²) |   bnnparce area(cm²) | area change   |   bnnparw power(mW) |   bnnparce power(mW) | power change   |
-|:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
-| Har       |               24.25 |                24.99 | +3.1%         |                77.6 |                 79   | +1.8%          |
-| cardio    |               33.21 |                34.84 | +4.9%         |               105.4 |                110.5 | +4.8%          |
-| gasId     |              171.37 |               181.82 | +6.1%         |               486.9 |                516.1 | +6.0%          |
-| pendigits |               33.97 |                35.74 | +5.2%         |               109.6 |                115.5 | +5.4%          |
-| winered   |               21.87 |                20.76 | -5.1%         |                72.3 |                 67.7 | -6.4%          |
-| winewhite |               20.36 |                20.48 | +0.6%         |                66.7 |                 65.8 | -1.3%          |
-
-\newpage
-
-### Results of shrinking intermediate results naively
-
-|           |   bnnparw area(cm²) |   bnnparstepw area(cm²) | area change   |   bnnparw power(mW) |   bnnparstepw power(mW) | power change   |
-|:----------|--------------------:|------------------------:|:--------------|--------------------:|------------------------:|:---------------|
-| Har       |               24.25 |                   23.16 | -4.5%         |                77.6 |                    73.7 | -5.0%          |
-| cardio    |               33.21 |                   39.29 | +18.3%        |               105.4 |                   125.5 | +19.1%         |
-| gasId     |              171.37 |                  326.98 | +90.8%        |               486.9 |                   935.2 | +92.1%         |
-| pendigits |               33.97 |                   37.09 | +9.2%         |               109.6 |                   120.3 | +9.8%          |
-| winered   |               21.87 |                   22.78 | +4.2%         |                72.3 |                    75.3 | +4.1%          |
-| winewhite |               20.36 |                   20    | -1.8%         |                66.7 |                    65.8 | -1.3%          |
-
-### Effect of preemptive arithmetic optimization with Paar's heuristic
-
-|           |   bnnparsign area(cm²) |   bnnpaar area(cm²) | area change   |   bnnparsign power(mW) |   bnnpaar power(mW) | power change   |
-|:----------|-----------------------:|--------------------:|:--------------|-----------------------:|--------------------:|:---------------|
-| Har       |                  24.52 |               17.42 | -29.0%        |                   78.8 |                57.2 | -27.4%         |
-| cardio    |                  33.27 |               38.74 | +16.4%        |                  106.2 |               124.1 | +16.9%         |
-| gasId     |                 175.09 |              281.55 | +60.8%        |                  499.1 |               807.6 | +61.8%         |
-| pendigits |                  33.38 |               35.43 | +6.1%         |                  108.9 |               114.6 | +5.2%          |
-| winered   |                  22.45 |               18.55 | -17.4%        |                   74.6 |                62.6 | -16.1%         |
-| winewhite |                  20.47 |               18.01 | -12.0%        |                   68   |                59.8 | -12.1%         |
-
-### Comparison of the modified Paar heuristic to the original
-
-|           |   bnnpaar area(cm²) |   bnnpaarter area(cm²) | area change   |   bnnpaar power(mW) |   bnnpaarter power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               17.42 |                  18.73 | +7.5%         |                57.2 |                   60.8 | +6.3%          |
-| cardio    |               38.74 |                  35.97 | -7.2%         |               124.1 |                  116   | -6.5%          |
-| gasId     |              281.55 |                 261.38 | -7.2%         |               807.6 |                  759.7 | -5.9%          |
-| pendigits |               35.43 |                  32.22 | -9.1%         |               114.6 |                  107.3 | -6.4%          |
-| winered   |               18.55 |                  17.47 | -5.8%         |                62.6 |                   59.6 | -4.8%          |
-| winewhite |               18.01 |                  16.65 | -7.6%         |                59.8 |                   55.9 | -6.5%          |
-
-\newpage
-
-### Effect of using a custom multiplexer per neuron in the first layer
 
 |           |   bnnseq area(cm²) |   bnndirect area(cm²) | area change   |   bnnseq power(mW) |   bnndirect power(mW) | power change   |
 |:----------|-------------------:|----------------------:|:--------------|-------------------:|----------------------:|:---------------|
@@ -2161,7 +2401,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |              29.57 |                 27.11 | -8.3%         |              131.7 |                 125.7 | -4.6%          |
 | winewhite |              29.75 |                 27.31 | -8.2%         |              128.6 |                 122.6 | -4.7%          |
 
-### Effect of reducing the width of the first layer's registers
+Table: Effect of using a custom multiplexer per neuron in the first layer
 
 |           |   bnndirect area(cm²) |   bnndw area(cm²) | area change   |   bnndirect power(mW) |   bnndw power(mW) | power change   |
 |:----------|----------------------:|------------------:|:--------------|----------------------:|------------------:|:---------------|
@@ -2172,7 +2412,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 27.11 |             24.51 | -9.6%         |                 125.7 |             112.1 | -10.8%         |
 | winewhite |                 27.31 |             23.98 | -12.2%        |                 122.6 |             106.2 | -13.4%         |
 
-### Effect of applying saturation to the first layer's registers
+Table: Effect of reducing the width of the first layer's registers
 
 |           |   bnndw area(cm²) |   bnndsat area(cm²) | area change   |   bnndw power(mW) |   bnndsat power(mW) | power change   |
 |:----------|------------------:|--------------------:|:--------------|------------------:|--------------------:|:---------------|
@@ -2183,9 +2423,9 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |             24.51 |               23.02 | -6.1%         |             112.1 |               104.5 | -6.8%          |
 | winewhite |             23.98 |               22.43 | -6.5%         |             106.2 |                98.5 | -7.3%          |
 
-\newpage
+Table: Effect of applying saturation to the first layer's registers
 
-### Effect of deconstructing negation
+\newpage
 
 |           |   bnnrolx area(cm²) |   bnnrolin area(cm²) | area change   |   bnnrolx power(mW) |   bnnrolin power(mW) | power change   |
 |:----------|--------------------:|---------------------:|:--------------|--------------------:|---------------------:|:---------------|
@@ -2196,7 +2436,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                8.85 |                 8.04 | -9.2%         |                38.9 |                 35.7 | -8.2%          |
 | winewhite |                8.65 |                 8    | -7.5%         |                37.5 |                 34.9 | -6.9%          |
 
-### Effect of replacing the cycle counter with shifting registers
+Table: Effect of deconstructing negation
 
 |           |   bnnrolin area(cm²) |   bnnrospine area(cm²) | area change   |   bnnrolin power(mW) |   bnnrospine power(mW) | power change   |
 |:----------|---------------------:|-----------------------:|:--------------|---------------------:|-----------------------:|:---------------|
@@ -2207,7 +2447,7 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                 8.04 |                   7.61 | -5.3%         |                 35.7 |                   30.9 | -13.4%         |
 | winewhite |                 8    |                   7.49 | -6.4%         |                 34.9 |                   30.9 | -11.5%         |
 
-### Effect of using tristate buffers for the weight memory
+Table: Effect of replacing the cycle counter with shifting registers
 
 |           |   bnnrospine area(cm²) |   bnnrobus area(cm²) | area change   |   bnnrospine power(mW) |   bnnrobus power(mW) | power change   |
 |:----------|-----------------------:|---------------------:|:--------------|-----------------------:|---------------------:|:---------------|
@@ -2218,47 +2458,11 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 | winered   |                   7.61 |                 9.66 | +26.9%        |                   30.9 |                 25.7 | -16.8%         |
 | winewhite |                   7.49 |                 9.56 | +27.6%        |                   30.9 |                 25.2 | -18.4%         |
 
-\newpage
+Table: Effect of using tristate buffers for the weight memory
 
-### Comparison of the final sequential designs to the final combinatorial designs
-
-|           |   bnnparw area(cm²) |   bnnrospine area(cm²) | area change   |   bnnparw power(mW) |   bnnrospine power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               24.25 |                   7.82 | -67.8%        |                77.6 |                   31.7 | -59.1%         |
-| cardio    |               33.21 |                   9.3  | -72.0%        |               105.4 |                   36   | -65.8%         |
-| gasId     |              171.37 |                  37.31 | -78.2%        |               486.9 |                  124.4 | -74.5%         |
-| pendigits |               33.97 |                   9.08 | -73.3%        |               109.6 |                   35.1 | -68.0%         |
-| winered   |               21.87 |                   7.61 | -65.2%        |                72.3 |                   30.9 | -57.3%         |
-| winewhite |               20.36 |                   7.49 | -63.2%        |                66.7 |                   30.9 | -53.7%         |
-
-### Performance of the ternary weight combinatorial implementation compared to the binary combinatorial
-
-|           |   bnnparw area(cm²) |   tnnparsign area(cm²) | area change   |   bnnparw power(mW) |   tnnparsign power(mW) | power change   |
-|:----------|--------------------:|-----------------------:|:--------------|--------------------:|-----------------------:|:---------------|
-| Har       |               24.25 |                  13.4  | -44.7%        |                77.6 |                   42.7 | -45.0%         |
-| cardio    |               33.21 |                  19.21 | -42.2%        |               105.4 |                   62.4 | -40.8%         |
-| gasId     |              171.37 |                 101.65 | -40.7%        |               486.9 |                  297.1 | -39.0%         |
-| pendigits |               33.97 |                  29.43 | -13.4%        |               109.6 |                   95.8 | -12.6%         |
-| winered   |               21.87 |                  11.78 | -46.1%        |                72.3 |                   40   | -44.7%         |
-| winewhite |               20.36 |                   9.53 | -53.2%        |                66.7 |                   32.8 | -50.8%         |
-
-\newpage
-
-## Graph comparisons
+### Additional graph comparisons
 
 The following graphs show the area and power measurements of the models reified via the second design normalised on the equivalent metrics from the first design type.
-
-![Comparison of single signed sum to double unsigned sums approaches](figs2/bnnpar_bnnparsign.svg)
-
-![Results of restricting neuron bitwidths](figs2/bnnparsign_bnnparw.svg)
-
-![Results of range centering](figs2/bnnparw_bnnparce.svg)
-
-![Results of shrinking intermediate results naively](figs2/bnnparw_bnnparstepw.svg)
-
-![Effect of preemptive arithmetic optimization with Paar's heuristic](figs2/bnnparsign_bnnpaar.svg)
-
-![Comparison of the modified Paar heuristic to the original](figs2/bnnpaar_bnnpaarter.svg)
 
 ![Effect of using a custom multiplexer per neuron in the first layer](figs2/bnnseq_bnndirect.svg)
 
@@ -2272,77 +2476,4 @@ The following graphs show the area and power measurements of the models reified 
 
 ![Effect of using tristate buffers for the weight memory](figs2/bnnrospine_bnnrobus.svg)
 
-![Comparison of the final sequential designs to the final combinatorial designs](figs2/bnnparw_bnnrospine.svg)
-
-![Performance of the ternary weight combinatorial implementation compared to the binary combinatorial](figs2/bnnparw_tnnparsign.svg)
-
-
 \newpage
-
-# Citations
-
-[1] Eloïse Bihar, Timothée Roberts, Mohamed Saadaoui, Thierry Hervé,
-Jozina B. De Graaf, George G. Malliaras, Inkjet-Printed PEDOT:PSS
-Electrodes on Paper for Electrocardiography, Advanced Healthcare
-Materials Volume 6, Issue 6
-
-[2] Jose, M., Mylavarapu, S. K., Bikkarolla, S. K., Machiels, J., KJ, S., McLaughlin, J., ... & Deferme, W. (2022). Printed pH Sensors for Textile‐Based Wearables: A Conceptual and Experimental Study on Materials, Deposition Technology, and Sensing Principles. Advanced Engineering Materials, 24(5), 2101087.
-
-[3] Jelbuldina, M., Younes, H., Saadat, I., Tizani, L., Sofela, S., & Al Ghaferi, A. (2017). Fabrication and design of CNTs inkjet-printed based micro FET sensor for sodium chloride scale detection in oil field. Sensors and Actuators A: Physical, 263, 349-356.
-
-[4] Tuukkanen, S., & Rajala, S. (2015, November). A survey of printable piezoelectric sensors. In 2015 IEEE SENSORS (pp. 1-4). IEEE.
-
-[5] Yamamoto, Y., Harada, S., Yamamoto, D., Honda, W., Arie, T., Akita, S., & Takei, K. (2016). Printed multifunctional flexible device with an integrated motion sensor for health care monitoring. Science advances, 2(11), e1601473.
-
-[6] Dai, J., Ogbeide, O., Macadam, N., Sun, Q., Yu, W., Li, Y., ... & Huang, W. (2020). Printed gas sensors. Chemical Society Reviews, 49(6), 1756-1789.
-
-[7] D. Dua and C. Graff, “UCI machine learning repository,” 2017. [Online]. Available: http://archive.ics.uci.edu/ml 
-
-[8] Guvenir, H. A., Acar, B., Demiroz, G., & Cekin, A. (1997, September). A supervised machine learning algorithm for arrhythmia analysis. In Computers in Cardiology 1997 (pp. 433-436). IEEE.
-
-[9] D. Ayres-de Campos, J. Bernardes, A. Garrido, J. Marques-de Sa, and L. Pereira-Leite, “Sisporto 2.0: a program for automated analysis of cardiotocograms,” Journal of Maternal-Fetal Medicine, vol. 9, no. 5, pp. 311–318, 2000. 
-
-[10] F. Alimoglu and E. Alpaydin, “Methods of combining multiple classifiers based on different representations for pen-based handwritten digit recognition,” in Proceedings of the Fifth Turkish Artificial Intelligence and Artificial Neural Networks Symposium (TAINN 96. Citeseer, 1996. 
-
-[11] D. Anguita, A. Ghio, L. Oneto, X. Parra, and J. L. Reyes-Ortiz, “A public domain dataset for human activity recognition using smartphones.” in Esann, 2013. 
-
-[12] S. Feng, F. Farha, Q. Li, Y. Wan, Y. Xu, T. Zhang, and H. Ning, “Review on smart gas sensing technology,” Sensors, vol. 19, no. 17, p. 3760, 2019. 
-
-[13] P. Cortez, A. Cerdeira, F. Almeida, T. Matos, and J. Reis, “Modeling wine preferences by data mining from physicochemical properties,” Decision Support Systems, vol. 47, no. 4, pp. 547–553, 2009. 
-
-[14] D. D. Weller, M. Hefenbrock, M. B. Tahoori, J. Aghassi-Hagmann,
-and M. Beigl, “Programmable neuromorphic circuit based on
-printed electrolyte-gated transistors,” in 2020 25th Asia and South
-Pacific Design Automation Conference (ASP-DAC), 2020, pp. 446–451
-
-[15] Douthwaite, M., García-Redondo, F., Georgiou, P., & Das, S. (2019, October). A time-domain current-mode mac engine for analogue neural networks in flexible electronics. In 2019 IEEE Biomedical Circuits and Systems Conference (BioCAS) (pp. 1-4). IEEE.
-
-[16] H. Ling, D. A. Koutsouras, S. Kazemzadeh, Y. van de Burgt, F. Yan, and P. Gkoupidenis, “Electrolyte-gated transistors for synaptic electronics, neuromorphic computing, and adaptable biointerfacing,” Applied Physics Reviews, vol. 7, no. 1, p. 011307, 2020. 
-
-[17] Ozer, E., Kufel, J., Biggs, J., Brown, G., Myers, J., Rana, A., ... & Ramsdale, C. (2019, July). Bespoke machine learning processor development framework on flexible substrates. In 2019 IEEE international conference on flexible and printable sensors and systems (FLEPS) (pp. 1-3). IEEE.
-
-[18] Bleier, N., Mubarik, M. H., Rasheed, F., Aghassi-Hagmann, J., Tahoori, M. B., & Kumar, R. (2020, May). Printed microprocessors. In 2020 ACM/IEEE 47th Annual International Symposium on Computer Architecture (ISCA) (pp. 213-226). IEEE.
-
-[19] D. D. Weller, N. Bleier, M. Hefenbrock, J. Aghassi-Hagmann,
-M. Beigl, R. Kumar, and M. B. Tahoori, “Printed stochastic com-
-puting neural networks,” in Design, Automation Test in Europe
-Conference Exhibition (DATE), 2021, pp. 914–919.
-
-[20] M. H. Mubarik, D. D. Weller, N. Bleier, M. Tomei, J. Aghassi-
-Hagmann, M. B. Tahoori, and R. Kumar, “Printed machine learn-
-ing classifiers,” in Annu. Int. Symp. Microarchitecture (MICRO),
-2020, pp. 73–87
-
-[21] G. Armeniakos, G. Zervakis, D. Soudris, M. B. Tahoori, and
-J. Henkel, “Cross-Layer Approximation For Printed Machine
-Learning Circuits,” in Design, Automation Test in Europe Conference
-& Exhibition (DATE), 2022, [Online]. Available: https://arxiv.org/
-abs/2203.05915
-
-[22] Sze, V., Chen, Y.H.H., Yang, T.J.J., Emer, J.S., 2017. Efficient Processing of Deep Neural Networks: A Tutorial and Survey. Proceedings of the IEEE 105, 2295–2329.
-
-[23] Courbariaux, M., Hubara, I., Soudry, D., El-Yaniv, R., Bengio, Y.: 2016, Binarized neural networks: Training deep neural networks with weights and activations constrained to+ 1 or-1. arXiv preprint arXiv:1602.02830. Darabi, S., Belbahri, M., Courbariaux, M., Nia, V.P.: 2018, Regularized binary network training. arXiv preprint
-
-[24] Kim, M., Smaragdis, P.: 2016, Bitwise neural networks. arXiv preprint arXiv:1601.06071.
-
-[25] IDTechEx, Flexible & Printed Electronics 2023-2033: Forecasts, Technologies, Markets. 2023

@@ -1,4 +1,5 @@
 ---
+link-citations: true
 numbersections: true
 header-includes:
  - \usepackage{fvextra}

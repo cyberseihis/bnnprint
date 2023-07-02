@@ -19,6 +19,66 @@ header-includes:
 
 # Introduction
 
+## Introduction to ubiquitous computing
+
+Technology in general and more specifically computation plays an ever
+increasing part in our lives and there are no signs of the trend slowing
+down any time soon. There still however exists a relatively rigid real
+world - computational domain gap, meaning most of of our interactions of
+the world around us don't involve any computation taking place. It is
+not hard to imagine countless examples where computational elements
+would add value to everyday activities such as grocery shopping or
+reduce required labour in production processes such as manufacturing if
+those elements had close to zero cost and greater embedability
+associated with them. Although almost everyone in developed countries
+carries and interacts with powerful computers everywhere they happen to
+be, the form of interaction cannot easily adapt to the surrounding
+context they are in. One cannot simply ask the bananas they got if they
+are ripe enough, call out to their keys to find where they left them,
+check with their shoes on how many more steps they got in them.
+Furthermore it is clear that uncountable processes are horribly
+unoptimised compared to what could be achieved if a continuous stream of
+detailed information from each of of it's constituents and access to
+fine grained control over the minutia of them was in place. Think for
+example a farm where every individual fruit on any tree has it's growth
+progress tracked.
+Essentially taking the ideas of the Internet-of-Things(IoT) and pushing
+them to their logical limit, ubiquitous computing is an aspirational
+ideal to a future where every product is a smart device, every
+observable anyone would reasonably care for is accessible. Self driving
+cars will be able to safely navigate without access to vision by
+querying the positions of nearby devices, since whatever is not a
+device directly at least has one or more attached.
+
+Printed electronics are positioned to play a major role in at the very
+least the early stages of such a transformation. Printing is currently
+the only manufacturing method that can provide sub-cent computational
+elements, and cost is the greatest bottleneck to how pervasive they can
+become. Additionally the non-toxicity is crucial to make adding them to
+fast moving consumer goods that are disposable at these scales. The
+flexibility also helps with embedding more easily.  Even relatively
+"modest" compared to the complete vision applications that we can expect
+to come eventually, such as RFID tags replacing barcodes and enabling
+stores to track every individual item of stock or printed food quality
+sensors making best-before dates obsolete have great potential to
+disrupt a wide range of industries.
+
+Machine learning can accelerate the process by many orders of magnitude
+compared to how long it would take for specialised people in multiple
+fields to design a computational model to interpret and process the
+sensor data. In many cases the upfront engineering cost would be enough
+to stop the adoption of the paradigm altogether. If all it takes is for
+some sensor data to be collected and labeled that can easily be handled
+by any employee. We also depend on autoML being good enough for most of
+these small scale data applications, since otherwise we would just run
+into the same bottleneck with needing a data scientist for every little
+thing. Methods to lighten the resources demanded of the printed system
+that implements the model, such as quantization and binarization can
+clearly expand the scope of how complex the classification supported can
+be.
+
+\newpage
+
 ## Intro to printed electronics
 
 Printed electronics refers to very thin electronic devices and circuits
@@ -36,19 +96,249 @@ compete with silicon electronics in performance due to the large
 resistance of conductive inks, the lack of support for high frequency
 and the  high variability in manufacturing. While the ability to cover
 large areas is sometimes desirable, a lot of applications demand
-miniaturization that they cannot offer. A variety of active and passive
-devices, including transistors, resistors, capacitors, sensors,
-harvesters and antennas can be implemented with them. They are thought
-to be an emerging market with considerable potential to broaden the role
-of computation in everyday living. They can help the pervasiveness of
-the Internet-of-Things reach far deeper, and thus synergize well with
-other advances in the sector. A recent report by IDTechEx[@fn25]
-forecasts the global market for printed flexible electronics, excluding
-OLEDs, to reach 12 billion dollars by 2033.
+miniaturization that they cannot offer. Feature sizes in printed
+computational elements are six orders of magnitudes larger than
+conventional electronics. A variety of active and passive devices,
+including transistors, resistors, capacitors, sensors, harvesters and
+antennas can be implemented with them. They are thought to be an
+emerging market with considerable potential to broaden the role of
+computation in everyday living. They can help the pervasiveness of
+computation reach far deeper, and thus synergize well with other
+advances in the sector. A recent report by IDTechEx[@fn25] forecasts the
+global market for printed flexible electronics, excluding OLEDs, to
+reach 12 billion dollars by 2033.
 
-![Source: https://doi.org/10.1109/ISCAS.2017.8050614](../../../Downloads/picdump/additivemanufacturing.png)
+![Comparison of subtractive electronics manufacturing to purely additive fabrication. The cost benefits of the much simpler additive procedure should be clear. Source: https://doi.org/10.1109/ISCAS.2017.8050614](../../../Downloads/picdump/additivemanufacturing.png)
 
-![Source: Precedence Research](../../../Downloads/moneyprinters.jpg)
+![Projection of printed electronics market size. Source: Precedence Research](../../../Downloads/moneyprinters.jpg)
+
+### Uses of printed electronics
+
+The usage of printed electronics most people may be familiar with
+in their everyday lives is the membrane used to detect key presses in most
+non-mechanical keyboards, or perhaps windshield defrosters.
+
+Other usages include:
+
+- Sensors: flexible, biodegradable and stretchable sensing elements
+enable the efficient monitoring of many processes. A variety of
+properties of the world can be measured by printed sensors, including
+temperature, touch, strain, gasses, humidity, light levels and
+presence of certain chemicals. The flexibility and
+non-toxicity is especially relevant for medical monitoring, so
+biosensors have received a lot of attention, with some (for example
+,printed seizure detecting patches) already commercially available.
+
+- RFID: RFID (Radio Frequency Identification) is a wireless technology
+reader, enabling seamless object identification and tracking through
+unique identification codes stored in the tags. The goal of printed RFID
+is to replace current methods for identifying goods with smart labels.
+RFID tags are usually passive and don't require a power supply. They can
+be cheaply made with any common printing method. They have been shown to
+operate on 5G and WLAN frequencies, and can even have sensor
+capabilities. Currently mostly used in ticket fares and
+anti-shoplifting.
+
+- Energy harvesting: Printed batteries can only provide power to the
+functional parts of printed circuits for a limited time, and can take up
+a significant portion of the circuit's area. In order to enable greater
+autonomy to deployed printed electronics the ability to harvest energy
+from the environment is crucial. Printed harvesters can draw power from
+radio signals, vibrations and most commonly, light. Printed photoelectric/solar cells have also drawn a lot of interest outside the realm of
+harvesters for small circuits, since while their performance doesn't
+reach the levels of rigid silicon solar cells they can be deployed in
+a wider selection of spaces, including wearables.
+- Lighting: LEDs have become the predominant light source, in place of
+  the energy wasteful incadecent lamps and the environmental minefields
+  of fluorescent lighting. OLEDs further increase the energy savings
+  and produce softer and more uniform lighting. Printing seems like a
+  promising solution for low cost manufacturing of OLEDs with
+  competitive luminous efficiency and enable them to cover large areas.
+  Paper thin light panels have been demonstrated that way.
+- Displays: Displays are one of the more mature aspects of printed
+electronics, with large 4K printed OLED displays are commercially 
+available. They enable flexible displays, that have many applications in
+consumer electronics and wearables and thus are a 5 billion dollar
+market. Even if the flexible display is not fully printed, printed
+electronics can offer it additional features. QLED displays may also one
+day be printed if printing accuracy keeps increasing.
+- Wearables: Wearable electronic devices are already very popular, such
+  as smart watches or hearing aids, or NFC rings. Printed electronics
+  have much to offer to the space thanks to their flexibility.
+  Conductive materials have been developed that can
+  be printed on fabric and withstand washing with detergent, allowing
+  electronics to be embedded in regular pieces of clothing. Printed
+  sensors can be used for activity tracking, one of the most popular
+  features of today's smartwatches, or health monitoring, with printed
+  patches for seizure detection already on the market. One can also
+  imagine they would be of interest to the fashion industry.
+
+![Printed NFC demontration. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printednfc.jpg)
+
+![Printed circuit on the membrane of a common keyboard. Source: Paulo Maluf](../../../Downloads/membranekeyboard.jpeg)
+
+\newpage
+
+## TinyML
+Edge computing enables applications where data processing is location
+sensitive. It provides greater security, privacy and availability
+guarantees to the end users. It is a fundamental component of the IoT
+market, that can reduce the dependence on cloud systems. The main
+bottleneck to it's adoption spread are the resource constraints it
+imposes.  
+
+To deal with the demand of running machine learning
+applications on the edge for intelligent devices, traditional
+architectures are too bloated to make the cut. Many models nowadays
+demand computing capabilities out of reach for even the most high-end
+consumer hardware, let alone low power devices. TinyML is the field of
+optimising machine learning architectures to run on ultra resource
+constrained systems, typically no more than a few milliwatts.  
+
+Multidisciplinary work is demanded for this undertaking, as both the ML
+algorithms, the software and the hardware that supports them must
+accommodate these constraints while not compromising the accuracy of the
+models to a significant degree. Roughly the constraints at play are
+energy efficiency, processing capacity, memory space and production and
+engineering costs. It should be emphasised that the concern is with the
+inference step of ML although enabling the training phase on edge
+hardware is also it's own niche endeavor. 
+
+Some approaches to the problem include:
+
+- One of the most ubiquitous methods in the field is constrained neural
+architecture search (NAS). Neural architecture search examines a search
+space of different architectures for different hyperparameters. An
+algorithm tries to locate the best possible architecture to maximise
+model performance on the objective function. An evaluator examines the
+trade-offs between accuracy and efficiency on deployment, given
+declared constraints of memory, energy etc. It may consider one or many
+target models on a single or multiple platforms. Both the search space
+and the search algorithm are hardware-aware. It is a multi-objective
+optimisation problem that is usually implemented as a multi-stage
+single-objective optimisation problem. Running the search is very time
+consuming but results outperform most manually designed networks.
+
+- An obvious approach to handling the memory constraint issue is using
+data compression techniques on the ML model. A key approach that has
+demonstrated 15-40x compression factors are Kronecker Products (KP).
+Large accuracy penalties may occur however, and a method called doped
+Kronecker product (DKP) leverages co-matrix adaptation to try and remedy
+those.
+
+- Over-parameterization is the property of a neural network where
+  redundant neurons do not improve the accuracy of results. This
+  redundancy can often be removed with little or no accuracy loss.
+  Network pruning removes parameters that don't impact accuracy by a
+  large amount. A common case where this can easily be done is when
+  parameters are either zero or sufficiently close to it. It can be
+  applied at any granularity, from individual connections, neurons to
+  entire layers. When a pruning procedure results in the neural network
+  losing it's symmetrical structure it is referred to as unstructured
+  pruning, otherwise it is structured pruning. Unstructured pruning
+  results to sparse weight matrices that general processors do not
+  execute efficiently.  Retraining a network after pruning parameters
+  that weren't contributing enough can allow it to reach higher
+  accuracies than before. Even pruning a randomly initialised network
+  without training it before or after can result to a decent accuracy.
+
+- Knowledge distillation is a process of training a smaller, shallower
+student network to much the output logits of a larger, more capable
+teacher network that has been trained to satisfactory accuracy. More
+advanced variants include ensembles of small networks each trying to
+match the results of the congregated ensemble, or self-distillation in
+which shallower layers of a deep neural network try to learn to match
+the more complicated features of the deeper layers. If the size
+difference between the student and teacher networks is too large an
+intermediate size teacher assistant network gets the teacher's answers
+distilled into it and subsequently distills them to the student.
+
+- Quantization is the process of reducing the numerical precision of
+  values in the model. Networks are typically using 32 bit floating
+  point numbers during training[@fn22]. The most common quantization
+  targets for those are either 8-bit or 4-bit integers. In many cases
+  the network does not utilise this level of precision to it's full
+  extend. Reducing the precision in these cases can relieve the
+  computational burden associated with negligible accuracy sacrifices.
+  Quantization-aware training is a process in which the full precision
+  network is fine-tuned of retrained into the reduced form. It succeeded
+  quantizing the network only after the training process is completed.
+  When the method is pushed to the limit, precision is reduced down to 1
+  bit. Networks with a single bit of precision are called Binary Neural
+  Networks(BNNs).
+
+\newpage
+
+## Printed machine learning
+
+The most clearly desirable applications of computation to printed
+electronics in the domain of ubiquitous computing center around some
+form of classification or another. For every printed circuit that
+includes one or more sensors a system to interpret the outputs of that
+sensor to a useable format is required, barring trivial cases.
+
+Creating hand-designed computational models for every combination of
+sensors and usecase they are included in and designing efficient
+hardware designs to support each one would take a monumental sum of
+man-hours. Machine learning provides a common medium to both create
+models for predicting and architectures to implement in circuits a vast
+array of these applications. There are clear incentives then to provide
+those mediums.
+
+The difficulties in this undertaking all stem from the extreme resource
+constraints given from the feature sizes and energy demands of printed
+electronics. To overcome these barriers the entire process, from
+selecting the right general architectures to only keeping the
+absolutely necessary hardware elements at the resulting circuits must be
+optimised for this aim.
+
+Beyond bringing the area of the circuit to a reasonable size, a big
+factor that prevents the usability of some implementations is that no
+printed battery can support their power draw. We can therefore not get
+them running inference in the wild. The power output of these batteries
+is a hard limit that must be reached or printed ML is purely
+theoretical. In this work the most permissive battery, from Molex, which
+can support circuits with up to 30mW of power, is targeted.
+
+\newpage
+
+## Thesis objective
+
+The concept of this thesis is taking place in a ubiquitous computing
+scenario. I have insured that the entire process from dataset to netlist
+that can be passed to the printer requires no manual intervention.
+Anyone can pass their sensor data in one end and receive measurements
+for the model accuracy, circuit area and power requirements on the
+other, without special knowledge on any domain being required of
+them. This is specifically done utilising bespoke implementations of
+binary neural networks, in order to evaluate their efficacy in
+providing a backbone for this process.
+
+Imagine if you will the scenario of a coffee shop owner. They decide
+they would like the glasses they serve their coffee in to indicate the
+amount of sugar or other sweeteners used in the contained beverage.
+This would prevent people from grabbing the wrong coffee from the table
+because they all look indistinguishable. After searching on an online
+repository for what sensor would be of any use here, they order a few
+sample sheets of these printed sensors and a small gadget that clips on
+the sheet and records the measurements of the sensors. After dipping
+them on a dozen coffees with different mixtures of sweeteners inside,
+they plug the gadget to their computer and get a spreadsheet of sensor
+values for each dipping session. They simply append the label they
+decided each sweetener level corresponds to and pass the spreadsheet to
+the system. They decide that the reported accuracy and area are
+manageable order the resulting circuit to be printed on a batch of
+flexible patches they can stick to the inside of the glasses.
+
+Various architectures have been evaluated for such a framework. This
+work adds Binary Neural Networks(BNNs) to the list of of approaches for
+printed ML inference. BNNs are networks quantised to the absolute limit
+of 1 bit. They are designed specifically to minimise compute resources
+as much as possible and thus are a prime candidate to bring ever more
+classifiers under the implementation threshold of printed electronics.
+The great bulk of this thesis is dedicated to examining efficient
+bespoke hardware implementations for BNNs to fit in the constraints of
+the technology.
 
 \newpage
 
@@ -155,160 +445,11 @@ traditional ML architectures this work is placed in.
 
 \newpage
 
-# Introduction to ubiquitous computing and thesis statement
-
-Technology in general and more specifically computation plays an ever
-increasing part in our lives and there are no signs of the trend slowing
-down any time soon. There still however exists a relatively rigid real
-world - computational domain gap, meaning most of of our interactions of
-the world around us don't involve any computation taking place. It is
-not hard to imagine countless examples where computational elements
-would add value to everyday activities such as grocery shopping or
-reduce required labour in production processes such as manufacturing if
-those elements had close to zero cost and greater embedability
-associated with them. Although almost everyone in developed countries
-carries and interacts with powerful computers everywhere they happen to
-be, the form of interaction cannot easily adapt to the surrounding
-context they are in. One cannot simply ask the bananas they got if they
-are ripe enough, call out to their keys to find where they left them,
-check with their shoes on how many more steps they got in them.
-Furthermore it is clear that uncountable processes are horribly
-unoptimised compared to what could be achieved if a continuous stream of
-detailed information from each of of it's constituents and access to
-fine grained control over the minutia of them was in place. Think for
-example a farm where every individual fruit on any tree has it's growth
-progress tracked.
-Essentially taking the ideas of the Internet-of-Things(IoT) and pushing
-them to their logical limit, ubiquitous computing is an aspirational
-ideal to a future where every product is a smart device, every
-observable anyone would reasonably care for is accessible. Self driving
-cars will be able to safely navigate without access to vision by
-querying the positions of nearby devices, since whatever is not a
-device directly at least has one or more attached.
-
-Printed electronics are positioned to play a major role in at the very
-least the early stages of such a transformation. Printing is currently
-the only manufacturing method that can provide sub-cent computational
-elements, and cost is the greatest bottleneck to how pervasive they can
-become. Additionally the non-toxicity is crucial to make adding them to
-fast moving consumer goods that are disposable at these scales. The
-flexibility also helps with embedding more easily.  Even relatively
-"modest" compared to the complete vision applications that we can expect
-to come eventually, such as RFID tags replacing barcodes and enabling
-stores to track every individual item of stock or printed food quality
-sensors making best-before dates obsolete have great potential to
-disrupt a wide range of industries.
-
-Machine learning can accelerate the process by many orders of magnitude
-compared to how long it would take for specialised people in multiple fields to
-design a computational model to interpret and process the sensor data. In many
-cases the upfront engineering cost would be enough to stop the adoption of the
-paradigm altogether. If all it takes is for some sensor data to be collected
-and labeled that can easily be handled by any employee. We also depend on
-autoML being good enough for most of these small scale data applications, since
-otherwise we would just run into the same bottleneck with needing a data
-scientist for every little thing. Methods to lighten the resources demanded of
-the printed system that implements the model, such as quantization and
-binarization can clearly expand the scope of how complex the classification
-supported can be.
-
-The concept of this thesis is taking place in such a scenario. I have
-insured that the entire process from dataset to netlist that can be passed to
-the printer requires no manual intervention. Anyone can pass their
-sensor data in one end and receive measurements for the model accuracy,
-circuit area and power requirements on the other, without special
-knowledge on any domain being required of them. This is specifically
-done utilising bespoke implementations of binary neural networks, in order
-to evaluate their efficacy in providing a backbone for this process.
-
-Imagine if you will the scenario of a coffee shop owner. They decide
-they would like the glasses they serve their coffee in to indicate the
-amount of sugar or other sweeteners used in the contained beverage.
-This would prevent people from grabbing the wrong coffee from the table
-because they all look indistinguishable. After searching on an online
-repository for what sensor would be of any use here, they order a few
-sample sheets of these printed sensors and a small gadget that clips on
-the sheet and records the measurements of the sensors. After dipping
-them on a dozen coffees with different mixtures of sweeteners inside,
-they plug the gadget to their computer and get a spreadsheet of sensor
-values for each dipping session. They simply append the label they
-decided each sweetener level corresponds to and pass the spreadsheet to
-the system. They decide that the reported accuracy and area are
-manageable order the resulting circuit to be printed on a batch of
-flexible patches they can stick to the inside of the glasses.
-
-\newpage
-
 # Background information - Prerequisites
 
-## Uses of printed electronics
+## Printed electronics technical details
 
-The usage of printed electronics most people may be familiar with
-in their everyday lives is the membrane used to detect key presses in most
-non-mechanical keyboards, or perhaps windshield defrosters.
-
-Other usages include:
-
-- Sensors: flexible, biodegradable and stretchable sensing elements
-enable the efficient monitoring of many processes. A variety of
-properties of the world can be measured by printed sensors, including
-temperature, touch, strain, gasses, humidity, light levels and
-presence of certain chemicals. The flexibility and
-non-toxicity is especially relevant for medical monitoring, so
-biosensors have received a lot of attention, with some (for example
-,printed seizure detecting patches) already commercially available.
-
-- RFID: RFID (Radio Frequency Identification) is a wireless technology
-reader, enabling seamless object identification and tracking through
-unique identification codes stored in the tags. The goal of printed RFID
-is to replace current methods for identifying goods with smart labels.
-RFID tags are usually passive and don't require a power supply. They can
-be cheaply made with any common printing method. They have been shown to
-operate on 5G and WLAN frequencies, and can even have sensor
-capabilities. Currently mostly used in ticket fares and
-anti-shoplifting.
-
-- Energy harvesting: Printed batteries can only provide power to the
-functional parts of printed circuits for a limited time, and can take up
-a significant portion of the circuit's area. In order to enable greater
-autonomy to deployed printed electronics the ability to harvest energy
-from the environment is crucial. Printed harvesters can draw power from
-radio signals, vibrations and most commonly, light. Printed photoelectric/solar cells have also drawn a lot of interest outside the realm of
-harvesters for small circuits, since while their performance doesn't
-reach the levels of rigid silicon solar cells they can be deployed in
-a wider selection of spaces, including wearables.
-- Lighting: LEDs have become the predominant light source, in place of
-  the energy wasteful incadecent lamps and the environmental minefields
-  of fluorescent lighting. OLEDs further increase the energy savings
-  and produce softer and more uniform lighting. Printing seems like a
-  promising solution for low cost manufacturing of OLEDs with
-  competitive luminous efficiency and enable them to cover large areas.
-  Paper thin light panels have been demonstrated that way.
-- Displays: Displays are one of the more mature aspects of printed
-electronics, with large 4K printed OLED displays are commercially 
-available. They enable flexible displays, that have many applications in
-consumer electronics and wearables and thus are a 5 billion dollar
-market. Even if the flexible display is not fully printed, printed
-electronics can offer it additional features. QLED displays may also one
-day be printed if printing accuracy keeps increasing.
-- Wearables: Wearable electronic devices are already very popular, such
-  as smart watches or hearing aids, or NFC rings. Printed electronics
-  have much to offer to the space thanks to their flexibility.
-  Conductive materials have been developed that can
-  be printed on fabric and withstand washing with detergent, allowing
-  electronics to be embedded in regular pieces of clothing. Printed
-  sensors can be used for activity tracking, one of the most popular
-  features of today's smartwatches, or health monitoring, with printed
-  patches for seizure detection already on the market. One can also
-  imagine they would be of interest to the fashion industry.
-
-![Printed NFC demontration. Source: PRINTED ELECTRONICS LTD](../../../Downloads/printednfc.jpg)
-
-![Printed circuit on the membrane of a common keyboard. Source: Paulo Maluf](../../../Downloads/membranekeyboard.jpeg)
-
-\newpage
-
-## Manufacturing methods
+### Manufacturing methods for printed electronics
 
 Printed electronics are manufactured using techniques from the graphic
 print industry. They are split into contact or R2R printing techniques
@@ -374,7 +515,7 @@ printing methods and thus less relevant.
 
 \newpage
 
-## Inks
+### Materials for printed electronics
 In order to implement functional circuits inks with conducting,
 semiconducting and dielectric properties are needed. They usually
 consist of nanoparticles of materials with these properties mixed with
@@ -402,164 +543,24 @@ conducting and semiconducting layers in order for charge not to leak
 through it. Substrate materials, ceramic oxides and polymers can be
 used as the active ingredient.
 
-<!-- ![](../../../Downloads/semiconductingink.jpeg) -->
+### EGFET
 
-<!-- ![](../../../Downloads/conductivepen.jpeg){width=33%} -->
-<!-- ![](../../../Downloads/conductivepen2.jpg){width=33%} -->
+This work is built upon the Process Design Kit(PDK) for
+Electrolyte-Gated oxide Field Effect Transistors(EGFET)[@egfet]. EGFET
+uses solid polymer electrolytes to gate the transistors in place of
+dielectrics. Specifically indium oxide is used for this purpose. They
+can be operated at up to 250 Hz at 1V.
 
-\newpage
-
-
-## TinyML
-Edge computing enables applications where data processing is location
-sensitive. It provides greater security, privacy and availability
-guarantees to the end users. It is a fundamental component of the IoT
-market, that can reduce the dependance on cloud systems. The main
-bottleneck to it's addoption spread are the resource contstraints it
-imposes.  
-
-To deal with the demand of running machine learning
-applications on the edge for inteligent devices, traditional
-architectures are too bloated to make the cut. Many models nowadays
-demand computing capabilities out of reach for even the most high-end
-consumer hardware, let alone low power devices. TinyML is the field of
-optimising machine learning architectures to run on ultra resource
-constrained systems, typically no more than a few milliwatts.  
-
-Multidisciplinary work is demanded for this undertaking, as both the ML
-algorithms, the software and the hardware that supports them must
-accomodate these constraints while not compromising the accuracy of the
-models to a significant degree. Roughly the constraints at play are
-energy efficiency, processing capacity, memory space and production and
-engineering costs. It should be emphasised that the concern is with the
-inference step of ML although enabling the training phase on edge
-hardware is also it's own niche endeavor. 
-
-Since pretrained ML models cannot be run on these terms by default,
-end to end pipelines are required from data acquisition to inference,
-giving rise to the field of TinyML-as-a-Service or TinyMaaS. Special
-precausions must be taken at every intermediate step to lead to a
-runtime model lightweight enough.  
-
-Some approaches to the problem include:
-
-- An alternative to common ML models that can function at lower energy
-budgets is Hyperdimensional computing (HDC). In this paradigm. It
-leverages the propery of high-dimentional spaces that randomly sampled
-vectors are almost certainly close to orthogonal to each other to
-represent classes and features as ensembles of hypervectors. Samples are
-mapped to querry hypervectors during inference, which are then compared
-to the class encoders and the most similar is declared as the predicted
-class. Vectors usually have binary elements of 1 or -1 to reduce
-requirements. It can handle noisy and/or incomplete data, which is a big
-plus. Unfortunately the count of dimensions needed for many problems are
-so large we cannot make savings by this method. 
-\newpage
-
-- One of the most ubiquitous methods in the field is constrained neural
-architecture search (NAS). Neural architecture search examines a search
-space of different architectures for different hyperparameters. An
-algorithm tries to locate the best possible architecture to maximise
-model performance on the objective function. An evaluator examines the
-trade-offs between accuracy and efficiency on deployement, given
-declared constraints of memory, energy etc. It may consider one or many
-target models on a single or multiple platforms. Both the search space
-and the search algorithm are hardware-aware. It is a multi-objective
-optimisation problem that is usually implemented as a multi-stage
-single-objective optimisation problem. Running the search is very time
-consuming but results outperform most manually designed networks.
-
-- An obvious approach to handling the memory constraint issue is using
-data compression techniques on the ML model. A key approach that has
-demonstrated 15-40x compression factors are Kronecker Products (KP).
-Large accuracy penalties may occur however, and a method called doped
-Kronecker product (DKP) leverages co-matrix adaptation to try and remedy
-those.
-
-- Once-for-all network is the name of a method for decoupling the
-architecture search from model training. OFA can find specialised
-subnetworks that largely maintain the accuracy of the full accuracy
-larger model without the need for training. A recent progressive
-shrinking algorithm (PSA) reduces depth and width of layers while
-retaining a higher final accuracy than equivalent general pruning.
-
-<!-- ![](../../../Downloads/tinymldiagram.jpeg){width=50%} -->
-<!-- ![](../../../Downloads/iotl.png){width=50%} -->
-
-\newpage
-
-- Over-parameterization is the property of a neural network where
-redundant neurons do not improve the accuracy of results. This
-redundancy can often be removed with little or no accuracy loss. Fully
-connected deep neural networks require N^2 connections between neurons.
-Network pruning removes parameters that don't impact accuracy by a large
-amount. A common case where this can easily be done is when parameters
-are either zero or sufficiently close to it. Similarly when the
-parameter values are redundantly duplicated. It can be applied at any
-granularity, from individual connections, neurons to entire layers. When
-a pruning procedure results in the neural network losing it's
-symmetrical structure it is referred to as unstructured pruning,
-otherwise it is structured pruning. Unstructured pruning results to
-sparse weight matrices that general processors do not execute
-efficiently.  Retraining a network after pruning parameters that weren't
-contributing enough can allow it to reach higher accuracies than before.
-Even pruning a randomly initialised network without training it before
-or after can result to a decent accuracy. Pruning is split into static
-pruning and dynamic pruning. Static pruning removes neurons between the
-training and inference stages, while in dynamic pruning it happens
-during the runtime. Usually all of the model's weights are available in
-runtime and a controller conditionally includes or excludes parts of the
-network from the computation based on detecting certain feature
-patterns. This controller is often also a trained machine learning
-model. Criteria for which elements to prune include brute-force pruning,
-where the entire model is searched element by element to find ones that
-don't affect the outcome. Norms of weight vectors may be used to prune
-neurons, in particular the popular L1 norm in the LASSO method. Optimal
-Brain Damage uses the second derivative or Hessian matrix of the loss
-function to locate unneeded weights and was succeeded by the similar
-Optimal Brain Surgeon. Calculating these derivatives is too
-computationally expensive to be applied to larger networks. Average
-Percentage Of Zeros is a method to judge if the outputs of a neuron are
-usually contibuting to the result. Penalty based pruning introduces
-constraints during training to result to more weights being near zero so
-they can be pruned. Feature selection removes input features of the
-model that are not utilised sufficiently. It prevents overfitting and
-accelerates training. Another method clusters hidden features of a layer
-and removes those that are close enough to be reduntant. Iteratively
-pruning a network then retraining it with only the remaining elements
-allows to remove a much larger percentage of parameters without damaging
-performance. Knowledge distillation with the original network as the
-teacher and the pruned network as student can be used to recover lost
-accuracy.
-
-<!-- ![](../../../Downloads/distillcartoon.png) -->
-<!-- ![](../../../Downloads/pruninpng.png) -->
-
-- Knowledge distillation is a process of training a smaller, shallower
-student network to much the output logits of a larger, more capable
-teacher network that has been trained to satisfactory accuracy. More
-advanced variants include ensembles of small networks each trying to
-match the results of the congregated ensemble, or self-distillation in
-which shallower layers of a deep neural network try to learn to match
-the more complicated features of the deeper layers. If the size
-difference between the student and teacher networks is too large an
-intermediate size teacher assistant network gets the teacher's answers
-distilled into it and subsequently distills them to the student.
-
-- Quantization is the process of reducing the numerical precision of
-  values in the model. Networks are typically using 32 bit floating
-  point numbers during training[@fn22]. The most common quantization
-  targets for those are either 8-bit or 4-bit integers. In many cases
-  the network does not utilise this level of precision to it's full
-  extend. Reducing the precision in these cases can relieve the
-  computational burden associated with negligible accuracy sacrifices.
-  Quantization-aware training is a process in which the full precision
-  network is fine-tuned of retrained into the reduced form. It succeeded
-  quantizing the network only after the training process is completed.
-  When the method is pushed to the limit, precision is reduced down to 1
-  bit. Networks with a single bit of precision are called Binary Neural
-  Networks(BNNs).
-
+The main advantage of EGFETs compared to organic transistors is that
+they can be driven at very low voltages, down to 0.6V. This is crucial
+for meeting the constraints imposed by the printed batteries available.
+The area they cover is however significantly larger(10-100x) that of
+organic transistors such as CNT-TFT[@cnttft]. As an example a single
+SR-latch based on EGFET takes up 7mm$^2$.
+Another difference of electrolyte-gated transistors with their organic
+counterparts is that in EGFET only n-type transistors are implementable,
+whereas in CNT only p-types are possible. Neither supports both so CMOS
+gates cannot be used in printed circuits.
 
 \newpage
 
@@ -580,6 +581,14 @@ computation costs are significantly dropped too since the
 multiply-accumulate(MAC) operations can be carried out by XNOR and
 popcount operations. This can lead to up to a $58\times$ improvement in
 speed.
+
+BNNs can therefore enable the implementation of neural networks in
+resource constrained environments. The trade-off is that both their
+representational capacity and corrigibility to training are inferior to
+higher precision networks, and so often they either cannot provide
+sufficient prediction accuracy or require a much higher count of neurons
+to achieve it, negating the previous gains. As a rule of thump 4
+binarised neurons are needed to match up to a unquantised one.
 
 During training, higher precision underlying weights are used to make learning more robust. In the forward propagation phase these more precise weights, $W$, and the activations from the previous layer $I$ are binarized using the sign function:
 
