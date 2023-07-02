@@ -218,3 +218,12 @@ winewhite_bnn1_bnnrospinor,    747786913,  0.0306
  pendigits_x_mlpc, 4600000000, 0.153
  winered_x_mlpc, 800000000, 0.027
  winewhite_x_mlpc,  1300000000,  0.042
+cardio_x_baseline,    3340000000  , 0.1242
+winered_x_baseline,   1760000000  , 0.0735 
+winewhite_x_baseline, 3120000000  , 0.1264
+cardio_x_crossax,     1700000000  , 0.0489
+winered_x_crossax,    800000000   , 0.0188
+winewhite_x_crossax,  1360000000  , 0.0432
+cardio_x_retrain,     610000000   , 0.0208
+winered_x_retrain,    110000000   , 0.0039 
+winewhite_x_retrain,  650000000   , 0.0213

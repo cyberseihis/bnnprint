@@ -503,7 +503,7 @@ The problem turns out considerable less well-studied than initially
 expected. While the deceptively simple description suggests a
 straightforward way to answer it, it is NP-Complete difficult, more
 specifically in the MaxSNP family of optimization problems. As a direct
-result only approximate solutions are attempted. [guy] searches for
+result only approximate solutions are attempted. [@guy] searches for
 exact solutions by leveraging SAT solvers, but only manages to get this
 to work for very small matrix sizes up to 8 x 8. Not much is else found
 on the exact scenario above, but a close-enough problem having to do
@@ -513,7 +513,7 @@ operations is actively worked on thanks to some applications in the
 field of cryptographic accelerators. Both belong to the shortest linear
 program family of problems.
 
-I choose to try utilising Paar's factoring algorithm [paar] first. It is
+I choose to try utilising Paar's factoring algorithm [@paar] first. It is
 older than most heuristics that have been applied to the XOR factoring
 problem, but has the advantage of not exploiting term cancellation.
 Thanks to the property $x \oplus x = 0$ some optimal solutions to the
@@ -686,9 +686,9 @@ raise the network size threshold for which results can be improved.
 
 \newpage
 
-# Sequential Evaluation of Layer Neurons
+# Sequential evaluation of layer neurons
 
-## Single Input, Per-Cycle Update
+## Single input per-cycle update
 
 ### Rationale
 
@@ -1176,14 +1176,16 @@ connect nested OR gates is removed. This trade-off allows to optimise
 for whichever of area and power is the largest bottleneck to the desired
 application.
 
-Importantly for our purposes, none of the models could be powered by a
-30mW BlueSpark using a conventional LUT for the weights. After
+Most importantly for our purposes, none of the models could be powered
+by a 30mW Molex battery using a conventional LUT for the weights. After
 implementing the LUT using tristate buffers, 5 out of the 6 can be
 powered by it. Although not coming cheaply in terms of area, the power
 savings were critical for overcoming this barrier.
 
 All in all compared to the fully parallel designs requirements are
-reduced $3-5\times$. This opens up the space of implementable applications. The relative savings would get considerably better for larger networks given the scaling observed.
+reduced $3-5\times$. This opens up the space of implementable
+applications. The relative savings would get considerably better for
+larger networks given the scaling observed.
 
 \begin{figure}
   \centering
@@ -1486,15 +1488,13 @@ nickname:
 
 Design nickname | Link to relevant description
 ---|---
-bnnpar| [Combinatorial fully connected implementations](#combinatorial-fully-connected-implementations)
 bnnpar| [Positive negative sum](#positive-negative-sum)
 bnnparsign| [Signed sum ](#signed-sum)
 bnnparw| [Minimum range bit width reduction](#minimum-range-bit-width-reduction)
-bnnparce| [Range centering](#range-centering)
 bnnparstepw| [Naively reducing bitwidths of intermediate results ](#naively-reducing-bitwidths-of-intermediate-results)
 bnnpaar| [Preemptive arithmetic optimization ](#preemptive-arithmetic-optimization)
 bnnpaarter| [Extension to support subtractions](#extension-to-support-subtractions)
-bnnseq| [Sequential evaluation](#sequential-evaluation)
+bnnseq| [Sequential evaluation](#sequential-evaluation-of-layer-neurons)
 bnndirect| [Removing the weight array](#removing-the-weight-array)
 bnndw| [Register width reduction ](#register-width-reduction)
 bnndsat| [Accumulator saturation ](#accumulator-saturation)
@@ -1520,6 +1520,14 @@ tnnparsign| [Ternary weight networks](#ternary-weight-networks)
 Table: Comparison of test split accuracies between the binary neural network models(BNN), ternary models(TNN),
 equivalant full precision networks and the multilayer perceptron classifiers evaluated in [@fn21](MLPC).
 
+As shown in the table above the binary and ternary networks achieve
+classification accuracies competitive with the ones by higher precision
+networks that have been implemented in printed electronics. This shows
+that the quality of their prediction should be acceptable for the
+applications they support. It should be noted that the number of neurons
+used by the BNNs and TNNs is about 10x the count of neurons of the
+higher precision networks in the comparison.
+
 ## Timing comparisons
 
 | dataset   |    combinatorial delay(ms) |    sequential delay(ms) |    sequential cycles |    total sequential delay(ms) |
@@ -1533,7 +1541,26 @@ equivalant full precision networks and the multilayer perceptron classifiers eva
 
 Table: Comparison of single cycle delay and total inference time between combinatorial and sequential implementations.
 
-## Against cross-layer
+As seen in the table above parallel designs can function at 3 to 7 Hz,
+whereas sequential designs can only run inference every 6 seconds or
+more. For certain applications such as wine quality estimation and gas
+identification this is quick enough to get the job done, but for example
+written digit identification has much faster changing inputs and this
+delay is not acceptable. So whether the delay sacrifice to enable area
+and power savings is worth it depends a lot on the specifics of the
+usecase.
+
+## Comparative Analysis: Cross-Layer Approximation For Printed Machine Learning Circuits [@fn21]
+
+The area and power demands of the final parallel and sequential designs
+are compared to the results achieved in [@fn21], described in the
+[Related works](#related-works-in-machine-learning-for-printed-circuits)
+section at the start, which is considered the starting point for this
+work.
+
+The edge in metrics is split across the datasets for the fully
+parallel designs. Some models perform better in one and some in the
+other. On average it I will call it a tie.
 
 |           |   mlpc area(cm²) |   tnnparsign area(cm²) | area change   |   mlpc power(mW) |   tnnparsign power(mW) | power change   |
 |:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
@@ -1542,7 +1569,15 @@ Table: Comparison of single cycle delay and total inference time between combina
 | winered   |                8 |                  11.78 | +47.2%        |               27 |                   40   | +48.1%         |
 | winewhite |               13 |                   9.53 | -26.7%        |               42 |                   32.8 | -21.9%         |
 
-![mlpc_tnnparsign](figs2/mlpc_tnnparsign.svg)
+Table: Comparison of final parallel designs with the results from [@fn21]
+
+![Comparison of final parallel designs with the results from [@fn21]](figs2/mlpc_tnnparsign.svg)
+
+Sequential designs take a clear lead in area and power, in the case of
+pendigits showing a 5x improvement. Unfortunately the time required to
+perform all the cycles of sequential inference makes the circuit too
+slow to be useable in cases such as pendigits, so this improvement has
+fallen to Goodhart's law.
 
 |           |   mlpc area(cm²) |   bnnrospine area(cm²) | area change   |   mlpc power(mW) |   bnnrospine power(mW) | power change   |
 |:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
@@ -1551,7 +1586,46 @@ Table: Comparison of single cycle delay and total inference time between combina
 | winered   |                8 |                   7.61 | -4.9%         |               27 |                   30.9 | +14.4%         |
 | winewhite |               13 |                   7.49 | -42.4%        |               42 |                   30.9 | -26.4%         |
 
-![mlpc_bnnrospine](figs2/mlpc_bnnrospine.svg)
+Table: Comparison of final sequential designs with the results from [@fn21]
+
+![Comparison of final sequential designs with the results from [@fn21]](figs2/mlpc_bnnrospine.svg)
+
+## Results comparison with relevant literature
+
+Here both the parallel and sequential designs are compared to further
+relevant works on printed networks that were described in 
+[Related works](#related-works-in-machine-learning-for-printed-circuits)
+. This includes both the initial bespoke networks from [@fn20] and
+improvements made to the results of [@fn21] that were compared to in
+greater detail above. This gives a sense of where this work is placed
+compared to the current state of the art.
+
+As it appears even with taking two orders of magnitude longer to
+compute the products of this work are not competitive with the state of
+the art results for the same datasets, in the case of redwine even being
+outdone by almost a factor of 10.
+
+|           |   baseline |   mlpc |   crossax |   retrain |   tnnparsign |   bnnrospine |
+|:----------|-----------:|-------:|----------:|----------:|-------------:|-------------:|
+| cardio    |       33.4 |     17 |      17   |       6.1 |         19.2 |          9.3 |
+| winered   |       17.6 |      8 |       8   |       1.1 |         11.8 |          7.6 |
+| winewhite |       31.2 |     13 |      13.6 |       6.5 |          9.5 |          7.5 |
+
+Table: Area comparison of the final parallel and sequential designs to the SOTA in printed MLPs.
+baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+|           |   baseline |   mlpc |   crossax |   retrain |   tnnparsign |   bnnrospine |
+|:----------|-----------:|-------:|----------:|----------:|-------------:|-------------:|
+| cardio    |      124.2 |     54 |      48.9 |      20.8 |         62.4 |         36   |
+| winered   |       73.5 |     27 |      18.8 |       3.9 |         40   |         30.9 |
+| winewhite |      126.4 |     42 |      43.2 |      21.3 |         32.8 |         30.9 |
+
+Table: Power comparison of the final parallel and sequential designs to the SOTA in printed MLPs.
+baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+![Area comparison to prior work](acom.svg)
+
+![Power comparison to prior work](pcom.svg)
 
 ## Combinatorial designs area comparisons
 
@@ -1568,7 +1642,8 @@ Table: Comparison of single cycle delay and total inference time between combina
 | bnnparce    | 24.99 |    34.84 |  181.82 |       35.74 |     20.76 |       20.48 |
 | bnnpaarter  | 18.73 |    35.97 |  261.38 |       32.22 |     17.47 |       16.65 |
 
-Table: What
+Table: Comparison of area requirements between the discussed fully
+parallel designs.
 
 ## Combinatorial designs power comparisons
 
@@ -1585,6 +1660,9 @@ Table: What
 | bnnparce    |  79   |    110.5 |   516.1 |       115.5 |      67.7 |        65.8 |
 | bnnpaarter  |  60.8 |    116   |   759.7 |       107.3 |      59.6 |        55.9 |
 
+Table: Comparison of power requirements between the discussed fully
+parallel designs.
+
 ## Sequential designs area comparisons
 
 ![](./seqarea.svg)
@@ -1599,6 +1677,9 @@ Table: What
 | bnndw      | 25.39 |    26.26 |   81.87 |       29.9  |     24.51 |       23.98 |
 | bnnrolin   |  8.29 |    10.85 |   38.54 |       10.37 |      8.04 |        8    |
 | bnnseq     | 29.55 |    31.47 |   47.67 |       34.71 |     29.57 |       29.75 |
+
+Table: Comparison of area requirements between the discussed
+sequential designs.
 
 ## Sequential designs power comparisons
 
@@ -1615,6 +1696,8 @@ Table: What
 | bnnrolin   |  36.3 |     45.6 |   131.3 |        42.6 |      35.7 |        34.9 |
 | bnnseq     | 132.7 |    143.1 |   216.8 |       139   |     131.7 |       128.6 |
 
+Table: Comparison of power requirements between the discussed 
+sequential designs.
 
 \newpage
 

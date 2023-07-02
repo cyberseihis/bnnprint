@@ -6,7 +6,7 @@ from matplotlib.lines import Line2D
 def build_dataframe(data):
     # Get the list of unique row and column indexes
     rows = list(set([i for i, _, _ in data]))
-    cols = list(set([j for _, j, _ in data]))
+    cols = list(dict.fromkeys([j for _, j, _ in data]))
     df = pd.DataFrame(index=rows, columns=cols)
     for i, j, v in data:
         df.loc[i, j] = v
