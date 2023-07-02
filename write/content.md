@@ -17,6 +17,30 @@ header-includes:
 
 \newpage
 
+# Abstract
+
+Printed electronics are an emerging technology that has the potential to
+enable pervasive computing in a great variety of consumer products,
+thanks to their sub-cent fabrication and flexible form factors. A lot of
+the envisioned applications they will support have to do with
+classifying the data gathered from printed sensors to derive a useful
+property about the object under measurement. Printed Machine
+Learning(ML) is deployed in order to perform these types of
+classifications from sensor data. Because printed electronics have far
+higher demands in area and power consumption compared to traditional
+electronics, these ML models must be executed in a very resource
+constrained environment. Thankfully the ease of manufacturing printed
+circuits using additive methods allows for hardware to be fully bespoke
+to the exact trained model it implements. This allows for resource
+requirements to shrink by many factors. This work evaluates the
+feasibility of deploying Binary Neural Network(BNN) architectures as
+printed classifiers, where BNNs are networks with weights and
+activations quantised to a single bit to reduce computational demands to
+the minimum, making them a good candidate architecture for the problem
+at hand.
+
+\newpage
+
 # Introduction
 
 ## Introduction to ubiquitous computing
@@ -2477,3 +2501,5 @@ The following graphs show the area and power measurements of the models reified 
 ![Effect of using tristate buffers for the weight memory](figs2/bnnrospine_bnnrobus.svg)
 
 \newpage
+
+# Bibliography
