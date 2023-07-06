@@ -1,0 +1,84 @@
+# Results
+
+The final parallel implementation will be refered to as *tnnparsign* and the final sequential implementation will be refered to as *bnnrospine*. Note that the design that was selected as the final sequential is the one without tristate buffers, because it has a better area / power balance.
+
+## Model predictive performance
+
+| Dataset     |    full precision |    BNN |    TNN |  MLPC   |
+|:------------|------------------:|-------:|-------:|:--------|
+| cardio      |                92 |     88 |     90 | 88      |
+| gasId       |                90 |     81 |     88 | -       |
+| Har         |                74 |     51 |     52 | -       |
+| pendigits   |                99 |     87 |     92 | 94      |
+| redwine     |                60 |     54 |     58 | 56      |
+| whitewine   |                57 |     51 |     50 | 54      |
+
+Table: Comparison of test split accuracies between the binary neural network models(BNN), ternary models(TNN), equivalant full precision networks and the multilayer perceptron classifiers evaluated in [@fn21](MLPC).
+
+As shown in the table above the binary and ternary networks achieve classification accuracies competitive with the ones by higher precision networks that have been implemented in printed electronics. This shows that the quality of their prediction should be acceptable for the applications they support. It should be noted that the number of neurons used by the BNNs and TNNs is about 10x the count of neurons of the higher precision networks in the comparison.
+
+## Delay of combinatorial and sequential designs
+
+| dataset   |    combinatorial delay(ms) |    sequential delay(ms) |    sequential cycles |    total sequential delay(ms) |
+|:----------|---------------------------:|------------------------:|---------------------:|------------------------------:|
+| cardio    |                        142 |                     147 |                   43 |                          6321 |
+| gasId     |                        260 |                     181 |                   46 |                          8326 |
+| Har       |                        165 |                     135 |                   46 |                          6210 |
+| pendigits |                        309 |                     147 |                   50 |                          7350 |
+| winered   |                        160 |                     138 |                   46 |                          6348 |
+| winewhite |                        143 |                     129 |                   47 |                          6063 |
+
+Table: Comparison of single cycle delay and total inference time between combinatorial and sequential implementations.
+
+As seen in the table above parallel designs can function at 3 to 7 Hz, whereas sequential designs can only run inference every 6 seconds or more. For certain applications such as wine quality estimation and gas identification this is quick enough to get the job done, but for example written digit identification has much faster changing inputs and this delay is not acceptable. So whether the delay sacrifice to enable area and power savings is worth it depends a lot on the specifics of the usecase.
+
+## Comparative analysis: Cross-Layer Approximation For Printed Machine Learning Circuits [@fn21]
+
+The area and power demands of the final parallel and sequential designs are compared to the results achieved in [@fn21], described in the [Related works](#related-works-in-machine-learning-for-printed-circuits) section at the start, which is considered the starting point for this work.
+
+The edge in metrics is split across the datasets for the fully parallel designs. Some models perform better in one and some in the other. On average it I will call it a tie.
+
+|           |   mlpc area(cm²) |   tnnparsign area(cm²) | area change   |   mlpc power(mW) |   tnnparsign power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                  19.21 | +13.0%        |               54 |                   62.4 | +15.6%         |
+| pendigits |               46 |                  29.43 | -36.0%        |              153 |                   95.8 | -37.4%         |
+| winered   |                8 |                  11.78 | +47.2%        |               27 |                   40   | +48.1%         |
+| winewhite |               13 |                   9.53 | -26.7%        |               42 |                   32.8 | -21.9%         |
+
+Table: Comparison of final parallel designs with the results from [@fn21]
+
+![Comparison of final parallel designs with the results from [@fn21]](figs2/mlpc_tnnparsign.svg)
+
+Sequential designs take a clear lead in area and power, in the case of pendigits showing a 5x improvement. Unfortunately the time required to perform all the cycles of sequential inference makes the circuit too slow to be useable in cases such as pendigits, so this improvement has fallen to Goodhart's law.
+
+|           |   mlpc area(cm²) |   bnnrospine area(cm²) | area change   |   mlpc power(mW) |   bnnrospine power(mW) | power change   |
+|:----------|-----------------:|-----------------------:|:--------------|-----------------:|-----------------------:|:---------------|
+| cardio    |               17 |                   9.3  | -45.3%        |               54 |                   36   | -33.3%         |
+| pendigits |               46 |                   9.08 | -80.3%        |              153 |                   35.1 | -77.1%         |
+| winered   |                8 |                   7.61 | -4.9%         |               27 |                   30.9 | +14.4%         |
+| winewhite |               13 |                   7.49 | -42.4%        |               42 |                   30.9 | -26.4%         |
+
+Table: Comparison of final sequential designs with the results from [@fn21]
+
+![Comparison of final sequential designs with the results from [@fn21]](figs2/mlpc_bnnrospine.svg)
+
+## Further comparison with relevant literature
+
+Here both the parallel and sequential designs are compared to further relevant works on printed networks that were described in [Related works](#related-works-in-machine-learning-for-printed-circuits) . This includes both the initial bespoke networks from [@fn20] and improvements made to the results of [@fn21] that were compared to in greater detail above. This gives a sense of where this work is placed compared to the current state of the art.
+
+As it appears even with taking two orders of magnitude longer to compute the products of this work are not competitive with the state of the art results for the same datasets, in the case of redwine even being outdone by almost a factor of 10.
+
+|           |   baseline |   mlpc |   crossax |   retrain |   tnnparsign |   bnnrospine |
+|:----------|-----------:|-------:|----------:|----------:|-------------:|-------------:|
+| cardio    |       33.4 |     17 |      17   |       6.1 |         19.2 |          9.3 |
+| winered   |       17.6 |      8 |       8   |       1.1 |         11.8 |          7.6 |
+| winewhite |       31.2 |     13 |      13.6 |       6.5 |          9.5 |          7.5 |
+
+Table: Area comparison of the final parallel and sequential designs to the state of the art in printed MLPs. baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+Table: Power comparison of the final parallel and sequential designs to the state of the art in printed MLPs. baseline is [@fn20], mlpc is [@fn21], crossax is [@modelcircuit] and retrain is [@codesign].
+
+![Area comparison to prior work](acom.svg)
+
+![Power comparison to prior work](pcom.svg)
+
