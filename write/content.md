@@ -2502,4 +2502,22 @@ The following graphs show the area and power measurements of the models reified 
 
 \newpage
 
+# Conclusion
+
+A large number of printed electronics applications have to do with
+classification using sensor data. Machine learning models are convenient
+for implementing these kinds of classification but have computational
+demands beyond the constraints of printed systems. Binary neural
+networks are an architecture with reduced requirements, so they are a
+candidate architecture to broaden the scope of classification tasks that
+can be supported. In this work bespoke designs for BNNs are evaluated
+for the first time. It is shown that ternary networks can offer both
+    better performance and lower area/power demands than binary networks
+    in the context of bespoke implementations. Additionally sequential
+    designs are shown to help significantly with meeting area/power
+    constraints at the cost of higher delay. Comparing with the state of
+    the art in printed neural networks the results for BNNs are not
+    currently competitive but some additional optimizations are likely
+    to help bridge the gap.
+
 # Bibliography

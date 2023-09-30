@@ -900,6 +900,12 @@ Table: Σύγκριση ισχύος των τελικών παράλληλων 
 
 \newpage
 
+# Συμπεράσματα
+
+Ένας μεγάλος αριθμός εφαρμογών των τυπωμένων ηλεκτρονικών έχει να κάνει με την κατηγοριοποίηση με χρήση δεδομένων αισθητήρων. Τα μοντέλα μηχανικής μάθησης είναι ιδανικά για την υλοποίηση τέτοιων ειδών κατηγοριοποίησης, αλλά έχουν υπολογιστικές απαιτήσεις πέρα από τους περιορισμούς των τυπωμένων συστημάτων. Τα δυαδικά νευρωνικά δίκτυα είναι μια αρχιτεκτονική με μειωμένες απαιτήσεις, οπότε αποτελούν μια υποψήφια αρχιτεκτονική για τη διεύρυνση του πεδίου των υποστηριζόμενων tasks κατηγοριοποίησης. Στην παρούσα εργασία αξιολογούνται για πρώτη φορά bespoke σχεδιασμοί για BNNs. Δείχνεται ότι τα τριαδικά δίκτυα μπορούν να προσφέρουν τόσο καλύτερες επιδόσεις όσο και χαμηλότερες απαιτήσεις σε επιφάνεια/ισχύ από τα δυαδικά δίκτυα στο πλαίσιο bespoke υλοποιήσεων. Επιπλέον, οι ακολουθιακοί σχεδιασμοί παρουσιάζεται ότι βοηθούν σημαντικά στην ικανοποίηση των περιορισμών χώρου/ισχύος με κόστος την υψηλότερη καθυστέρηση. Συγκρίνοντας με την κατάσταση της τεχνολογίας στα τυπωμένα νευρωνικά δίκτυα, τα αποτελέσματα για τα BNN δεν είναι επί του παρόντος ανταγωνιστικά, αλλά ορισμένες πρόσθετες βελτιστοποιήσεις είναι πιθανό να βοηθήσουν στη γεφύρωση του χάσματος.
+
+\newpage
+
 # Παράρτημα: Αγγλική μετάφραση
 
 ## Abstract
@@ -3384,6 +3390,26 @@ The following graphs show the area and power measurements of the models reified 
 ![Effect of replacing the cycle counter with shifting registers](figs2/bnnrolin_bnnrospine.svg)
 
 ![Effect of using tristate buffers for the weight memory](figs2/bnnrospine_bnnrobus.svg)
+
+\newpage
+
+## Conclusion
+
+A large number of printed electronics applications have to do with
+classification using sensor data. Machine learning models are convenient
+for implementing these kinds of classification but have computational
+demands beyond the constraints of printed systems. Binary neural
+networks are an architecture with reduced requirements, so they are a
+candidate architecture to broaden the scope of classification tasks that
+can be supported. In this work bespoke designs for BNNs are evaluated
+for the first time. It is shown that ternary networks can offer both
+    better performance and lower area/power demands than binary networks
+    in the context of bespoke implementations. Additionally sequential
+    designs are shown to help significantly with meeting area/power
+    constraints at the cost of higher delay. Comparing with the state of
+    the art in printed neural networks the results for BNNs are not
+    currently competitive but some additional optimizations are likely
+    to help bridge the gap.
 
 \newpage
 
